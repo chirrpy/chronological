@@ -28,4 +28,11 @@ Gem::Specification.new do |s|
   s.test_files            = Dir["{test,spec,features}/**/*"]
   s.require_paths         = ["lib"]
   #= Manifest =#
+
+  s.add_development_dependency  'rspec',                '~> 2.11'
+  s.add_development_dependency  'fuubar',               '~> 1.0'
+  s.add_development_dependency  'guard',                '~> 1.4.0'
+  s.add_development_dependency  'guard-rspec',          '~> 2.0.0'
+  s.add_development_dependency  'rb-fsevent',           '~> 0.9.1'
+  s.add_development_dependency  'awesome_print',        '~> 1.1.0'
 end
