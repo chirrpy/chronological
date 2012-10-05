@@ -23,6 +23,12 @@ describe Chronological do
     context 'but no end time is set' do
       let(:end_time) { nil }
 
+      describe '#scheduled?' do
+        it 'is false' do
+          chronologicable.should_not be_scheduled
+        end
+      end
+
       describe '#partially_scheduled?' do
         it 'is true' do
           chronologicable.should     be_partially_scheduled
@@ -32,6 +38,12 @@ describe Chronological do
 
     context 'and an end time is set' do
       let(:end_time) { Time.now }
+
+      describe '#scheduled?' do
+        it 'is true' do
+          chronologicable.should     be_scheduled
+        end
+      end
 
       describe '#partially_scheduled?' do
         it 'is true' do
@@ -47,6 +59,12 @@ describe Chronological do
     context 'but no start time is set' do
       let(:start_time) { nil }
 
+      describe '#scheduled?' do
+        it 'is false' do
+          chronologicable.should_not be_scheduled
+        end
+      end
+
       describe '#partially_scheduled?' do
         it 'is true' do
           chronologicable.should     be_partially_scheduled
@@ -58,6 +76,12 @@ describe Chronological do
   context 'when neither a start time nor an end time is set' do
     let(:start_time) { nil }
     let(:end_time)   { nil }
+
+    describe '#scheduled?' do
+      it 'is false' do
+        chronologicable.should_not be_scheduled
+      end
+    end
 
     describe '#partially_scheduled?' do
       it 'is false' do
