@@ -69,7 +69,7 @@ module Chronological
   def in_progress?
     return false unless scheduled?
 
-    self.started_at_utc.past? && self.ending_at_utc.future?
+    (started_at_utc <= Time.now.utc) && ended_at_utc.future?
   end
 
   alias active? in_progress?
