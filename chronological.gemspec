@@ -37,4 +37,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency  'awesome_print',        '~> 1.1.0'
   s.add_development_dependency  'activerecord',         '~> 3.1.8'
   s.add_development_dependency  'sqlite3',              '~> 1.3.6'
+  s.add_development_dependency  'timecop',              '~> 0.5.2'
 end

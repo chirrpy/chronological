@@ -1,5 +1,6 @@
 require 'sqlite3'
 require 'active_record'
+require 'timecop'
 require 'chronological'
 
 RSpec.configure do |config|
