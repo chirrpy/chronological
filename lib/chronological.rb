@@ -69,7 +69,7 @@ module Chronological
   def in_progress?
     return false unless scheduled?
 
-    self.started_at.past? && self.ending_at.future?
+    self.started_at_utc.past? && self.ending_at_utc.future?
   end
 
   alias active? in_progress?
@@ -79,7 +79,7 @@ module Chronological
   end
 
   def scheduled?
-    started_at.present? || ended_at.present? || time_zone.present?
+    started_at_utc.present? || ended_at_utc.present? || time_zone.present?
   end
 
   def duration
@@ -91,6 +91,6 @@ module Chronological
 
 private
   def duration_in_minutes
-    @duration_in_minutes ||= (ended_at - started_at) / 60
+    @duration_in_minutes ||= (ended_at_utc - started_at_utc) / 60
   end
 end
