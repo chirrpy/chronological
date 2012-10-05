@@ -17,6 +17,55 @@ describe Chronological do
       :ended_at_utc   => end_time)
   end
 
+  context 'when a start time is set' do
+    let(:start_time) { Time.now }
+
+    context 'but no end time is set' do
+      let(:end_time) { nil }
+
+      describe '#partially_scheduled?' do
+        it 'is true' do
+          chronologicable.should     be_partially_scheduled
+        end
+      end
+    end
+
+    context 'and an end time is set' do
+      let(:end_time) { Time.now }
+
+      describe '#partially_scheduled?' do
+        it 'is true' do
+          chronologicable.should     be_partially_scheduled
+        end
+      end
+    end
+  end
+
+  context 'when an end time is set' do
+    let(:end_time) { Time.now }
+
+    context 'but no start time is set' do
+      let(:start_time) { nil }
+
+      describe '#partially_scheduled?' do
+        it 'is true' do
+          chronologicable.should     be_partially_scheduled
+        end
+      end
+    end
+  end
+
+  context 'when neither a start time nor an end time is set' do
+    let(:start_time) { nil }
+    let(:end_time)   { nil }
+
+    describe '#partially_scheduled?' do
+      it 'is false' do
+        chronologicable.should_not be_partially_scheduled
+      end
+    end
+  end
+
   context 'when there is a chronologicable that has already started' do
     let(:start_time) { past }
 
