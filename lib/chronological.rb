@@ -79,7 +79,7 @@ module Chronological
   end
 
   def scheduled?
-    started_at_utc.present? || ended_at_utc.present? || time_zone.present?
+    started_at_utc.present? || ended_at_utc.present?
   end
 
   def duration
