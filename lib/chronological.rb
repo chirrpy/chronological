@@ -107,20 +107,3 @@ module Chronological
     base.extend ClassMethods
   end
 end
-
-  # alias_attribute  :starts_at,        :started_at
-  # alias_attribute  :starting_at,      :started_at
-  # alias_attribute  :ends_at,          :ended_at
-  # alias_attribute  :ending_at,        :ended_at
-
-  # def started_at_date
-  #   return nil unless started_at.respond_to? :to_date
-
-  #   started_at.to_date
-  # end
-
-  # def ended_at_date
-  #   return nil unless ended_at.respond_to? :to_date
-
-  #   ended_at.to_date
-  # end
