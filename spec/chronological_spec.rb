@@ -37,6 +37,26 @@ describe Chronological do
     end
   end
 
+  describe '#ended_at_utc_date' do
+    context 'when the date field is set to a string' do
+      let(:start_time)  { nil }
+      let(:end_time)    { '2012-07-26 03:15:12' }
+
+      it 'properly converts the date' do
+        chronologicable.ended_at_utc_date.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
+      end
+    end
+
+    context 'when the date field is set to a date' do
+      let(:start_time)  { nil }
+      let(:end_time)    { Time.utc(2012, 7, 26, 3, 15, 12) }
+
+      it 'properly converts the date' do
+        chronologicable.ended_at_utc_date.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
+      end
+    end
+  end
+
   context 'when a start time is set' do
     let(:start_time) { Time.now }
 

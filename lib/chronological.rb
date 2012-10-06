@@ -60,10 +60,10 @@ module Chronological
     started_at_utc.to_date
   end
 
-  def ended_at_date
-    return nil unless ended_at.respond_to? :to_date
+  def ended_at_utc_date
+    return nil unless ended_at_utc.respond_to? :to_date
 
-    ended_at.to_date
+    ended_at_utc.to_date
   end
 
   def in_progress?
