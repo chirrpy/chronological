@@ -40,6 +40,13 @@ describe Chronological, :timecop => true do
           Chronologicable.by_date.last.should   eql chronologicable_2
         end
       end
+
+      describe '.by_date_reversed' do
+        it 'sorts them backwards by the start date' do
+          Chronologicable.by_date_reversed.first.should  eql chronologicable_2
+          Chronologicable.by_date_reversed.last.should   eql chronologicable_1
+        end
+      end
     end
 
     context 'and end at the same time' do
@@ -47,6 +54,13 @@ describe Chronological, :timecop => true do
       let!(:chronologicable_2) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
       describe '.by_date' do
+        it 'does not matter what order they are in as long as they are all there' do
+          Chronologicable.by_date.should  include chronologicable_1
+          Chronologicable.by_date.should  include chronologicable_2
+        end
+      end
+
+      describe '.by_date_reversed' do
         it 'does not matter what order they are in as long as they are all there' do
           Chronologicable.by_date.should  include chronologicable_1
           Chronologicable.by_date.should  include chronologicable_2
@@ -66,6 +80,13 @@ describe Chronological, :timecop => true do
           Chronologicable.by_date.last.should   eql chronologicable_2
         end
       end
+
+      describe '.by_date_reversed' do
+        it 'sorts them backwards by the start date' do
+          Chronologicable.by_date_reversed.first.should  eql chronologicable_2
+          Chronologicable.by_date_reversed.last.should   eql chronologicable_1
+        end
+      end
     end
 
     context 'but end at the same time' do
@@ -76,6 +97,13 @@ describe Chronological, :timecop => true do
         it 'sorts them by the start date' do
           Chronologicable.by_date.first.should  eql chronologicable_1
           Chronologicable.by_date.last.should   eql chronologicable_2
+        end
+      end
+
+      describe '.by_date_reversed' do
+        it 'sorts them backwards by the start date' do
+          Chronologicable.by_date_reversed.first.should  eql chronologicable_2
+          Chronologicable.by_date_reversed.last.should   eql chronologicable_1
         end
       end
     end

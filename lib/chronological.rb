@@ -54,9 +54,9 @@ module Chronological
         order "#{table_name}.#{start_field} ASC, #{table_name}.#{end_field} ASC"
       end
 
-      # self.class.send(:define_method, :by_date_reversed) do
-      #   order "#{table_name}.#{start_field} DESC, #{table_name}.#{end_field} DESC"
-      # end
+      self.class.send(:define_method, :by_date_reversed) do
+        order "#{table_name}.#{start_field} DESC, #{table_name}.#{end_field} DESC"
+      end
 
       self.class.send(:define_method, :expired) do
         where("#{end_field} <= :now", :now => Time.now.utc)
