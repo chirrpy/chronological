@@ -50,9 +50,9 @@ module Chronological
       ###
       # Scopes
       #
-      # self.class.send(:define_method, :by_date) do
-      #   order "#{table_name}.#{start_field} ASC, #{table_name}.#{end_field} ASC"
-      # end
+      self.class.send(:define_method, :by_date) do
+        order "#{table_name}.#{start_field} ASC, #{table_name}.#{end_field} ASC"
+      end
 
       # self.class.send(:define_method, :by_date_reversed) do
       #   order "#{table_name}.#{start_field} DESC, #{table_name}.#{end_field} DESC"

@@ -29,6 +29,58 @@ describe Chronological, :timecop => true do
   it { Chronologicable.respond_to?(:active?).should             be_true }
   it { Chronologicable.respond_to?(:active).should              be_true }
 
+  context 'when there are two chronologicables that start at the same time' do
+    context 'but end at different times' do
+      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => past }
+      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
+
+      describe '.by_date' do
+        it 'properly sorts them' do
+          Chronologicable.by_date.first.should  eql chronologicable_1
+          Chronologicable.by_date.last.should   eql chronologicable_2
+        end
+      end
+    end
+
+    context 'and end at the same time' do
+      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
+
+      describe '.by_date' do
+        it 'does not matter what order they are in as long as they are all there' do
+          Chronologicable.by_date.should  include chronologicable_1
+          Chronologicable.by_date.should  include chronologicable_2
+        end
+      end
+    end
+  end
+
+  context 'when there are two chronologicables that start at different times' do
+    context 'and end at different times' do
+      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => now,  :ended_at_utc => later }
+
+      describe '.by_date' do
+        it 'sorts them by the start date' do
+          Chronologicable.by_date.first.should  eql chronologicable_1
+          Chronologicable.by_date.last.should   eql chronologicable_2
+        end
+      end
+    end
+
+    context 'but end at the same time' do
+      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => later }
+      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => now,  :ended_at_utc => later }
+
+      describe '.by_date' do
+        it 'sorts them by the start date' do
+          Chronologicable.by_date.first.should  eql chronologicable_1
+          Chronologicable.by_date.last.should   eql chronologicable_2
+        end
+      end
+    end
+  end
+
   describe '#started_at_utc_date' do
     context 'when the date field is set to a string' do
       let(:start_time) { '2012-07-26 03:15:12' }
