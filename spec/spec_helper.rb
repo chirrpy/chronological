@@ -26,6 +26,10 @@ RSpec.configure do |config|
     SetupTests.new.migrate(:up)
   end
 
+  config.before(:each) do
+    ActiveRecord::Base.connection.execute 'DELETE FROM chronologicables'
+  end
+
   config.after(:all) do
     `rm -f ./tmp/test.db`
   end
