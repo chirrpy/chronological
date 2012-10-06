@@ -74,9 +74,9 @@ module Chronological
         where("#{start_field} <= :now", :now => Time.now.utc)
       end
 
-      # def in_progress?
-      #   in_progress.any?
-      # end
+      self.class.send(:define_method, :in_progress?) do
+        in_progress.any?
+      end
 
       # alias active? in_progress?
       # alias active  in_progress

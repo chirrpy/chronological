@@ -151,6 +151,13 @@ describe Chronological do
         end
       end
 
+      describe '.in_progress?' do
+        it 'is false' do
+          chronologicable
+          Chronologicable.should_not be_in_progress
+        end
+      end
+
       describe '.expired' do
         it 'includes that chronologicable' do
           Chronologicable.expired.should include chronologicable
@@ -185,6 +192,13 @@ describe Chronological do
         end
       end
 
+      describe '.in_progress?' do
+        it 'is false' do
+          chronologicable
+          Chronologicable.should_not be_in_progress
+        end
+      end
+
       describe '.expired' do
         it 'does include that chronologicable' do
           Chronologicable.expired.should include chronologicable
@@ -216,6 +230,13 @@ describe Chronological do
       describe '#in_progress?' do
         it 'is true' do
           chronologicable.should     be_in_progress
+        end
+      end
+
+      describe '.in_progress?' do
+        it 'is true' do
+          chronologicable
+          Chronologicable.should be_in_progress
         end
       end
 
@@ -257,6 +278,13 @@ describe Chronological do
         end
       end
 
+      describe '.in_progress?' do
+        it 'is false' do
+          chronologicable
+          Chronologicable.should_not be_in_progress
+        end
+      end
+
       describe '.expired' do
         it 'does include that chronologicable' do
           Chronologicable.expired.should include chronologicable
@@ -288,6 +316,13 @@ describe Chronological do
       describe '#in_progress?' do
         it 'is true' do
           chronologicable.should     be_in_progress
+        end
+      end
+
+      describe '.in_progress?' do
+        it 'is true' do
+          chronologicable
+          Chronologicable.should be_in_progress
         end
       end
 
@@ -324,6 +359,13 @@ describe Chronological do
     describe '#in_progress?' do
       it 'is false' do
         chronologicable.should_not be_in_progress
+      end
+    end
+
+    describe '.in_progress?' do
+      it 'is false' do
+        chronologicable
+        Chronologicable.should_not be_in_progress
       end
     end
 
