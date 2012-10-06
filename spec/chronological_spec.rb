@@ -156,6 +156,12 @@ describe Chronological do
           Chronologicable.expired.should include chronologicable
         end
       end
+
+      describe '.current' do
+        it 'does not include that chronologicable' do
+          Chronologicable.current.should_not include chronologicable
+        end
+      end
     end
 
     context 'and ends now' do
@@ -172,6 +178,12 @@ describe Chronological do
           Chronologicable.expired.should include chronologicable
         end
       end
+
+      describe '.current' do
+        it 'does not include that chronologicable' do
+          Chronologicable.current.should_not include chronologicable
+        end
+      end
     end
 
     context 'and ends later' do
@@ -186,6 +198,12 @@ describe Chronological do
       describe '.expired' do
         it 'does not include that chronologicable' do
           Chronologicable.expired.should_not include chronologicable
+        end
+      end
+
+      describe '.current' do
+        it 'includes that chronologicable' do
+          Chronologicable.current.should include chronologicable
         end
       end
     end
@@ -208,6 +226,12 @@ describe Chronological do
           Chronologicable.expired.should include chronologicable
         end
       end
+
+      describe '.current' do
+        it 'does not include that chronologicable' do
+          Chronologicable.current.should_not include chronologicable
+        end
+      end
     end
 
     context 'and ends later' do
@@ -222,6 +246,12 @@ describe Chronological do
       describe '.expired' do
         it 'does not include that chronologicable' do
           Chronologicable.expired.should_not include chronologicable
+        end
+      end
+
+      describe '.current' do
+        it 'includes that chronologicable' do
+          Chronologicable.current.should include chronologicable
         end
       end
     end
@@ -240,6 +270,12 @@ describe Chronological do
     describe '.expired' do
       it 'does not include that chronologicable' do
         Chronologicable.expired.should_not include chronologicable
+      end
+    end
+
+    describe '.current' do
+      it 'includes that chronologicable' do
+        Chronologicable.current.should include chronologicable
       end
     end
   end
