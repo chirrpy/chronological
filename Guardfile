@@ -1,3 +1,8 @@
+notification  :tmux,
+              :success => 'colour22',
+              :failed  => 'colour52',
+              :display_message => true
+
 guard 'rspec',
       all_on_start:   true,
       all_after_pass: true,
