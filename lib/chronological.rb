@@ -40,10 +40,11 @@ module Chronological
       end
 
       define_method(:duration) do
-        hours   = (duration_in_minutes / 60).to_int
-        minutes = (duration_in_minutes % 60).to_int
+        hours   = (duration_in_seconds / 3600).to_i
+        minutes = ((duration_in_seconds % 3600) / 60).to_i
+        seconds = (duration_in_seconds % 60).to_i
 
-        { :hours => hours, :minutes => minutes }
+        { :hours => hours, :minutes => minutes, :seconds => seconds }
       end
 
       ###
@@ -92,16 +93,16 @@ module Chronological
 
         alias             active?                                   in_progress?
       end
+
+    private
+      define_method(:duration_in_seconds) do
+        (send(end_field) - send(start_field))
+      end
     end
   end
 
   def self.included(base)
     base.extend ClassMethods
-  end
-
-private
-  def duration_in_minutes
-    @duration_in_minutes ||= (send(end_field) - send(start_field)) / 60
   end
 end
 
