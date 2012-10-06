@@ -157,6 +157,12 @@ describe Chronological do
         end
       end
 
+      describe '.started' do
+        it 'includes that chronologicable' do
+          Chronologicable.started.should include chronologicable
+        end
+      end
+
       describe '.current' do
         it 'does not include that chronologicable' do
           Chronologicable.current.should_not include chronologicable
@@ -185,6 +191,12 @@ describe Chronological do
         end
       end
 
+      describe '.started' do
+        it 'includes that chronologicable' do
+          Chronologicable.started.should include chronologicable
+        end
+      end
+
       describe '.current' do
         it 'does not include that chronologicable' do
           Chronologicable.current.should_not include chronologicable
@@ -210,6 +222,12 @@ describe Chronological do
       describe '.expired' do
         it 'does not include that chronologicable' do
           Chronologicable.expired.should_not include chronologicable
+        end
+      end
+
+      describe '.started' do
+        it 'includes that chronologicable' do
+          Chronologicable.started.should include chronologicable
         end
       end
 
@@ -245,6 +263,12 @@ describe Chronological do
         end
       end
 
+      describe '.started' do
+        it 'includes that chronologicable' do
+          Chronologicable.started.should include chronologicable
+        end
+      end
+
       describe '.current' do
         it 'does not include that chronologicable' do
           Chronologicable.current.should_not include chronologicable
@@ -270,6 +294,12 @@ describe Chronological do
       describe '.expired' do
         it 'does not include that chronologicable' do
           Chronologicable.expired.should_not include chronologicable
+        end
+      end
+
+      describe '.started' do
+        it 'includes that chronologicable' do
+          Chronologicable.started.should include chronologicable
         end
       end
 
@@ -300,6 +330,12 @@ describe Chronological do
     describe '.expired' do
       it 'does not include that chronologicable' do
         Chronologicable.expired.should_not include chronologicable
+      end
+    end
+
+    describe '.started' do
+      it 'does not include that chronologicable' do
+        Chronologicable.started.should_not include chronologicable
       end
     end
 

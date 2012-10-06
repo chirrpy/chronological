@@ -70,9 +70,9 @@ module Chronological
         where("#{start_field} <= :now AND #{end_field} > :now", :now => Time.now.utc)
       end
 
-      # self.class.send(:define_method, :started) do
-      #   where("#{start_field} <= :now", :now => Time.now.utc)
-      # end
+      self.class.send(:define_method, :started) do
+        where("#{start_field} <= :now", :now => Time.now.utc)
+      end
 
       # def in_progress?
       #   in_progress.any?
