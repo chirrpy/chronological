@@ -1,98 +1,123 @@
 module Chronological
   module ClassMethods
-    ###
-    # Scopes
-    #
-    def by_date
-      order "#{table_name}.started_at_utc ASC, #{table_name}.ended_at_utc ASC"
-    end
+    def chronological(options = {})
+      start_field            = options[:start_utc] || options[:start]
+      end_field              = options[:end_utc]   || options[:end]
+      time_zone              = options[:time_zone]
+      start_field_is_utc     = options.has_key? :start_utc
+      end_field_is_utc       = options.has_key? :end_utc
+      start_field_utc_suffix = start_field_is_utc ? '_utc' : ''
+      end_field_utc_suffix   = end_field_is_utc ? '_utc' : ''
 
-    def by_date_reversed
-      order "#{table_name}.started_at_utc DESC, #{table_name}.ended_at_utc DESC"
-    end
+      define_method(:started_at_utc_date) do
+        return nil unless send(start_field).respond_to? :to_date
 
-    def expired
-      where('ended_at_utc < :now', :now => Time.now.utc)
-    end
+        send(start_field).to_date
+      end
 
-    def current
-      where('ended_at_utc > :now', :now => Time.now.utc)
-    end
+      define_method(:ended_at_utc_date) do
+        return nil unless send(end_field).respond_to? :to_date
 
-    def in_progress
-      where('started_at_utc <= :now AND ended_at_utc > :now', :now => Time.now.utc)
-    end
+        send(end_field).to_date
+      end
 
-    alias active in_progress
+      define_method(:in_progress?) do
+        return false unless scheduled?
 
-    def in_progress?
-      in_progress.any?
-    end
+        (send(start_field) <= Time.now.utc) && send(end_field).future?
+      end
 
-    alias active? in_progress?
+      define_method(:inactive?) do
+        !active?
+      end
 
-    def started
-      where("started_at_utc <= :now", :now => Time.now.utc)
+      define_method(:scheduled?) do
+        send(start_field).present? && send(end_field).present?
+      end
+
+      define_method(:partially_scheduled?) do
+        send(start_field).present? || send(end_field).present?
+      end
+
+      define_method(:duration) do
+        hours   = (duration_in_minutes / 60).to_int
+        minutes = (duration_in_minutes % 60).to_int
+
+        { :hours => hours, :minutes => minutes }
+      end
+
+      ###
+      # Scopes
+      #
+      # self.class.send(:define_method, :by_date) do
+      #   order "#{table_name}.#{start_field} ASC, #{table_name}.#{end_field} ASC"
+      # end
+
+      # self.class.send(:define_method, :by_date_reversed) do
+      #   order "#{table_name}.#{start_field} DESC, #{table_name}.#{end_field} DESC"
+      # end
+
+      # self.class.send(:define_method, :expired) do
+      #   where("#{end_field} < :now", :now => Time.now.utc)
+      # end
+
+      # self.class.send(:define_method, :current) do
+      #   where("#{end_field} > :now", :now => Time.now.utc)
+      # end
+
+      # self.class.send(:define_method, :in_progress) do
+      #   where("#{start_field} <= :now AND #{end_field} > :now", :now => Time.now.utc)
+      # end
+
+      # self.class.send(:define_method, :started) do
+      #   where("#{start_field} <= :now", :now => Time.now.utc)
+      # end
+
+      # def in_progress?
+      #   in_progress.any?
+      # end
+
+      # alias active? in_progress?
+      # alias active  in_progress
+
+      ###
+      # Aliases
+      #
+      # Aliasing date methods to make code more readable
+      class_eval do
+        alias_attribute   :"starts_at#{start_field_utc_suffix}",    start_field.to_sym
+        alias_attribute   :"starting_at#{start_field_utc_suffix}",  start_field.to_sym
+        alias_attribute   :"ends_at#{start_field_utc_suffix}",      end_field.to_sym
+        alias_attribute   :"ending_at#{start_field_utc_suffix}",    end_field.to_sym
+
+        alias             active?                                   in_progress?
+      end
     end
   end
 
   def self.included(base)
     base.extend ClassMethods
-
-    ###
-    # Aliases
-    #
-    # Aliasing date methods to make code more readable
-
-    base.instance_eval <<-EVALING
-      alias_attribute  :starts_at_utc,    :started_at_utc
-      alias_attribute  :starting_at_utc,  :started_at_utc
-      alias_attribute  :ends_at_utc,      :ended_at_utc
-      alias_attribute  :ending_at_utc,    :ended_at_utc
-    EVALING
-  end
-
-  def started_at_utc_date
-    return nil unless started_at_utc.respond_to? :to_date
-
-    started_at_utc.to_date
-  end
-
-  def ended_at_utc_date
-    return nil unless ended_at_utc.respond_to? :to_date
-
-    ended_at_utc.to_date
-  end
-
-  def in_progress?
-    return false unless scheduled?
-
-    (started_at_utc <= Time.now.utc) && ended_at_utc.future?
-  end
-
-  alias active? in_progress?
-
-  def inactive?
-    !active?
-  end
-
-  def scheduled?
-    started_at_utc.present? && ended_at_utc.present?
-  end
-
-  def partially_scheduled?
-    started_at_utc.present? || ended_at_utc.present?
-  end
-
-  def duration
-    hours   = (duration_in_minutes / 60).to_int
-    minutes = (duration_in_minutes % 60).to_int
-
-    { :hours => hours, :minutes => minutes }
   end
 
 private
   def duration_in_minutes
-    @duration_in_minutes ||= (ended_at_utc - started_at_utc) / 60
+    @duration_in_minutes ||= (send(end_field) - send(start_field)) / 60
   end
 end
+
+  # alias_attribute  :starts_at,        :started_at
+  # alias_attribute  :starting_at,      :started_at
+  # alias_attribute  :ends_at,          :ended_at
+  # alias_attribute  :ending_at,        :ended_at
+
+  # def started_at_date
+  #   return nil unless started_at.respond_to? :to_date
+
+  #   started_at.to_date
+  # end
+
+  # def ended_at_date
+  #   return nil unless ended_at.respond_to? :to_date
+
+  #   ended_at.to_date
+  # end

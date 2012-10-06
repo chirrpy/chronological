@@ -2,6 +2,9 @@ require 'spec_helper'
 
 class Chronologicable < ActiveRecord::Base
   include Chronological
+
+  chronological :start_utc => :started_at_utc,
+                :end_utc   => :ended_at_utc
 end
 
 describe Chronological do
