@@ -20,6 +20,12 @@ RSpec.configure do |config|
           t.datetime :started_at_utc
           t.datetime :ended_at_utc
         end
+
+        create_table :chronologicable_with_time_zones do |t|
+          t.datetime :started_at_utc
+          t.datetime :ended_at_utc
+          t.string   :time_zone
+        end
       end
     end
 

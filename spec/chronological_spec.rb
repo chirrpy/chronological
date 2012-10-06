@@ -7,6 +7,14 @@ class Chronologicable < ActiveRecord::Base
                 :end_utc   => :ended_at_utc
 end
 
+class ChronologicableWithTimeZone < ActiveRecord::Base
+  include Chronological
+
+  chronological :start_utc => :started_at_utc,
+                :end_utc   => :ended_at_utc,
+                :time_zone => :time_zone
+end
+
 describe Chronological, :timecop => true do
   let(:later) { Time.local(2012, 7, 26, 6, 0, 26) }
   let(:now)   { Time.local(2012, 7, 26, 6, 0, 25) }
@@ -18,6 +26,19 @@ describe Chronological, :timecop => true do
     Chronologicable.create(
       :started_at_utc => start_time,
       :ended_at_utc   => end_time)
+  end
+
+  let(:chronologicable_without_enabled_time_zone) do
+    Chronologicable.new(
+      :started_at_utc => start_time,
+      :ended_at_utc   => end_time)
+  end
+
+  let(:chronologicable_with_enabled_time_zone) do
+    ChronologicableWithTimeZone.new(
+      :started_at_utc => start_time,
+      :ended_at_utc   => end_time,
+      :time_zone      => time_zone)
   end
 
   it { Chronologicable.new.respond_to?(:starts_at_utc).should   be_true }
@@ -155,31 +176,79 @@ describe Chronological, :timecop => true do
     context 'but no end time is set' do
       let(:end_time) { nil }
 
-      describe '#scheduled?' do
-        it 'is false' do
-          chronologicable.should_not be_scheduled
+      context 'and no time zone is set' do
+        let(:time_zone) { nil }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
         end
       end
 
-      describe '#partially_scheduled?' do
-        it 'is true' do
-          chronologicable.should be_partially_scheduled
+      context 'and a time zone is set' do
+        let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
         end
       end
     end
 
-    context 'and an end time is set' do
+    context 'an end time is set' do
       let(:end_time) { Time.now }
 
-      describe '#scheduled?' do
-        it 'is true' do
-          chronologicable.should be_scheduled
+      context 'but no time zone is set' do
+        let(:time_zone) { nil }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
         end
       end
 
-      describe '#partially_scheduled?' do
-        it 'is true' do
-          chronologicable.should be_partially_scheduled
+      context 'and a time zone is set' do
+        let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_scheduled
+            chronologicable_with_enabled_time_zone.should be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
         end
       end
     end
@@ -200,6 +269,42 @@ describe Chronological, :timecop => true do
       describe '#partially_scheduled?' do
         it 'is true' do
           chronologicable.should be_partially_scheduled
+        end
+      end
+
+      context 'but no time zone is set' do
+        let(:time_zone) { nil }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
+        end
+      end
+
+      context 'and a time zone is set' do
+        let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
         end
       end
     end

@@ -32,11 +32,15 @@ module Chronological
       end
 
       define_method(:scheduled?) do
-        send(start_field).present? && send(end_field).present?
+        optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : true
+
+        send(start_field).present? && send(end_field).present? && optional_time_zone
       end
 
       define_method(:partially_scheduled?) do
-        send(start_field).present? || send(end_field).present?
+        optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : false
+
+        send(start_field).present? || send(end_field).present? || optional_time_zone
       end
 
       define_method(:duration) do
