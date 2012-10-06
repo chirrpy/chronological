@@ -78,8 +78,10 @@ module Chronological
         in_progress.any?
       end
 
-      # alias active? in_progress?
-      # alias active  in_progress
+      instance_eval do
+        alias active? in_progress?
+        alias active  in_progress
+      end
 
       ###
       # Aliases

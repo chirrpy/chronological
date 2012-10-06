@@ -26,6 +26,9 @@ describe Chronological, :timecop => true do
   it { Chronologicable.new.respond_to?(:ending_at_utc).should   be_true }
   it { Chronologicable.new.respond_to?(:active?).should         be_true }
 
+  it { Chronologicable.respond_to?(:active?).should             be_true }
+  it { Chronologicable.respond_to?(:active).should              be_true }
+
   describe '#started_at_utc_date' do
     context 'when the date field is set to a string' do
       let(:start_time) { '2012-07-26 03:15:12' }
