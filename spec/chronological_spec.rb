@@ -80,7 +80,7 @@ describe Chronological, :timecop => true do
 
       describe '#partially_scheduled?' do
         it 'is true' do
-          chronologicable.should     be_partially_scheduled
+          chronologicable.should be_partially_scheduled
         end
       end
     end
@@ -90,13 +90,13 @@ describe Chronological, :timecop => true do
 
       describe '#scheduled?' do
         it 'is true' do
-          chronologicable.should     be_scheduled
+          chronologicable.should be_scheduled
         end
       end
 
       describe '#partially_scheduled?' do
         it 'is true' do
-          chronologicable.should     be_partially_scheduled
+          chronologicable.should be_partially_scheduled
         end
       end
     end
@@ -116,7 +116,7 @@ describe Chronological, :timecop => true do
 
       describe '#partially_scheduled?' do
         it 'is true' do
-          chronologicable.should     be_partially_scheduled
+          chronologicable.should be_partially_scheduled
         end
       end
     end
@@ -229,7 +229,7 @@ describe Chronological, :timecop => true do
 
       describe '#in_progress?' do
         it 'is true' do
-          chronologicable.should     be_in_progress
+          chronologicable.should be_in_progress
         end
       end
 
@@ -315,7 +315,7 @@ describe Chronological, :timecop => true do
 
       describe '#in_progress?' do
         it 'is true' do
-          chronologicable.should     be_in_progress
+          chronologicable.should be_in_progress
         end
       end
 
