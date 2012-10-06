@@ -24,6 +24,7 @@ describe Chronological do
   it { Chronologicable.new.respond_to?(:starting_at_utc).should be_true }
   it { Chronologicable.new.respond_to?(:ends_at_utc).should     be_true }
   it { Chronologicable.new.respond_to?(:ending_at_utc).should   be_true }
+  it { Chronologicable.new.respond_to?(:active?).should         be_true }
 
   describe '#started_at_utc_date' do
     context 'when the date field is set to a string' do
