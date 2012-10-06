@@ -8,9 +8,9 @@ class Chronologicable < ActiveRecord::Base
 end
 
 describe Chronological, :timecop => true do
-  let(:later) { Time.utc(2012, 7, 26, 6, 0, 26) }
-  let(:now)   { Time.utc(2012, 7, 26, 6, 0, 25) }
-  let(:past)  { Time.utc(2012, 7, 26, 6, 0, 24) }
+  let(:later) { Time.local(2012, 7, 26, 6, 0, 26) }
+  let(:now)   { Time.local(2012, 7, 26, 6, 0, 25) }
+  let(:past)  { Time.local(2012, 7, 26, 6, 0, 24) }
 
   before      { Timecop.freeze(now)             }
 
