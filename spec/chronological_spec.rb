@@ -149,6 +149,12 @@ describe Chronological do
           chronologicable.should_not be_in_progress
         end
       end
+
+      describe '.expired' do
+        it 'includes that chronologicable' do
+          Chronologicable.expired.should include chronologicable
+        end
+      end
     end
 
     context 'and ends now' do
@@ -159,6 +165,12 @@ describe Chronological do
           chronologicable.should_not be_in_progress
         end
       end
+
+      describe '.expired' do
+        it 'does include that chronologicable' do
+          Chronologicable.expired.should include chronologicable
+        end
+      end
     end
 
     context 'and ends later' do
@@ -167,6 +179,12 @@ describe Chronological do
       describe '#in_progress?' do
         it 'is true' do
           chronologicable.should     be_in_progress
+        end
+      end
+
+      describe '.expired' do
+        it 'does not include that chronologicable' do
+          Chronologicable.expired.should_not include chronologicable
         end
       end
     end
@@ -183,6 +201,12 @@ describe Chronological do
           chronologicable.should_not be_in_progress
         end
       end
+
+      describe '.expired' do
+        it 'does include that chronologicable' do
+          Chronologicable.expired.should include chronologicable
+        end
+      end
     end
 
     context 'and ends later' do
@@ -191,6 +215,12 @@ describe Chronological do
       describe '#in_progress?' do
         it 'is true' do
           chronologicable.should     be_in_progress
+        end
+      end
+
+      describe '.expired' do
+        it 'does not include that chronologicable' do
+          Chronologicable.expired.should_not include chronologicable
         end
       end
     end
@@ -203,6 +233,12 @@ describe Chronological do
     describe '#in_progress?' do
       it 'is false' do
         chronologicable.should_not be_in_progress
+      end
+    end
+
+    describe '.expired' do
+      it 'does not include that chronologicable' do
+        Chronologicable.expired.should_not include chronologicable
       end
     end
   end
