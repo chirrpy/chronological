@@ -38,17 +38,19 @@ module Chronological
 
   def self.included(base)
     base.extend ClassMethods
+
+    ###
+    # Aliases
+    #
+    # Aliasing date methods to make code more readable
+
+    base.instance_eval <<-EVALING
+      alias_attribute  :starts_at_utc,    :started_at_utc
+      alias_attribute  :starting_at_utc,  :started_at_utc
+      alias_attribute  :ends_at_utc,      :ended_at_utc
+      alias_attribute  :ending_at_utc,    :ended_at_utc
+    EVALING
   end
-
-  ###
-  # Aliases
-  #
-  # Aliasing date methods to make code more readable
-
-  alias_attribute  :starts_at_utc,    :started_at_utc
-  alias_attribute  :starting_at_utc,  :started_at_utc
-  alias_attribute  :ends_at_utc,      :ended_at_utc
-  alias_attribute  :ending_at_utc,    :ended_at_utc
 
   def started_at_utc_date
     return nil unless started_at_utc.respond_to? :to_date
