@@ -54,10 +54,10 @@ module Chronological
   alias_attribute  :ends_at_utc,      :ended_at_utc
   alias_attribute  :ending_at_utc,    :ended_at_utc
 
-  def started_at_date
-    return nil unless started_at.respond_to? :to_date
+  def started_at_utc_date
+    return nil unless started_at_utc.respond_to? :to_date
 
-    started_at.to_date
+    started_at_utc.to_date
   end
 
   def ended_at_date
