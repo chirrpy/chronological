@@ -7,7 +7,7 @@ class Chronologicable < ActiveRecord::Base
                 :end_utc   => :ended_at_utc
 end
 
-describe Chronological do
+describe Chronological, :timecop => true do
   let(:later) { Time.utc(2012, 7, 26, 6, 0, 26) }
   let(:now)   { Time.utc(2012, 7, 26, 6, 0, 25) }
   let(:past)  { Time.utc(2012, 7, 26, 6, 0, 24) }
