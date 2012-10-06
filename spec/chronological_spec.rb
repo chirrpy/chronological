@@ -162,6 +162,12 @@ describe Chronological do
           Chronologicable.current.should_not include chronologicable
         end
       end
+
+      describe '.in_progress' do
+        it 'does not include that chronologicable' do
+          Chronologicable.in_progress.should_not include chronologicable
+        end
+      end
     end
 
     context 'and ends now' do
@@ -184,6 +190,12 @@ describe Chronological do
           Chronologicable.current.should_not include chronologicable
         end
       end
+
+      describe '.in_progress' do
+        it 'does not include that chronologicable' do
+          Chronologicable.in_progress.should_not include chronologicable
+        end
+      end
     end
 
     context 'and ends later' do
@@ -204,6 +216,12 @@ describe Chronological do
       describe '.current' do
         it 'includes that chronologicable' do
           Chronologicable.current.should include chronologicable
+        end
+      end
+
+      describe '.in_progress' do
+        it 'includes that chronologicable' do
+          Chronologicable.in_progress.should include chronologicable
         end
       end
     end
@@ -232,6 +250,12 @@ describe Chronological do
           Chronologicable.current.should_not include chronologicable
         end
       end
+
+      describe '.in_progress' do
+        it 'does not include that chronologicable' do
+          Chronologicable.in_progress.should_not include chronologicable
+        end
+      end
     end
 
     context 'and ends later' do
@@ -252,6 +276,12 @@ describe Chronological do
       describe '.current' do
         it 'includes that chronologicable' do
           Chronologicable.current.should include chronologicable
+        end
+      end
+
+      describe '.in_progress' do
+        it 'includes that chronologicable' do
+          Chronologicable.in_progress.should include chronologicable
         end
       end
     end
@@ -276,6 +306,12 @@ describe Chronological do
     describe '.current' do
       it 'includes that chronologicable' do
         Chronologicable.current.should include chronologicable
+      end
+    end
+
+    describe '.in_progress' do
+      it 'does not include that chronologicable' do
+        Chronologicable.in_progress.should_not include chronologicable
       end
     end
   end

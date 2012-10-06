@@ -66,9 +66,9 @@ module Chronological
         where("#{end_field} > :now", :now => Time.now.utc)
       end
 
-      # self.class.send(:define_method, :in_progress) do
-      #   where("#{start_field} <= :now AND #{end_field} > :now", :now => Time.now.utc)
-      # end
+      self.class.send(:define_method, :in_progress) do
+        where("#{start_field} <= :now AND #{end_field} > :now", :now => Time.now.utc)
+      end
 
       # self.class.send(:define_method, :started) do
       #   where("#{start_field} <= :now", :now => Time.now.utc)
