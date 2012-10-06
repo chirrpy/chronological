@@ -45,10 +45,6 @@ module Chronological
   #
   # Aliasing date methods to make code more readable
 
-  alias_attribute  :starts_at,        :started_at
-  alias_attribute  :starting_at,      :started_at
-  alias_attribute  :ends_at,          :ended_at
-  alias_attribute  :ending_at,        :ended_at
   alias_attribute  :starts_at_utc,    :started_at_utc
   alias_attribute  :starting_at_utc,  :started_at_utc
   alias_attribute  :ends_at_utc,      :ended_at_utc
