@@ -1,5 +1,8 @@
 module Chronological
   module ClassMethods
+    # TODO: Needs to be able to add a validation option which can do the
+    # typical timeliness validation such as ended_at should be after started_at
+    # and that both should validate timeliness
     def chronological(options = {})
       start_time_field            = options[:start_utc] || options[:start]
       end_time_field              = options[:end_utc]   || options[:end]
