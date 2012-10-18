@@ -27,7 +27,7 @@ module Chronological
       end
 
       define_method(:in_progress?) do
-        return false unless scheduled?
+        return false unless send(start_time_field).present? && send(end_time_field).present?
 
         (send(start_time_field) <= Time.now.utc) && send(end_time_field).future?
       end
