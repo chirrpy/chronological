@@ -6,7 +6,7 @@ require 'chronological'
 Dir[File.expand_path('../support/**/*.rb',   __FILE__)].each { |f| require f }
 
 RSpec.configure do |config|
-  config.before(:all) do
+  config.before(:suite) do
     SQLite3::Database.new 'tmp/test.db'
 
     ActiveRecord::Base.establish_connection(
@@ -36,7 +36,7 @@ RSpec.configure do |config|
     ActiveRecord::Base.connection.execute 'DELETE FROM chronologicables'
   end
 
-  config.after(:all) do
+  config.after(:suite) do
     `rm -f ./tmp/test.db`
   end
 end
