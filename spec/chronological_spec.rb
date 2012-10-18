@@ -130,13 +130,13 @@ describe Chronological, :timecop => true do
     end
   end
 
-  describe '#started_at_utc_date' do
+  describe '#started_on_utc' do
     context 'when the date field is set to a string' do
       let(:start_time) { '2012-07-26 03:15:12' }
       let(:end_time)   { nil }
 
       it 'properly converts the date' do
-        chronologicable.started_at_utc_date.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
+        chronologicable.started_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
       end
     end
 
@@ -145,18 +145,18 @@ describe Chronological, :timecop => true do
       let(:end_time)   { nil }
 
       it 'properly converts the date' do
-        chronologicable.started_at_utc_date.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
+        chronologicable.started_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
       end
     end
   end
 
-  describe '#ended_at_utc_date' do
+  describe '#ended_on_utc' do
     context 'when the date field is set to a string' do
       let(:start_time)  { nil }
       let(:end_time)    { '2012-07-26 03:15:12' }
 
       it 'properly converts the date' do
-        chronologicable.ended_at_utc_date.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
+        chronologicable.ended_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
       end
     end
 
@@ -165,7 +165,7 @@ describe Chronological, :timecop => true do
       let(:end_time)    { Time.utc(2012, 7, 26, 3, 15, 12) }
 
       it 'properly converts the date' do
-        chronologicable.ended_at_utc_date.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
+        chronologicable.ended_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
       end
     end
   end

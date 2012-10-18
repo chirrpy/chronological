@@ -5,20 +5,22 @@ module Chronological
     # and that both should validate timeliness
     def chronological(options = {})
       start_time_field            = options[:start_utc] || options[:start]
+      start_date_field            = start_time_field.to_s.gsub(/_at/, '_on')
       end_time_field              = options[:end_utc]   || options[:end]
+      end_date_field              = end_time_field.to_s.gsub(/_at/, '_on')
       time_zone                   = options[:time_zone]
       start_time_field_is_utc     = options.has_key? :start_utc
       end_time_field_is_utc       = options.has_key? :end_utc
       start_time_field_utc_suffix = start_time_field_is_utc ? '_utc' : ''
       end_time_field_utc_suffix   = end_time_field_is_utc ? '_utc' : ''
 
-      define_method(:started_at_utc_date) do
+      define_method(start_date_field) do
         return nil unless send(start_time_field).respond_to? :to_date
 
         send(start_time_field).to_date
       end
 
-      define_method(:ended_at_utc_date) do
+      define_method(end_date_field) do
         return nil unless send(end_time_field).respond_to? :to_date
 
         send(end_time_field).to_date
