@@ -4,15 +4,15 @@ class Chronologicable < ActiveRecord::Base
   include Chronological::AbsoluteTimeframe
 
   chronological :start_utc => :started_at_utc,
-                :end_utc   => :ended_at_utc
+                     :end_utc   => :ended_at_utc
 end
 
 class ChronologicableWithTimeZone < ActiveRecord::Base
   include Chronological::AbsoluteTimeframe
 
   chronological :start_utc => :started_at_utc,
-                :end_utc   => :ended_at_utc,
-                :time_zone => :time_zone
+                     :end_utc   => :ended_at_utc,
+                     :time_zone => :time_zone
 end
 
 describe Chronological::AbsoluteTimeframe, :timecop => true do
