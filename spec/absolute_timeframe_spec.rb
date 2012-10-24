@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 class Chronologicable < ActiveRecord::Base
-  include Chronological
+  include Chronological::AbsoluteTimeframe
 
   chronological :start_utc => :started_at_utc,
                 :end_utc   => :ended_at_utc
 end
 
 class ChronologicableWithTimeZone < ActiveRecord::Base
-  include Chronological
+  include Chronological::AbsoluteTimeframe
 
   chronological :start_utc => :started_at_utc,
                 :end_utc   => :ended_at_utc,
                 :time_zone => :time_zone
 end
 
-describe Chronological, :timecop => true do
+describe Chronological::AbsoluteTimeframe, :timecop => true do
   let(:later) { Time.local(2012, 7, 26, 6, 0, 26) }
   let(:now)   { Time.local(2012, 7, 26, 6, 0, 25) }
   let(:past)  { Time.local(2012, 7, 26, 6, 0, 24) }
