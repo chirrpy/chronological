@@ -16,7 +16,7 @@ module Chronological
         end_time_field_utc_suffix   = end_time_field_is_utc ? '_utc' : ''
 
         define_method(:in_progress?) do
-          return false unless send(start_time_field).present? && send(end_time_field).present?
+          return false unless has_absolute_timeframe?
 
           (send(start_time_field) <= Time.now.utc) && send(end_time_field).future?
         end
@@ -86,6 +86,10 @@ module Chronological
                         end_time_field:   end_time_field
 
       private
+        define_method(:has_absolute_timeframe?) do
+          send(start_time_field).present? && send(end_time_field).present?
+        end
+
         define_method(:duration_in_seconds) do
           (send(end_time_field) - send(start_time_field))
         end
