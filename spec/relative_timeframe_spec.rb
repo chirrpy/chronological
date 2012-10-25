@@ -3,9 +3,9 @@ require 'spec_helper'
 class RelativeChronologicable < ActiveRecord::Base
   include Chronological::RelativeTimeframe
 
-  relative_timeframe :start => :starting_offset,
-                     :end   => :ending_offset,
-                     :base  => :base_datetime_utc
+  relative_timeframe :start     => :starting_offset,
+                     :end       => :ending_offset,
+                     :base_utc  => :base_datetime_utc
 end
 
 describe Chronological::RelativeTimeframe do
