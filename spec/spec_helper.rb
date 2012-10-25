@@ -19,7 +19,7 @@ RSpec.configure do |config|
         create_table :relative_chronologicables do |t|
           t.integer  :starting_offset
           t.integer  :ending_offset
-          t.datetime :base_datetime
+          t.datetime :base_datetime_utc
         end
 
         create_table :absolute_chronologicables do |t|

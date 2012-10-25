@@ -5,7 +5,7 @@ class RelativeChronologicable < ActiveRecord::Base
 
   relative_timeframe :start => :starting_offset,
                      :end   => :ending_offset,
-                     :base  => :base_datetime
+                     :base  => :base_datetime_utc
 end
 
 describe Chronological::RelativeTimeframe do
@@ -18,7 +18,7 @@ describe Chronological::RelativeTimeframe do
     RelativeChronologicable.create(
       :starting_offset => starting_offset,
       :ending_offset   => ending_offset,
-      :base_datetime   => base_time)
+      :base_datetime_utc    => base_time)
   end
 
   context 'when it is not scheduled' do
