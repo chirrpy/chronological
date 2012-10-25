@@ -24,7 +24,7 @@ module Chronological
         end
 
         define_method(:in_progress?) do
-          return false unless scheduled?
+          return false unless has_absolute_timeframe?
 
           send(start_time_field) <= Time.now && Time.now < send(end_time_field)
         end
@@ -43,6 +43,10 @@ module Chronological
                         end_time_field:   end_time_field
 
       private
+        define_method(:has_absolute_timeframe?) do
+          scheduled?
+        end
+
         define_method(:duration_in_seconds) do
           return nil unless send(options[:start]).present? && send(options[:end]).present?
 

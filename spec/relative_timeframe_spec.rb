@@ -24,7 +24,7 @@ describe Chronological::RelativeTimeframe do
   context 'when it is not scheduled' do
     let(:chronologicable) { RelativeChronologicable.new }
 
-    before { chronologicable.should_receive(:scheduled?).and_return false }
+    before { chronologicable.should_receive(:has_absolute_timeframe?).and_return false }
 
     it 'is not active' do
       chronologicable.should_not be_active
