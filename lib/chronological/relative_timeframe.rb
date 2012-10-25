@@ -3,14 +3,10 @@ module Chronological
     module ClassMethods
       def relative_timeframe(options = {})
         define_method(:in_progress?) do
-          base_time       = send(options[:base])
-          starting_offset = send(options[:start])
-          ending_offset   = send(options[:end])
-
           return false unless base_time.present? && starting_offset.present? && ending_offset.present?
 
-          start_time = base_time - starting_offset
-          end_time   = base_time - ending_offset
+          start_time = send(options[:base]) - send(options[:start])
+          end_time   = send(options[:base]) - send(options[:end])
 
           start_time <= Time.now && Time.now < end_time
         end
