@@ -16,7 +16,7 @@ RSpec.configure do |config|
 
     class SetupTests < ActiveRecord::Migration
       def up
-        create_table :chronologicables do |t|
+        create_table :absolute_chronologicables do |t|
           t.datetime :started_at_utc
           t.datetime :ended_at_utc
         end
@@ -33,7 +33,8 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    ActiveRecord::Base.connection.execute 'DELETE FROM chronologicables'
+    ActiveRecord::Base.connection.execute 'DELETE FROM absolute_chronologicables'
+    ActiveRecord::Base.connection.execute 'DELETE FROM chronologicable_with_time_zones'
   end
 
   config.after(:suite) do

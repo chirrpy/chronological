@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class Chronologicable < ActiveRecord::Base
+class AbsoluteChronologicable < ActiveRecord::Base
   include Chronological::AbsoluteTimeframe
 
   absolute_timeframe :start_utc => :started_at_utc,
@@ -23,13 +23,13 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
   before      { Timecop.freeze(now)             }
 
   let(:chronologicable) do
-    Chronologicable.create(
+    AbsoluteChronologicable.create(
       :started_at_utc => start_time,
       :ended_at_utc   => end_time)
   end
 
   let(:chronologicable_without_enabled_time_zone) do
-    Chronologicable.new(
+    AbsoluteChronologicable.new(
       :started_at_utc => start_time,
       :ended_at_utc   => end_time)
   end
@@ -41,50 +41,50 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       :time_zone      => time_zone)
   end
 
-  it { Chronologicable.new.respond_to?(:starts_at_utc).should   be_true }
-  it { Chronologicable.new.respond_to?(:starting_at_utc).should be_true }
-  it { Chronologicable.new.respond_to?(:ends_at_utc).should     be_true }
-  it { Chronologicable.new.respond_to?(:ending_at_utc).should   be_true }
-  it { Chronologicable.new.respond_to?(:active?).should         be_true }
+  it { AbsoluteChronologicable.new.respond_to?(:starts_at_utc).should   be_true }
+  it { AbsoluteChronologicable.new.respond_to?(:starting_at_utc).should be_true }
+  it { AbsoluteChronologicable.new.respond_to?(:ends_at_utc).should     be_true }
+  it { AbsoluteChronologicable.new.respond_to?(:ending_at_utc).should   be_true }
+  it { AbsoluteChronologicable.new.respond_to?(:active?).should         be_true }
 
-  it { Chronologicable.respond_to?(:active?).should             be_true }
-  it { Chronologicable.respond_to?(:active).should              be_true }
+  it { AbsoluteChronologicable.respond_to?(:active?).should             be_true }
+  it { AbsoluteChronologicable.respond_to?(:active).should              be_true }
 
   context 'when there are two chronologicables that start at the same time' do
     context 'but end at different times' do
-      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => past }
-      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => past }
+      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
       describe '.by_date' do
         it 'properly sorts them' do
-          Chronologicable.by_date.first.should  eql chronologicable_1
-          Chronologicable.by_date.last.should   eql chronologicable_2
+          AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
+          AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
         end
       end
 
       describe '.by_date_reversed' do
         it 'sorts them backwards by the start date' do
-          Chronologicable.by_date_reversed.first.should  eql chronologicable_2
-          Chronologicable.by_date_reversed.last.should   eql chronologicable_1
+          AbsoluteChronologicable.by_date_reversed.first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date_reversed.last.should   eql chronologicable_1
         end
       end
     end
 
     context 'and end at the same time' do
-      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
-      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
       describe '.by_date' do
         it 'does not matter what order they are in as long as they are all there' do
-          Chronologicable.by_date.should  include chronologicable_1
-          Chronologicable.by_date.should  include chronologicable_2
+          AbsoluteChronologicable.by_date.should  include chronologicable_1
+          AbsoluteChronologicable.by_date.should  include chronologicable_2
         end
       end
 
       describe '.by_date_reversed' do
         it 'does not matter what order they are in as long as they are all there' do
-          Chronologicable.by_date.should  include chronologicable_1
-          Chronologicable.by_date.should  include chronologicable_2
+          AbsoluteChronologicable.by_date.should  include chronologicable_1
+          AbsoluteChronologicable.by_date.should  include chronologicable_2
         end
       end
     end
@@ -92,39 +92,39 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
 
   context 'when there are two chronologicables that start at different times' do
     context 'and end at different times' do
-      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => now }
-      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => now,  :ended_at_utc => later }
+      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
 
       describe '.by_date' do
         it 'sorts them by the start date' do
-          Chronologicable.by_date.first.should  eql chronologicable_1
-          Chronologicable.by_date.last.should   eql chronologicable_2
+          AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
+          AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
         end
       end
 
       describe '.by_date_reversed' do
         it 'sorts them backwards by the start date' do
-          Chronologicable.by_date_reversed.first.should  eql chronologicable_2
-          Chronologicable.by_date_reversed.last.should   eql chronologicable_1
+          AbsoluteChronologicable.by_date_reversed.first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date_reversed.last.should   eql chronologicable_1
         end
       end
     end
 
     context 'but end at the same time' do
-      let!(:chronologicable_1) { Chronologicable.create :started_at_utc => past, :ended_at_utc => later }
-      let!(:chronologicable_2) { Chronologicable.create :started_at_utc => now,  :ended_at_utc => later }
+      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => later }
+      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
 
       describe '.by_date' do
         it 'sorts them by the start date' do
-          Chronologicable.by_date.first.should  eql chronologicable_1
-          Chronologicable.by_date.last.should   eql chronologicable_2
+          AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
+          AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
         end
       end
 
       describe '.by_date_reversed' do
         it 'sorts them backwards by the start date' do
-          Chronologicable.by_date_reversed.first.should  eql chronologicable_2
-          Chronologicable.by_date_reversed.last.should   eql chronologicable_1
+          AbsoluteChronologicable.by_date_reversed.first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date_reversed.last.should   eql chronologicable_1
         end
       end
     end
@@ -342,31 +342,31 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
-          Chronologicable.should_not be_in_progress
+          AbsoluteChronologicable.should_not be_in_progress
         end
       end
 
       describe '.expired' do
         it 'includes that chronologicable' do
-          Chronologicable.expired.should include chronologicable
+          AbsoluteChronologicable.expired.should include chronologicable
         end
       end
 
       describe '.started' do
         it 'includes that chronologicable' do
-          Chronologicable.started.should include chronologicable
+          AbsoluteChronologicable.started.should include chronologicable
         end
       end
 
       describe '.current' do
         it 'does not include that chronologicable' do
-          Chronologicable.current.should_not include chronologicable
+          AbsoluteChronologicable.current.should_not include chronologicable
         end
       end
 
       describe '.in_progress' do
         it 'does not include that chronologicable' do
-          Chronologicable.in_progress.should_not include chronologicable
+          AbsoluteChronologicable.in_progress.should_not include chronologicable
         end
       end
     end
@@ -383,31 +383,31 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
-          Chronologicable.should_not be_in_progress
+          AbsoluteChronologicable.should_not be_in_progress
         end
       end
 
       describe '.expired' do
         it 'does include that chronologicable' do
-          Chronologicable.expired.should include chronologicable
+          AbsoluteChronologicable.expired.should include chronologicable
         end
       end
 
       describe '.started' do
         it 'includes that chronologicable' do
-          Chronologicable.started.should include chronologicable
+          AbsoluteChronologicable.started.should include chronologicable
         end
       end
 
       describe '.current' do
         it 'does not include that chronologicable' do
-          Chronologicable.current.should_not include chronologicable
+          AbsoluteChronologicable.current.should_not include chronologicable
         end
       end
 
       describe '.in_progress' do
         it 'does not include that chronologicable' do
-          Chronologicable.in_progress.should_not include chronologicable
+          AbsoluteChronologicable.in_progress.should_not include chronologicable
         end
       end
     end
@@ -424,31 +424,31 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       describe '.in_progress?' do
         it 'is true' do
           chronologicable
-          Chronologicable.should be_in_progress
+          AbsoluteChronologicable.should be_in_progress
         end
       end
 
       describe '.expired' do
         it 'does not include that chronologicable' do
-          Chronologicable.expired.should_not include chronologicable
+          AbsoluteChronologicable.expired.should_not include chronologicable
         end
       end
 
       describe '.started' do
         it 'includes that chronologicable' do
-          Chronologicable.started.should include chronologicable
+          AbsoluteChronologicable.started.should include chronologicable
         end
       end
 
       describe '.current' do
         it 'includes that chronologicable' do
-          Chronologicable.current.should include chronologicable
+          AbsoluteChronologicable.current.should include chronologicable
         end
       end
 
       describe '.in_progress' do
         it 'includes that chronologicable' do
-          Chronologicable.in_progress.should include chronologicable
+          AbsoluteChronologicable.in_progress.should include chronologicable
         end
       end
     end
@@ -469,31 +469,31 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
-          Chronologicable.should_not be_in_progress
+          AbsoluteChronologicable.should_not be_in_progress
         end
       end
 
       describe '.expired' do
         it 'does include that chronologicable' do
-          Chronologicable.expired.should include chronologicable
+          AbsoluteChronologicable.expired.should include chronologicable
         end
       end
 
       describe '.started' do
         it 'includes that chronologicable' do
-          Chronologicable.started.should include chronologicable
+          AbsoluteChronologicable.started.should include chronologicable
         end
       end
 
       describe '.current' do
         it 'does not include that chronologicable' do
-          Chronologicable.current.should_not include chronologicable
+          AbsoluteChronologicable.current.should_not include chronologicable
         end
       end
 
       describe '.in_progress' do
         it 'does not include that chronologicable' do
-          Chronologicable.in_progress.should_not include chronologicable
+          AbsoluteChronologicable.in_progress.should_not include chronologicable
         end
       end
     end
@@ -510,31 +510,31 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       describe '.in_progress?' do
         it 'is true' do
           chronologicable
-          Chronologicable.should be_in_progress
+          AbsoluteChronologicable.should be_in_progress
         end
       end
 
       describe '.expired' do
         it 'does not include that chronologicable' do
-          Chronologicable.expired.should_not include chronologicable
+          AbsoluteChronologicable.expired.should_not include chronologicable
         end
       end
 
       describe '.started' do
         it 'includes that chronologicable' do
-          Chronologicable.started.should include chronologicable
+          AbsoluteChronologicable.started.should include chronologicable
         end
       end
 
       describe '.current' do
         it 'includes that chronologicable' do
-          Chronologicable.current.should include chronologicable
+          AbsoluteChronologicable.current.should include chronologicable
         end
       end
 
       describe '.in_progress' do
         it 'includes that chronologicable' do
-          Chronologicable.in_progress.should include chronologicable
+          AbsoluteChronologicable.in_progress.should include chronologicable
         end
       end
     end
@@ -553,31 +553,31 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     describe '.in_progress?' do
       it 'is false' do
         chronologicable
-        Chronologicable.should_not be_in_progress
+        AbsoluteChronologicable.should_not be_in_progress
       end
     end
 
     describe '.expired' do
       it 'does not include that chronologicable' do
-        Chronologicable.expired.should_not include chronologicable
+        AbsoluteChronologicable.expired.should_not include chronologicable
       end
     end
 
     describe '.started' do
       it 'does not include that chronologicable' do
-        Chronologicable.started.should_not include chronologicable
+        AbsoluteChronologicable.started.should_not include chronologicable
       end
     end
 
     describe '.current' do
       it 'includes that chronologicable' do
-        Chronologicable.current.should include chronologicable
+        AbsoluteChronologicable.current.should include chronologicable
       end
     end
 
     describe '.in_progress' do
       it 'does not include that chronologicable' do
-        Chronologicable.in_progress.should_not include chronologicable
+        AbsoluteChronologicable.in_progress.should_not include chronologicable
       end
     end
   end
