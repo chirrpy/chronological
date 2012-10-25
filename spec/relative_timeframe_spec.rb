@@ -31,6 +31,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not active' do
         chronologicable.should_not be_active
       end
+
+      it 'is not scheduled' do
+        chronologicable.should_not be_scheduled
+      end
     end
 
     context 'and neither of the offsets is set' do
@@ -39,6 +43,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not active' do
         chronologicable.should_not be_active
+      end
+
+      it 'is not scheduled' do
+        chronologicable.should_not be_scheduled
       end
     end
   end
@@ -53,6 +61,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not active' do
         chronologicable.should_not be_active
       end
+
+      it 'is not scheduled' do
+        chronologicable.should_not be_scheduled
+      end
     end
 
     context 'and the ending offset is set' do
@@ -60,6 +72,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not active' do
         chronologicable.should_not be_active
+      end
+
+      it 'is not scheduled' do
+        chronologicable.should_not be_scheduled
       end
     end
   end
@@ -73,6 +89,18 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not active' do
         chronologicable.should_not be_active
+      end
+
+      it 'is not scheduled' do
+        chronologicable.should_not be_scheduled
+      end
+    end
+
+    context 'and the ending offset is set' do
+      let(:ending_offset)   { 0 }
+
+      it 'is scheduled' do
+        chronologicable.should be_scheduled
       end
     end
   end
