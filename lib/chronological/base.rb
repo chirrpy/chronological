@@ -2,7 +2,7 @@ module Chronological
   module Base
     def base_timeframe(options = {})
       define_method(options[:start_date_field]) do
-        return nil unless send(options[:start_time_field]).respond_to? :to_time
+        return nil unless send(options[:start_time_field]).respond_to? :to_date
 
         send(options[:start_time_field]).to_date
       end
