@@ -31,6 +31,56 @@ describe Chronological::RelativeTimeframe do
     end
   end
 
+  describe '#duration' do
+    context 'when the starting offset is set' do
+      let(:starting_offset) { 6263 }
+
+      context 'and the ending offset is set' do
+        let(:ending_offset) { 0 }
+
+        it 'is a hash with the correct hours' do
+          chronologicable.duration[:hours].should eql 1
+        end
+
+        it 'is a hash with the correct minutes' do
+          chronologicable.duration[:minutes].should eql 44
+        end
+
+        it 'is a hash with the correct seconds' do
+          chronologicable.duration[:seconds].should eql 23
+        end
+      end
+
+      context 'but the ending offset is not set' do
+        let(:ending_offset) { nil }
+
+        it 'is nil' do
+          chronologicable.duration.should eql Hash.new
+        end
+      end
+    end
+
+    context 'when the starting offset is not set' do
+      let(:starting_offset) { nil }
+
+      context 'but the ending offset is set' do
+        let(:ending_offset) { 0 }
+
+        it 'is nil' do
+          chronologicable.duration.should eql Hash.new
+        end
+      end
+
+      context 'and the ending offset is not set' do
+        let(:ending_offset) { nil }
+
+        it 'is nil' do
+          chronologicable.duration.should eql Hash.new
+        end
+      end
+    end
+  end
+
   describe '#started_at_utc' do
     let(:ending_offset) { 'anything' }
 

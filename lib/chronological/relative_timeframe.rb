@@ -56,6 +56,18 @@ module Chronological
           send(base_time_field).present? || send(options[:start]).present? || send(options[:end]).present?
         end
 
+        define_method(:duration) do
+          return Hash.new unless send(options[:start]).present? && send(options[:end]).present?
+
+          duration_in_seconds = send(options[:start]) - send(options[:end])
+
+          hours   = (duration_in_seconds / 3600).to_i
+          minutes = ((duration_in_seconds % 3600) / 60).to_i
+          seconds = (duration_in_seconds % 60).to_i
+
+          { :hours => hours, :minutes => minutes, :seconds => seconds }
+        end
+
         class_eval do
           alias active? in_progress?
         end
