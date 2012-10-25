@@ -27,6 +27,12 @@ module Chronological
         { :hours => hours, :minutes => minutes, :seconds => seconds }
       end
 
+      define_method(:in_progress?) do
+        return false unless has_absolute_timeframe?
+
+        (send(options[:start_time_field]) <= Time.now.utc) && send(options[:end_time_field]).future?
+      end
+
       class_eval do
         alias active? in_progress?
       end

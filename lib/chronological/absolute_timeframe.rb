@@ -15,12 +15,6 @@ module Chronological
         start_time_field_utc_suffix = start_time_field_is_utc ? '_utc' : ''
         end_time_field_utc_suffix   = end_time_field_is_utc ? '_utc' : ''
 
-        define_method(:in_progress?) do
-          return false unless has_absolute_timeframe?
-
-          (send(start_time_field) <= Time.now.utc) && send(end_time_field).future?
-        end
-
         define_method(:scheduled?) do
           optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : true
 

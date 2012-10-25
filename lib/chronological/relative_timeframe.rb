@@ -23,12 +23,6 @@ module Chronological
           send(base_time_field) - send(options[:end])
         end
 
-        define_method(:in_progress?) do
-          return false unless has_absolute_timeframe?
-
-          send(start_time_field) <= Time.now && Time.now < send(end_time_field)
-        end
-
         define_method(:scheduled?) do
           send(base_time_field).present? && send(options[:start]).present? && send(options[:end]).present?
         end
