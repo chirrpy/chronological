@@ -21,10 +21,6 @@ module Chronological
           (send(start_time_field) <= Time.now.utc) && send(end_time_field).future?
         end
 
-        define_method(:inactive?) do
-          !active?
-        end
-
         define_method(:scheduled?) do
           optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : true
 

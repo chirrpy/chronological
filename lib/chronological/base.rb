@@ -12,6 +12,10 @@ module Chronological
 
         send(options[:end_time_field]).to_date
       end
+
+      define_method(:inactive?) do
+        !active?
+      end
     end
   end
 end
