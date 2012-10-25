@@ -44,6 +44,10 @@ module Chronological
           start_time <= Time.now && Time.now < end_time
         end
 
+        define_method(:inactive?) do
+          !active?
+        end
+
         define_method(:scheduled?) do
           send(base_time_field).present? && send(options[:start]).present? && send(options[:end]).present?
         end
