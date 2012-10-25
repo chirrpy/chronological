@@ -26,6 +26,10 @@ module Chronological
 
         { :hours => hours, :minutes => minutes, :seconds => seconds }
       end
+
+      class_eval do
+        alias active? in_progress?
+      end
     end
   end
 end

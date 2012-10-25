@@ -37,10 +37,6 @@ module Chronological
           send(base_time_field).present? || send(options[:start]).present? || send(options[:end]).present?
         end
 
-        class_eval do
-          alias active? in_progress?
-        end
-
         base_timeframe  start_date_field: start_date_field,
                         start_time_field: start_time_field,
                         end_date_field:   end_date_field,

@@ -78,8 +78,6 @@ module Chronological
           alias_attribute   :"starting_at#{start_time_field_utc_suffix}",  start_time_field.to_sym
           alias_attribute   :"ends_at#{start_time_field_utc_suffix}",      end_time_field.to_sym
           alias_attribute   :"ending_at#{start_time_field_utc_suffix}",    end_time_field.to_sym
-
-          alias             active?                                   in_progress?
         end
 
         base_timeframe  start_date_field: start_date_field,
