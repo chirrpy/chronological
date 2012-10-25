@@ -75,4 +75,78 @@ describe Chronological::Base do
       end
     end
   end
+
+  describe '#duration' do
+    context 'when the chronologicable represents something with a duration' do
+      before { chronologicable.should_receive(:duration_in_seconds).any_number_of_times.and_return(6263) }
+
+      it 'is a hash with the correct hours' do
+        chronologicable.duration[:hours].should eql 1
+      end
+
+      it 'is a hash with the correct minutes' do
+        chronologicable.duration[:minutes].should eql 44
+      end
+
+      it 'is a hash with the correct seconds' do
+        chronologicable.duration[:seconds].should eql 23
+      end
+    end
+
+    context 'when the chronologicable represents something with an even second time duration' do
+      before { chronologicable.should_receive(:duration_in_seconds).any_number_of_times.and_return(6240) }
+
+      it 'is a hash with the correct hours' do
+        chronologicable.duration[:hours].should eql 1
+      end
+
+      it 'is a hash with the correct minutes' do
+        chronologicable.duration[:minutes].should eql 44
+      end
+
+      it 'is a hash with the correct seconds' do
+        chronologicable.duration[:seconds].should eql 0
+      end
+    end
+
+    context 'when the chronologicable represents something with an even minute time duration' do
+      before { chronologicable.should_receive(:duration_in_seconds).any_number_of_times.and_return(3600) }
+
+      it 'is a hash with the correct hours' do
+        chronologicable.duration[:hours].should eql 1
+      end
+
+      it 'is a hash with the correct minutes' do
+        chronologicable.duration[:minutes].should eql 0
+      end
+
+      it 'is a hash with the correct seconds' do
+        chronologicable.duration[:seconds].should eql 0
+      end
+    end
+
+    context 'when the chronologicable represents something with a zero duration' do
+      before { chronologicable.should_receive(:duration_in_seconds).any_number_of_times.and_return(0) }
+
+      it 'is a hash with the correct hours' do
+        chronologicable.duration[:hours].should eql 0
+      end
+
+      it 'is a hash with the correct minutes' do
+        chronologicable.duration[:minutes].should eql 0
+      end
+
+      it 'is a hash with the correct seconds' do
+        chronologicable.duration[:seconds].should eql 0
+      end
+    end
+
+    context 'when duration in seconds returns an empty value' do
+      before { chronologicable.should_receive(:duration_in_seconds).and_return(nil) }
+
+      it 'is an empty hash' do
+        chronologicable.duration.should eql Hash.new
+      end
+    end
+  end
 end
