@@ -293,12 +293,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     context 'and has already ended' do
       let(:end_time) { past }
 
-      describe '#in_progress?' do
-        it 'is false' do
-          chronologicable.should_not be_in_progress
-        end
-      end
-
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
@@ -334,12 +328,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     context 'and ends now' do
       let(:end_time) { now }
 
-      describe '#in_progress?' do
-        it 'is false' do
-          chronologicable.should_not be_in_progress
-        end
-      end
-
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
@@ -374,12 +362,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
 
     context 'and ends later' do
       let(:end_time) { later }
-
-      describe '#in_progress?' do
-        it 'is true' do
-          chronologicable.should be_in_progress
-        end
-      end
 
       describe '.in_progress?' do
         it 'is true' do
@@ -420,12 +402,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     context 'and ends now' do
       let(:end_time) { now }
 
-      describe '#in_progress?' do
-        it 'is false' do
-          chronologicable.should_not be_in_progress
-        end
-      end
-
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
@@ -460,12 +436,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
 
     context 'and ends later' do
       let(:end_time) { later }
-
-      describe '#in_progress?' do
-        it 'is true' do
-          chronologicable.should be_in_progress
-        end
-      end
 
       describe '.in_progress?' do
         it 'is true' do
@@ -503,12 +473,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
   context 'when there is a chronologicable that has not yet started' do
     let(:start_time) { later }
     let(:end_time)   { later }
-
-    describe '#in_progress?' do
-      it 'is false' do
-        chronologicable.should_not be_in_progress
-      end
-    end
 
     describe '.in_progress?' do
       it 'is false' do
