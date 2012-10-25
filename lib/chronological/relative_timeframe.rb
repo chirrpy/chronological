@@ -8,6 +8,7 @@ module Chronological
 
         start_time_field       = ['started_at', time_field_utc_suffix].join('_')
         end_time_field         = ['ended_at',   time_field_utc_suffix].join('_')
+        start_date_field       = ['started_on', time_field_utc_suffix].join('_')
 
         define_method(start_time_field) do
           return nil unless send(base_time_field).present? && send(options[:start]).present?
@@ -19,6 +20,12 @@ module Chronological
           return nil unless send(base_time_field).present? && send(options[:end]).present?
 
           send(base_time_field) - send(options[:end])
+        end
+
+        define_method(start_date_field) do
+          return nil unless send(start_time_field).present?
+
+          send(start_time_field).to_date
         end
 
         define_method(:in_progress?) do
