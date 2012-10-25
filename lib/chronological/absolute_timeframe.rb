@@ -33,14 +33,6 @@ module Chronological
           send(start_time_field).present? || send(end_time_field).present? || optional_time_zone
         end
 
-        define_method(:duration) do
-          hours   = (duration_in_seconds / 3600).to_i
-          minutes = ((duration_in_seconds % 3600) / 60).to_i
-          seconds = (duration_in_seconds % 60).to_i
-
-          { :hours => hours, :minutes => minutes, :seconds => seconds }
-        end
-
         ###
         # Scopes
         #

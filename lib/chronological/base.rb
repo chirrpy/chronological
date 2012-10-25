@@ -16,6 +16,16 @@ module Chronological
       define_method(:inactive?) do
         !active?
       end
+
+      define_method(:duration) do
+        return Hash.new unless duration_in_seconds.present?
+
+        hours   = (duration_in_seconds / 3600).to_i
+        minutes = ((duration_in_seconds % 3600) / 60).to_i
+        seconds = (duration_in_seconds % 60).to_i
+
+        { :hours => hours, :minutes => minutes, :seconds => seconds }
+      end
     end
   end
 end
