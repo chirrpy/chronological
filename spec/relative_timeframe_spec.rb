@@ -63,6 +63,38 @@ describe Chronological::RelativeTimeframe do
     end
   end
 
+  describe '#ended_at_utc' do
+    let(:starting_offset) { 'anything' }
+
+    context 'when the ending offset is set' do
+      let(:ending_offset) { 30 }
+
+      context 'but the base time is not set' do
+        let(:base_time) { nil }
+
+        it 'is nil' do
+          chronologicable.ended_at_utc.should be_nil
+        end
+      end
+
+      context 'and the base time is set' do
+        let(:base_time)   { Time.local(2012, 7, 26, 6, 0, 30) }
+
+        it 'is the proper offset calculation' do
+          chronologicable.ended_at_utc.should eql Time.local(2012, 7, 26, 6, 0, 0)
+        end
+      end
+    end
+
+    context 'when the ending offset is not set' do
+      let(:ending_offset) { nil }
+
+      it 'is nil' do
+        chronologicable.ended_at_utc.should be_nil
+      end
+    end
+  end
+
   context 'when the base time is not set' do
     let(:now)             { Time.local(2012, 7, 26, 6, 0, 0) }
     let(:base_time)       { nil }
