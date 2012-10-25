@@ -16,8 +16,8 @@ describe Chronological::RelativeTimeframe do
 
   let(:chronologicable) do
     RelativeChronologicable.create(
-      :starting_offset => starting_offset,
-      :ending_offset   => ending_offset,
+      :starting_offset      => starting_offset,
+      :ending_offset        => ending_offset,
       :base_datetime_utc    => base_time)
   end
 
