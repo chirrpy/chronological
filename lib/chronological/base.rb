@@ -8,7 +8,7 @@ module Chronological
       end
 
       define_method(options[:end_date_field]) do
-        return nil unless send(options[:end_time_field]).respond_to? :to_time
+        return nil unless send(options[:end_time_field]).respond_to? :to_date
 
         send(options[:end_time_field]).to_date
       end
