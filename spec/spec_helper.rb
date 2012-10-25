@@ -16,6 +16,11 @@ RSpec.configure do |config|
 
     class SetupTests < ActiveRecord::Migration
       def up
+        create_table :base_chronologicables do |t|
+          t.datetime :started_at
+          t.datetime :ended_at
+        end
+
         create_table :relative_chronologicables do |t|
           t.integer  :starting_offset
           t.integer  :ending_offset

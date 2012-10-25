@@ -130,46 +130,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     end
   end
 
-  describe '#started_on_utc' do
-    context 'when the date field is set to a string' do
-      let(:start_time) { '2012-07-26 03:15:12' }
-      let(:end_time)   { nil }
-
-      it 'properly converts the date' do
-        chronologicable.started_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
-      end
-    end
-
-    context 'when the date field is set to a date' do
-      let(:start_time) { Time.utc(2012, 7, 26, 3, 15, 12) }
-      let(:end_time)   { nil }
-
-      it 'properly converts the date' do
-        chronologicable.started_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
-      end
-    end
-  end
-
-  describe '#ended_on_utc' do
-    context 'when the date field is set to a string' do
-      let(:start_time)  { nil }
-      let(:end_time)    { '2012-07-26 03:15:12' }
-
-      it 'properly converts the date' do
-        chronologicable.ended_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
-      end
-    end
-
-    context 'when the date field is set to a date' do
-      let(:start_time)  { nil }
-      let(:end_time)    { Time.utc(2012, 7, 26, 3, 15, 12) }
-
-      it 'properly converts the date' do
-        chronologicable.ended_on_utc.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
-      end
-    end
-  end
-
   context 'when a start time is set' do
     let(:start_time) { Time.now }
 
@@ -333,12 +293,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     context 'and has already ended' do
       let(:end_time) { past }
 
-      describe '#in_progress?' do
-        it 'is false' do
-          chronologicable.should_not be_in_progress
-        end
-      end
-
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
@@ -374,12 +328,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     context 'and ends now' do
       let(:end_time) { now }
 
-      describe '#in_progress?' do
-        it 'is false' do
-          chronologicable.should_not be_in_progress
-        end
-      end
-
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
@@ -414,12 +362,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
 
     context 'and ends later' do
       let(:end_time) { later }
-
-      describe '#in_progress?' do
-        it 'is true' do
-          chronologicable.should be_in_progress
-        end
-      end
 
       describe '.in_progress?' do
         it 'is true' do
@@ -460,12 +402,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     context 'and ends now' do
       let(:end_time) { now }
 
-      describe '#in_progress?' do
-        it 'is false' do
-          chronologicable.should_not be_in_progress
-        end
-      end
-
       describe '.in_progress?' do
         it 'is false' do
           chronologicable
@@ -500,12 +436,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
 
     context 'and ends later' do
       let(:end_time) { later }
-
-      describe '#in_progress?' do
-        it 'is true' do
-          chronologicable.should be_in_progress
-        end
-      end
 
       describe '.in_progress?' do
         it 'is true' do
@@ -544,12 +474,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     let(:start_time) { later }
     let(:end_time)   { later }
 
-    describe '#in_progress?' do
-      it 'is false' do
-        chronologicable.should_not be_in_progress
-      end
-    end
-
     describe '.in_progress?' do
       it 'is false' do
         chronologicable
@@ -578,76 +502,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     describe '.in_progress' do
       it 'does not include that chronologicable' do
         AbsoluteChronologicable.in_progress.should_not include chronologicable
-      end
-    end
-  end
-
-  describe '#duration' do
-    context 'when the chronologicable represents something with a complex time duration' do
-      let(:start_time) { Time.local(2012, 7, 26, 14, 13, 16) }
-      let(:end_time)   { Time.local(2012, 7, 26, 15, 57, 39) }
-
-      it 'is a hash with the correct hours' do
-        chronologicable.duration[:hours].should eql 1
-      end
-
-      it 'is a hash with the correct minutes' do
-        chronologicable.duration[:minutes].should eql 44
-      end
-
-      it 'is a hash with the correct seconds' do
-        chronologicable.duration[:seconds].should eql 23
-      end
-    end
-
-    context 'when the chronologicable represents something with an even second time duration' do
-      let(:start_time) { Time.local(2012, 7, 26, 14, 13, 16) }
-      let(:end_time)   { Time.local(2012, 7, 26, 15, 57, 16) }
-
-      it 'is a hash with the correct hours' do
-        chronologicable.duration[:hours].should eql 1
-      end
-
-      it 'is a hash with the correct minutes' do
-        chronologicable.duration[:minutes].should eql 44
-      end
-
-      it 'is a hash with the correct seconds' do
-        chronologicable.duration[:seconds].should eql 0
-      end
-    end
-
-    context 'when the chronologicable represents something with an even minute time duration' do
-      let(:start_time) { Time.local(2012, 7, 26, 14, 13, 16) }
-      let(:end_time)   { Time.local(2012, 7, 26, 15, 13, 16) }
-
-      it 'is a hash with the correct hours' do
-        chronologicable.duration[:hours].should eql 1
-      end
-
-      it 'is a hash with the correct minutes' do
-        chronologicable.duration[:minutes].should eql 0
-      end
-
-      it 'is a hash with the correct seconds' do
-        chronologicable.duration[:seconds].should eql 0
-      end
-    end
-
-    context 'when the chronologicable represents something with a zero duration' do
-      let(:start_time) { Time.local(2012, 7, 26, 14, 13, 16) }
-      let(:end_time)   { Time.local(2012, 7, 26, 14, 13, 16) }
-
-      it 'is a hash with the correct hours' do
-        chronologicable.duration[:hours].should eql 0
-      end
-
-      it 'is a hash with the correct minutes' do
-        chronologicable.duration[:minutes].should eql 0
-      end
-
-      it 'is a hash with the correct seconds' do
-        chronologicable.duration[:seconds].should eql 0
       end
     end
   end

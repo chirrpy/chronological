@@ -23,28 +23,6 @@ module Chronological
           send(base_time_field) - send(options[:end])
         end
 
-        define_method(start_date_field) do
-          return nil unless send(start_time_field).present?
-
-          send(start_time_field).to_date
-        end
-
-        define_method(end_date_field) do
-          return nil unless send(end_time_field).present?
-
-          send(end_time_field).to_date
-        end
-
-        define_method(:in_progress?) do
-          return false unless scheduled?
-
-          send(start_time_field) <= Time.now && Time.now < send(end_time_field)
-        end
-
-        define_method(:inactive?) do
-          !active?
-        end
-
         define_method(:scheduled?) do
           send(base_time_field).present? && send(options[:start]).present? && send(options[:end]).present?
         end
@@ -53,25 +31,26 @@ module Chronological
           send(base_time_field).present? || send(options[:start]).present? || send(options[:end]).present?
         end
 
-        define_method(:duration) do
-          return Hash.new unless send(options[:start]).present? && send(options[:end]).present?
+        base_timeframe  start_date_field: start_date_field,
+                        start_time_field: start_time_field,
+                        end_date_field:   end_date_field,
+                        end_time_field:   end_time_field
 
-          duration_in_seconds = send(options[:start]) - send(options[:end])
-
-          hours   = (duration_in_seconds / 3600).to_i
-          minutes = ((duration_in_seconds % 3600) / 60).to_i
-          seconds = (duration_in_seconds % 60).to_i
-
-          { :hours => hours, :minutes => minutes, :seconds => seconds }
+      private
+        define_method(:has_absolute_timeframe?) do
+          scheduled?
         end
 
-        class_eval do
-          alias active? in_progress?
+        define_method(:duration_in_seconds) do
+          return nil unless send(options[:start]).present? && send(options[:end]).present?
+
+          send(options[:start]) - send(options[:end])
         end
       end
     end
 
     def self.included(base)
+      base.extend Chronological::Base
       base.extend ClassMethods
     end
   end

@@ -15,28 +15,6 @@ module Chronological
         start_time_field_utc_suffix = start_time_field_is_utc ? '_utc' : ''
         end_time_field_utc_suffix   = end_time_field_is_utc ? '_utc' : ''
 
-        define_method(start_date_field) do
-          return nil unless send(start_time_field).respond_to? :to_date
-
-          send(start_time_field).to_date
-        end
-
-        define_method(end_date_field) do
-          return nil unless send(end_time_field).respond_to? :to_date
-
-          send(end_time_field).to_date
-        end
-
-        define_method(:in_progress?) do
-          return false unless send(start_time_field).present? && send(end_time_field).present?
-
-          (send(start_time_field) <= Time.now.utc) && send(end_time_field).future?
-        end
-
-        define_method(:inactive?) do
-          !active?
-        end
-
         define_method(:scheduled?) do
           optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : true
 
@@ -47,14 +25,6 @@ module Chronological
           optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : false
 
           send(start_time_field).present? || send(end_time_field).present? || optional_time_zone
-        end
-
-        define_method(:duration) do
-          hours   = (duration_in_seconds / 3600).to_i
-          minutes = ((duration_in_seconds % 3600) / 60).to_i
-          seconds = (duration_in_seconds % 60).to_i
-
-          { :hours => hours, :minutes => minutes, :seconds => seconds }
         end
 
         ###
@@ -102,11 +72,18 @@ module Chronological
           alias_attribute   :"starting_at#{start_time_field_utc_suffix}",  start_time_field.to_sym
           alias_attribute   :"ends_at#{start_time_field_utc_suffix}",      end_time_field.to_sym
           alias_attribute   :"ending_at#{start_time_field_utc_suffix}",    end_time_field.to_sym
-
-          alias             active?                                   in_progress?
         end
 
+        base_timeframe  start_date_field: start_date_field,
+                        start_time_field: start_time_field,
+                        end_date_field:   end_date_field,
+                        end_time_field:   end_time_field
+
       private
+        define_method(:has_absolute_timeframe?) do
+          send(start_time_field).present? && send(end_time_field).present?
+        end
+
         define_method(:duration_in_seconds) do
           (send(end_time_field) - send(start_time_field))
         end
@@ -114,6 +91,7 @@ module Chronological
     end
 
     def self.included(base)
+      base.extend Chronological::Base
       base.extend ClassMethods
     end
   end
