@@ -15,12 +15,6 @@ module Chronological
         start_time_field_utc_suffix = start_time_field_is_utc ? '_utc' : ''
         end_time_field_utc_suffix   = end_time_field_is_utc ? '_utc' : ''
 
-        define_method(end_date_field) do
-          return nil unless send(end_time_field).respond_to? :to_date
-
-          send(end_time_field).to_date
-        end
-
         define_method(:in_progress?) do
           return false unless send(start_time_field).present? && send(end_time_field).present?
 
@@ -100,7 +94,10 @@ module Chronological
           alias             active?                                   in_progress?
         end
 
-        base_timeframe(start_date_field, start_time_field)
+        base_timeframe  start_date_field: start_date_field,
+                        start_time_field: start_time_field,
+                        end_date_field:   end_date_field,
+                        end_time_field:   end_time_field
 
       private
         define_method(:duration_in_seconds) do

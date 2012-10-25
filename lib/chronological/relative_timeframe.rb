@@ -23,12 +23,6 @@ module Chronological
           send(base_time_field) - send(options[:end])
         end
 
-        define_method(end_date_field) do
-          return nil unless send(end_time_field).present?
-
-          send(end_time_field).to_date
-        end
-
         define_method(:in_progress?) do
           return false unless scheduled?
 
@@ -63,7 +57,10 @@ module Chronological
           alias active? in_progress?
         end
 
-        base_timeframe(start_date_field, start_time_field)
+        base_timeframe  start_date_field: start_date_field,
+                        start_time_field: start_time_field,
+                        end_date_field:   end_date_field,
+                        end_time_field:   end_time_field
       end
     end
 
