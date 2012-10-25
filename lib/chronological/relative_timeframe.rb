@@ -23,12 +23,6 @@ module Chronological
           send(base_time_field) - send(options[:end])
         end
 
-        define_method(start_date_field) do
-          return nil unless send(start_time_field).present?
-
-          send(start_time_field).to_date
-        end
-
         define_method(end_date_field) do
           return nil unless send(end_time_field).present?
 
@@ -68,10 +62,13 @@ module Chronological
         class_eval do
           alias active? in_progress?
         end
+
+        base_timeframe(start_date_field, start_time_field)
       end
     end
 
     def self.included(base)
+      base.extend Chronological::Base
       base.extend ClassMethods
     end
   end
