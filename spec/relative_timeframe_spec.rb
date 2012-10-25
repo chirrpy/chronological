@@ -9,6 +9,7 @@ class RelativeChronologicable < ActiveRecord::Base
 end
 
 describe Chronological::RelativeTimeframe do
+  let(:now)         { Time.local(2012, 7, 26, 6, 0, 0)  }
   let(:base_time)   { Time.local(2012, 7, 26, 6, 0, 30) }
 
   before            { Timecop.freeze(now)               }
@@ -20,6 +21,16 @@ describe Chronological::RelativeTimeframe do
       :base_datetime   => base_time)
   end
 
+  context 'when it is not scheduled' do
+    let(:chronologicable) { RelativeChronologicable.new }
+
+    before { chronologicable.should_receive(:scheduled?).and_return false }
+
+    it 'is not active' do
+      chronologicable.should_not be_active
+    end
+  end
+
   context 'when the base time is not set' do
     let(:now)             { Time.local(2012, 7, 26, 6, 0, 0) }
     let(:base_time)       { nil }
@@ -27,10 +38,6 @@ describe Chronological::RelativeTimeframe do
     context 'but the offsets are both set' do
       let(:starting_offset) { 30 }
       let(:ending_offset)   { 0 }
-
-      it 'is not active' do
-        chronologicable.should_not be_active
-      end
 
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
@@ -40,10 +47,6 @@ describe Chronological::RelativeTimeframe do
     context 'and neither of the offsets is set' do
       let(:starting_offset) { nil }
       let(:ending_offset)   { nil }
-
-      it 'is not active' do
-        chronologicable.should_not be_active
-      end
 
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
@@ -58,10 +61,6 @@ describe Chronological::RelativeTimeframe do
     context 'and the ending offset is not set' do
       let(:ending_offset) { nil }
 
-      it 'is not active' do
-        chronologicable.should_not be_active
-      end
-
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
       end
@@ -69,10 +68,6 @@ describe Chronological::RelativeTimeframe do
 
     context 'and the ending offset is set' do
       let(:ending_offset)   { 0 }
-
-      it 'is not active' do
-        chronologicable.should_not be_active
-      end
 
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
