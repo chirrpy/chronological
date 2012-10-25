@@ -52,6 +52,10 @@ module Chronological
           send(base_time_field).present? && send(options[:start]).present? && send(options[:end]).present?
         end
 
+        define_method(:partially_scheduled?) do
+          send(base_time_field).present? || send(options[:start]).present? || send(options[:end]).present?
+        end
+
         class_eval do
           alias active? in_progress?
         end

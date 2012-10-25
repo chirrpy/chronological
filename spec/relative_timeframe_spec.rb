@@ -139,12 +139,47 @@ describe Chronological::RelativeTimeframe do
     let(:now)             { Time.local(2012, 7, 26, 6, 0, 0) }
     let(:base_time)       { nil }
 
-    context 'but the offsets are both set' do
+    context 'but the starting offset is set' do
       let(:starting_offset) { 30 }
-      let(:ending_offset)   { 0 }
 
-      it 'is not scheduled' do
-        chronologicable.should_not be_scheduled
+      context 'and the ending offset is set' do
+        let(:ending_offset) { 0 }
+
+        it 'is not scheduled' do
+          chronologicable.should_not be_scheduled
+        end
+
+        it 'is partially scheduled' do
+          chronologicable.should be_partially_scheduled
+        end
+      end
+
+      context 'and the ending offset is not set' do
+        let(:ending_offset) { nil }
+
+        it 'is not scheduled' do
+          chronologicable.should_not be_scheduled
+        end
+
+        it 'is partially scheduled' do
+          chronologicable.should be_partially_scheduled
+        end
+      end
+    end
+
+    context 'and the starting offset is not set' do
+      let(:starting_offset) { nil }
+
+      context 'but the ending offset is set' do
+        let(:ending_offset) { 0 }
+
+        it 'is not scheduled' do
+          chronologicable.should_not be_scheduled
+        end
+
+        it 'is partially scheduled' do
+          chronologicable.should be_partially_scheduled
+        end
       end
     end
 
@@ -154,6 +189,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
+      end
+
+      it 'is not partially scheduled' do
+        chronologicable.should_not be_partially_scheduled
       end
     end
   end
@@ -168,6 +207,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
       end
+
+      it 'is partially scheduled' do
+        chronologicable.should be_partially_scheduled
+      end
     end
 
     context 'and the ending offset is set' do
@@ -175,6 +218,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
+      end
+
+      it 'is partially scheduled' do
+        chronologicable.should be_partially_scheduled
       end
     end
   end
@@ -193,6 +240,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not scheduled' do
         chronologicable.should_not be_scheduled
       end
+
+      it 'is partially scheduled' do
+        chronologicable.should be_partially_scheduled
+      end
     end
 
     context 'and the ending offset is set' do
@@ -200,6 +251,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is scheduled' do
         chronologicable.should be_scheduled
+      end
+
+      it 'is partially scheduled' do
+        chronologicable.should be_partially_scheduled
       end
     end
   end
