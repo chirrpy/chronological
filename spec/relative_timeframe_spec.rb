@@ -96,30 +96,18 @@ describe Chronological::RelativeTimeframe do
   end
 
   describe '#started_on_utc' do
-    let(:ending_offset) { 'anything' }
+    let(:chronologicable) { RelativeChronologicable.new }
 
-    context 'when the starting offset is set' do
-      let(:starting_offset) { 30 }
+    context 'when the starting time field is set' do
+      before { chronologicable.should_receive(:started_at_utc).twice.and_return Time.local(2012, 7, 26, 6, 0, 0) }
 
-      context 'but the base time is not set' do
-        let(:base_time) { nil }
-
-        it 'is nil' do
-          chronologicable.started_on_utc.should be_nil
-        end
-      end
-
-      context 'and the base time is set' do
-        let(:base_time)   { Time.local(2012, 7, 26, 6, 0, 30) }
-
-        it 'is the proper offset calculation' do
-          chronologicable.started_on_utc.should eql Time.local(2012, 7, 26, 6, 0, 0).to_date
-        end
+      it 'is the proper offset calculation' do
+        chronologicable.started_on_utc.should eql Time.local(2012, 7, 26, 6, 0, 0).to_date
       end
     end
 
     context 'when the starting offset is not set' do
-      let(:starting_offset) { nil }
+      before { chronologicable.should_receive(:started_at_utc).and_return nil }
 
       it 'is nil' do
         chronologicable.started_on_utc.should be_nil
