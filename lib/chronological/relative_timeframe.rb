@@ -31,6 +31,13 @@ module Chronological
           send(base_time_field).present? || send(options[:start]).present? || send(options[:end]).present?
         end
 
+        ###
+        # Scopes
+        #
+        self.class.send(:define_method, :in_progress) do
+          all.select(&:in_progress?)
+        end
+
         base_timeframe  start_date_field: start_date_field,
                         start_time_field: start_time_field,
                         end_date_field:   end_date_field,
