@@ -58,15 +58,15 @@ module Chronological
           in_progress.any?
         end
 
+        ###
+        # Aliases
+        #
+        # Aliasing date methods to make code more readable
         instance_eval do
           alias active? in_progress?
           alias active  in_progress
         end
 
-        ###
-        # Aliases
-        #
-        # Aliasing date methods to make code more readable
         class_eval do
           alias_attribute   :"starts_at#{start_time_field_utc_suffix}",    start_time_field.to_sym
           alias_attribute   :"starting_at#{start_time_field_utc_suffix}",  start_time_field.to_sym

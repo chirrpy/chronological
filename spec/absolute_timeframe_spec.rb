@@ -3,43 +3,28 @@ require 'spec_helper'
 class AbsoluteChronologicable < ActiveRecord::Base
   include Chronological::AbsoluteTimeframe
 
-  absolute_timeframe :start_utc => :started_at_utc,
-                     :end_utc   => :ended_at_utc
+  absolute_timeframe start_utc:  :started_at_utc,
+                     end_utc:    :ended_at_utc
 end
 
 class ChronologicableWithTimeZone < ActiveRecord::Base
   include Chronological::AbsoluteTimeframe
 
-  absolute_timeframe :start_utc => :started_at_utc,
-                     :end_utc   => :ended_at_utc,
-                     :time_zone => :time_zone
+  absolute_timeframe start_utc:  :started_at_utc,
+                     end_utc:    :ended_at_utc,
+                     time_zone:  :time_zone
 end
 
 describe Chronological::AbsoluteTimeframe, :timecop => true do
-  let(:later) { Time.local(2012, 7, 26, 6, 0, 26) }
-  let(:now)   { Time.local(2012, 7, 26, 6, 0, 25) }
-  let(:past)  { Time.local(2012, 7, 26, 6, 0, 24) }
+  let(:later)      { Time.local(2012, 7, 26, 6, 0, 26) }
+  let(:now)        { Time.local(2012, 7, 26, 6, 0, 25) }
+  let(:past)       { Time.local(2012, 7, 26, 6, 0, 24) }
 
-  before      { Timecop.freeze(now)             }
+  let(:start_time) { nil }
+  let(:end_time)   { nil }
+  let(:time_zone)  { nil }
 
-  let(:chronologicable) do
-    AbsoluteChronologicable.create(
-      :started_at_utc => start_time,
-      :ended_at_utc   => end_time)
-  end
-
-  let(:chronologicable_without_enabled_time_zone) do
-    AbsoluteChronologicable.new(
-      :started_at_utc => start_time,
-      :ended_at_utc   => end_time)
-  end
-
-  let(:chronologicable_with_enabled_time_zone) do
-    ChronologicableWithTimeZone.new(
-      :started_at_utc => start_time,
-      :ended_at_utc   => end_time,
-      :time_zone      => time_zone)
-  end
+  before           { Timecop.freeze(now) }
 
   it { AbsoluteChronologicable.new.respond_to?(:starts_at_utc).should   be_true }
   it { AbsoluteChronologicable.new.respond_to?(:starting_at_utc).should be_true }
@@ -130,95 +115,169 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
     end
   end
 
-  context 'when a start time is set' do
-    let(:start_time) { Time.now }
+  context 'when dealing with one chronologicable' do
+    let!(:chronologicable) do
+      AbsoluteChronologicable.create(
+        started_at_utc:  start_time,
+        ended_at_utc:    end_time)
+    end
 
-    context 'but no end time is set' do
-      let(:end_time) { nil }
+    let!(:chronologicable_without_enabled_time_zone) do
+      AbsoluteChronologicable.new(
+        started_at_utc:  start_time,
+        ended_at_utc:    end_time)
+    end
 
-      context 'and no time zone is set' do
-        let(:time_zone) { nil }
+    let!(:chronologicable_with_enabled_time_zone) do
+      ChronologicableWithTimeZone.new(
+        started_at_utc:  start_time,
+        ended_at_utc:    end_time,
+        time_zone:       time_zone)
+    end
 
-        describe '#scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should_not be_scheduled
-            chronologicable_with_enabled_time_zone.should_not be_scheduled
+    context 'when a start time is set' do
+      let(:start_time) { Time.now }
+
+      context 'but no end time is set' do
+        let(:end_time) { nil }
+
+        context 'and no time zone is set' do
+          let(:time_zone) { nil }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
           end
         end
 
-        describe '#partially_scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_partially_scheduled
-            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+        context 'and a time zone is set' do
+          let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
           end
         end
       end
 
-      context 'and a time zone is set' do
-        let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+      context 'an end time is set' do
+        let(:end_time) { Time.now }
 
-        describe '#scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should_not be_scheduled
-            chronologicable_with_enabled_time_zone.should_not be_scheduled
+        context 'but no time zone is set' do
+          let(:time_zone) { nil }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
           end
         end
 
-        describe '#partially_scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_partially_scheduled
-            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+        context 'and a time zone is set' do
+          let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_scheduled
+              chronologicable_with_enabled_time_zone.should be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
           end
         end
       end
     end
 
-    context 'an end time is set' do
+    context 'when an end time is set' do
       let(:end_time) { Time.now }
 
-      context 'but no time zone is set' do
-        let(:time_zone) { nil }
+      context 'but no start time is set' do
+        let(:start_time) { nil }
 
         describe '#scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_scheduled
-            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          it 'is false' do
+            chronologicable.should_not be_scheduled
           end
         end
 
         describe '#partially_scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_partially_scheduled
-            chronologicable_with_enabled_time_zone.should be_partially_scheduled
-          end
-        end
-      end
-
-      context 'and a time zone is set' do
-        let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
-
-        describe '#scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_scheduled
-            chronologicable_with_enabled_time_zone.should be_scheduled
+          it 'is true' do
+            chronologicable.should be_partially_scheduled
           end
         end
 
-        describe '#partially_scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_partially_scheduled
-            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+        context 'but no time zone is set' do
+          let(:time_zone) { nil }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'and a time zone is set' do
+          let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
           end
         end
       end
     end
-  end
 
-  context 'when an end time is set' do
-    let(:end_time) { Time.now }
-
-    context 'but no start time is set' do
+    context 'when neither a start time nor an end time is set' do
       let(:start_time) { nil }
+      let(:end_time)   { nil }
 
       describe '#scheduled?' do
         it 'is false' do
@@ -227,146 +286,197 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       end
 
       describe '#partially_scheduled?' do
-        it 'is true' do
-          chronologicable.should be_partially_scheduled
+        it 'is false' do
+          chronologicable.should_not be_partially_scheduled
+        end
+      end
+    end
+
+    context 'when there is a chronologicable that has already started' do
+      let(:start_time) { past }
+
+      context 'and has already ended' do
+        let(:end_time) { past }
+
+        describe '.in_progress?' do
+          it 'is false' do
+            AbsoluteChronologicable.should_not be_in_progress
+          end
+        end
+
+        describe '.expired' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.expired.should include chronologicable
+          end
+        end
+
+        describe '.started' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.started.should include chronologicable
+          end
+        end
+
+        describe '.current' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.current.should_not include chronologicable
+          end
+        end
+
+        describe '.in_progress' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.in_progress.should_not include chronologicable
+          end
         end
       end
 
-      context 'but no time zone is set' do
-        let(:time_zone) { nil }
+      context 'and ends now' do
+        let(:end_time) { now }
 
-        describe '#scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should_not be_scheduled
-            chronologicable_with_enabled_time_zone.should_not be_scheduled
+        describe '.in_progress?' do
+          it 'is false' do
+            AbsoluteChronologicable.should_not be_in_progress
           end
         end
 
-        describe '#partially_scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_partially_scheduled
-            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+        describe '.expired' do
+          it 'does include that chronologicable' do
+            AbsoluteChronologicable.expired.should include chronologicable
+          end
+        end
+
+        describe '.started' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.started.should include chronologicable
+          end
+        end
+
+        describe '.current' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.current.should_not include chronologicable
+          end
+        end
+
+        describe '.in_progress' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.in_progress.should_not include chronologicable
           end
         end
       end
 
-      context 'and a time zone is set' do
-        let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
+      context 'and ends later' do
+        let(:end_time) { later }
 
-        describe '#scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should_not be_scheduled
-            chronologicable_with_enabled_time_zone.should_not be_scheduled
+        describe '.in_progress?' do
+          it 'is true' do
+            AbsoluteChronologicable.should be_in_progress
           end
         end
 
-        describe '#partially_scheduled?' do
-          it 'is correct' do
-            chronologicable_without_enabled_time_zone.should be_partially_scheduled
-            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+        describe '.expired' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.expired.should_not include chronologicable
+          end
+        end
+
+        describe '.started' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.started.should include chronologicable
+          end
+        end
+
+        describe '.current' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.current.should include chronologicable
+          end
+        end
+
+        describe '.in_progress' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.in_progress.should include chronologicable
           end
         end
       end
     end
-  end
 
-  context 'when neither a start time nor an end time is set' do
-    let(:start_time) { nil }
-    let(:end_time)   { nil }
+    context 'when there is a chronologicable that starts now' do
+      let(:start_time) { now }
 
-    describe '#scheduled?' do
-      it 'is false' do
-        chronologicable.should_not be_scheduled
+      context 'and ends now' do
+        let(:end_time) { now }
+
+        describe '.in_progress?' do
+          it 'is false' do
+            AbsoluteChronologicable.should_not be_in_progress
+          end
+        end
+
+        describe '.expired' do
+          it 'does include that chronologicable' do
+            AbsoluteChronologicable.expired.should include chronologicable
+          end
+        end
+
+        describe '.started' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.started.should include chronologicable
+          end
+        end
+
+        describe '.current' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.current.should_not include chronologicable
+          end
+        end
+
+        describe '.in_progress' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.in_progress.should_not include chronologicable
+          end
+        end
+      end
+
+      context 'and ends later' do
+        let(:end_time) { later }
+
+        describe '.in_progress?' do
+          it 'is true' do
+            AbsoluteChronologicable.should be_in_progress
+          end
+        end
+
+        describe '.expired' do
+          it 'does not include that chronologicable' do
+            AbsoluteChronologicable.expired.should_not include chronologicable
+          end
+        end
+
+        describe '.started' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.started.should include chronologicable
+          end
+        end
+
+        describe '.current' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.current.should include chronologicable
+          end
+        end
+
+        describe '.in_progress' do
+          it 'includes that chronologicable' do
+            AbsoluteChronologicable.in_progress.should include chronologicable
+          end
+        end
       end
     end
 
-    describe '#partially_scheduled?' do
-      it 'is false' do
-        chronologicable.should_not be_partially_scheduled
-      end
-    end
-  end
-
-  context 'when there is a chronologicable that has already started' do
-    let(:start_time) { past }
-
-    context 'and has already ended' do
-      let(:end_time) { past }
+    context 'when there is a chronologicable that has not yet started' do
+      let(:start_time) { later }
+      let(:end_time)   { later }
 
       describe '.in_progress?' do
         it 'is false' do
-          chronologicable
           AbsoluteChronologicable.should_not be_in_progress
-        end
-      end
-
-      describe '.expired' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.expired.should include chronologicable
-        end
-      end
-
-      describe '.started' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.started.should include chronologicable
-        end
-      end
-
-      describe '.current' do
-        it 'does not include that chronologicable' do
-          AbsoluteChronologicable.current.should_not include chronologicable
-        end
-      end
-
-      describe '.in_progress' do
-        it 'does not include that chronologicable' do
-          AbsoluteChronologicable.in_progress.should_not include chronologicable
-        end
-      end
-    end
-
-    context 'and ends now' do
-      let(:end_time) { now }
-
-      describe '.in_progress?' do
-        it 'is false' do
-          chronologicable
-          AbsoluteChronologicable.should_not be_in_progress
-        end
-      end
-
-      describe '.expired' do
-        it 'does include that chronologicable' do
-          AbsoluteChronologicable.expired.should include chronologicable
-        end
-      end
-
-      describe '.started' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.started.should include chronologicable
-        end
-      end
-
-      describe '.current' do
-        it 'does not include that chronologicable' do
-          AbsoluteChronologicable.current.should_not include chronologicable
-        end
-      end
-
-      describe '.in_progress' do
-        it 'does not include that chronologicable' do
-          AbsoluteChronologicable.in_progress.should_not include chronologicable
-        end
-      end
-    end
-
-    context 'and ends later' do
-      let(:end_time) { later }
-
-      describe '.in_progress?' do
-        it 'is true' do
-          chronologicable
-          AbsoluteChronologicable.should be_in_progress
         end
       end
 
@@ -377,53 +487,14 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
       end
 
       describe '.started' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.started.should include chronologicable
+        it 'does not include that chronologicable' do
+          AbsoluteChronologicable.started.should_not include chronologicable
         end
       end
 
       describe '.current' do
         it 'includes that chronologicable' do
           AbsoluteChronologicable.current.should include chronologicable
-        end
-      end
-
-      describe '.in_progress' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.in_progress.should include chronologicable
-        end
-      end
-    end
-  end
-
-  context 'when there is a chronologicable that starts now' do
-    let(:start_time) { now }
-
-    context 'and ends now' do
-      let(:end_time) { now }
-
-      describe '.in_progress?' do
-        it 'is false' do
-          chronologicable
-          AbsoluteChronologicable.should_not be_in_progress
-        end
-      end
-
-      describe '.expired' do
-        it 'does include that chronologicable' do
-          AbsoluteChronologicable.expired.should include chronologicable
-        end
-      end
-
-      describe '.started' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.started.should include chronologicable
-        end
-      end
-
-      describe '.current' do
-        it 'does not include that chronologicable' do
-          AbsoluteChronologicable.current.should_not include chronologicable
         end
       end
 
@@ -431,77 +502,6 @@ describe Chronological::AbsoluteTimeframe, :timecop => true do
         it 'does not include that chronologicable' do
           AbsoluteChronologicable.in_progress.should_not include chronologicable
         end
-      end
-    end
-
-    context 'and ends later' do
-      let(:end_time) { later }
-
-      describe '.in_progress?' do
-        it 'is true' do
-          chronologicable
-          AbsoluteChronologicable.should be_in_progress
-        end
-      end
-
-      describe '.expired' do
-        it 'does not include that chronologicable' do
-          AbsoluteChronologicable.expired.should_not include chronologicable
-        end
-      end
-
-      describe '.started' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.started.should include chronologicable
-        end
-      end
-
-      describe '.current' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.current.should include chronologicable
-        end
-      end
-
-      describe '.in_progress' do
-        it 'includes that chronologicable' do
-          AbsoluteChronologicable.in_progress.should include chronologicable
-        end
-      end
-    end
-  end
-
-  context 'when there is a chronologicable that has not yet started' do
-    let(:start_time) { later }
-    let(:end_time)   { later }
-
-    describe '.in_progress?' do
-      it 'is false' do
-        chronologicable
-        AbsoluteChronologicable.should_not be_in_progress
-      end
-    end
-
-    describe '.expired' do
-      it 'does not include that chronologicable' do
-        AbsoluteChronologicable.expired.should_not include chronologicable
-      end
-    end
-
-    describe '.started' do
-      it 'does not include that chronologicable' do
-        AbsoluteChronologicable.started.should_not include chronologicable
-      end
-    end
-
-    describe '.current' do
-      it 'includes that chronologicable' do
-        AbsoluteChronologicable.current.should include chronologicable
-      end
-    end
-
-    describe '.in_progress' do
-      it 'does not include that chronologicable' do
-        AbsoluteChronologicable.in_progress.should_not include chronologicable
       end
     end
   end
