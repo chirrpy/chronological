@@ -42,6 +42,15 @@ module Chronological
           all.any?(&:in_progress?)
         end
 
+        ###
+        # Aliases
+        #
+        # Aliasing date methods to make code more readable
+        instance_eval do
+          alias active? in_progress?
+          alias active  in_progress
+        end
+
         base_timeframe  start_date_field: start_date_field,
                         start_time_field: start_time_field,
                         end_date_field:   end_date_field,

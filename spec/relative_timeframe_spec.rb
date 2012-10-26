@@ -23,6 +23,11 @@ describe Chronological::RelativeTimeframe do
 
   before { Timecop.freeze(now) }
 
+  it { RelativeChronologicable.new.respond_to?(:active?).should  be_true }
+
+  it { RelativeChronologicable.respond_to?(:active?).should      be_true }
+  it { RelativeChronologicable.respond_to?(:active).should       be_true }
+
   context 'when the base time is not set' do
     let(:base_time)       { nil }
 
