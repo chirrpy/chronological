@@ -16,6 +16,20 @@ module Chronological
           columns_hash[end_time_field]   = ActiveRecord::ConnectionAdapters::Column.new(end_time_field, nil, "datetime")
         end
 
+        unless base_time_field_is_utc
+          define_method("#{start_time_field}_utc") do
+            return nil unless send(start_time_field).present?
+
+            send(start_time_field).in_time_zone('UTC')
+          end
+
+          define_method("#{end_time_field}_utc") do
+            return nil unless send(end_time_field).present?
+
+            send(end_time_field).in_time_zone('UTC')
+          end
+        end
+
         define_method(start_time_field) do
           return nil unless send(base_time_field).present? && send(options[:start]).present?
 
