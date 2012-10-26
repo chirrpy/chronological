@@ -6,10 +6,10 @@ module Chronological
         base_time_field_is_utc = options.has_key? :base_utc
         time_field_utc_suffix  = base_time_field_is_utc ? 'utc' : nil
 
-        start_time_field       = ['started_at', time_field_utc_suffix].join('_')
-        end_time_field         = ['ended_at',   time_field_utc_suffix].join('_')
-        start_date_field       = ['started_on', time_field_utc_suffix].join('_')
-        end_date_field         = ['ended_on',   time_field_utc_suffix].join('_')
+        start_time_field       = ['started_at', time_field_utc_suffix].compact.join('_')
+        end_time_field         = ['ended_at',   time_field_utc_suffix].compact.join('_')
+        start_date_field       = ['started_on', time_field_utc_suffix].compact.join('_')
+        end_date_field         = ['ended_on',   time_field_utc_suffix].compact.join('_')
 
         define_method(start_time_field) do
           return nil unless send(base_time_field).present? && send(options[:start]).present?
