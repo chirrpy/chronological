@@ -43,6 +43,10 @@ describe Chronological::RelativeTimeframe do
         it 'is not included in the in progress list' do
           RelativeChronologicable.in_progress.should_not include chronologicable
         end
+
+        it 'does not mark the list as in progress' do
+          RelativeChronologicable.should_not be_in_progress
+        end
       end
 
       context 'and the ending offset is not set' do
@@ -58,6 +62,10 @@ describe Chronological::RelativeTimeframe do
 
         it 'is not included in the in progress list' do
           RelativeChronologicable.in_progress.should_not include chronologicable
+        end
+
+        it 'does not mark the list as in progress' do
+          RelativeChronologicable.should_not be_in_progress
         end
       end
 
@@ -82,6 +90,10 @@ describe Chronological::RelativeTimeframe do
 
         it 'is not included in the in progress list' do
           RelativeChronologicable.in_progress.should_not include chronologicable
+        end
+
+        it 'does not mark the list as in progress' do
+          RelativeChronologicable.should_not be_in_progress
         end
       end
 
@@ -121,6 +133,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
+
+      it 'does not mark the list as in progress' do
+        RelativeChronologicable.should_not be_in_progress
+      end
     end
   end
 
@@ -145,6 +161,10 @@ describe Chronological::RelativeTimeframe do
         it 'is not included in the in progress list' do
           RelativeChronologicable.in_progress.should_not include chronologicable
         end
+
+        it 'does not mark the list as in progress' do
+          RelativeChronologicable.should_not be_in_progress
+        end
       end
 
       context 'and the ending offset is set' do
@@ -160,6 +180,10 @@ describe Chronological::RelativeTimeframe do
 
         it 'is not included in the in progress list' do
           RelativeChronologicable.in_progress.should_not include chronologicable
+        end
+
+        it 'does not mark the list as in progress' do
+          RelativeChronologicable.should_not be_in_progress
         end
       end
 
@@ -185,6 +209,10 @@ describe Chronological::RelativeTimeframe do
         it 'is not included in the in progress list' do
           RelativeChronologicable.in_progress.should_not include chronologicable
         end
+
+        it 'does not mark the list as in progress' do
+          RelativeChronologicable.should_not be_in_progress
+        end
       end
 
       context 'and the ending offset is set' do
@@ -200,6 +228,10 @@ describe Chronological::RelativeTimeframe do
 
         it 'is included in the in progress list' do
           RelativeChronologicable.in_progress.should include chronologicable
+        end
+
+        it 'marks the list as in progress' do
+          RelativeChronologicable.should be_in_progress
         end
       end
 
@@ -236,6 +268,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
+
+      it 'does not mark the list as in progress' do
+        RelativeChronologicable.should_not be_in_progress
+      end
     end
   end
 
@@ -250,6 +286,10 @@ describe Chronological::RelativeTimeframe do
       it 'is included in the in progress list' do
         RelativeChronologicable.in_progress.should include chronologicable
       end
+
+      it 'marks the list as in progress' do
+        RelativeChronologicable.should be_in_progress
+      end
     end
 
     context 'and the same as the ending offset' do
@@ -257,6 +297,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
+      end
+
+      it 'does not mark the list as in progress' do
+        RelativeChronologicable.should_not be_in_progress
       end
     end
   end
@@ -272,6 +316,10 @@ describe Chronological::RelativeTimeframe do
       it 'is included in the in progress list' do
         RelativeChronologicable.in_progress.should include chronologicable
       end
+
+      it 'marks the list as in progress' do
+        RelativeChronologicable.should be_in_progress
+      end
     end
 
     context 'and the same as the ending offset' do
@@ -280,6 +328,10 @@ describe Chronological::RelativeTimeframe do
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
+
+      it 'does not mark the list as in progress' do
+        RelativeChronologicable.should_not be_in_progress
+      end
     end
 
     context 'and after the ending offset' do
@@ -287,6 +339,10 @@ describe Chronological::RelativeTimeframe do
 
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
+      end
+
+      it 'does not mark the list as in progress' do
+        RelativeChronologicable.should_not be_in_progress
       end
     end
   end

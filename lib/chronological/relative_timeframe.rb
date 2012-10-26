@@ -38,6 +38,10 @@ module Chronological
           all.select(&:in_progress?)
         end
 
+        self.class.send(:define_method, :in_progress?) do
+          all.any?(&:in_progress?)
+        end
+
         base_timeframe  start_date_field: start_date_field,
                         start_time_field: start_time_field,
                         end_date_field:   end_date_field,
