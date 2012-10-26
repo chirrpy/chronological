@@ -11,6 +11,11 @@ module Chronological
         start_date_field       = ['started_on', time_field_utc_suffix].compact.join('_')
         end_date_field         = ['ended_on',   time_field_utc_suffix].compact.join('_')
 
+        class_eval do
+          columns_hash[start_time_field] = ActiveRecord::ConnectionAdapters::Column.new(start_time_field, nil, "datetime")
+          columns_hash[end_time_field]   = ActiveRecord::ConnectionAdapters::Column.new(end_time_field, nil, "datetime")
+        end
+
         define_method(start_time_field) do
           return nil unless send(base_time_field).present? && send(options[:start]).present?
 
