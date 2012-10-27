@@ -8,7 +8,7 @@ class RelativeChronologicable < ActiveRecord::Base
                      base_utc: :base_datetime_utc
 end
 
-describe Chronological::RelativeTimeframe do
+describe Chronological::RelativeTimeframe, :timecop => true do
   let(:now)             { nil }
   let(:starting_offset) { nil }
   let(:ending_offset)   { nil }
