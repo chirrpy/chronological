@@ -12,8 +12,8 @@ module Chronological
         end_date_field         = ['ended_on',   time_field_utc_suffix].compact.join('_').to_sym
 
         class_eval do
-          columns_hash[start_time_field] = ActiveRecord::ConnectionAdapters::Column.new(start_time_field, nil, "datetime")
-          columns_hash[end_time_field]   = ActiveRecord::ConnectionAdapters::Column.new(end_time_field, nil, "datetime")
+          columns_hash[start_time_field] = ActiveRecord::ConnectionAdapters::Column.new(start_time_field, nil, 'datetime')
+          columns_hash[end_time_field]   = ActiveRecord::ConnectionAdapters::Column.new(end_time_field,   nil, 'datetime')
         end
 
         unless base_time_field_is_utc
