@@ -5,10 +5,10 @@ module Chronological
       # typical timeliness validation such as ended_at should be after started_at
       # and that both should validate timeliness
       def absolute_timeframe(options = {})
-        start_time_field            = options[:start_utc] || options[:start]
-        start_date_field            = start_time_field.to_s.gsub(/_at/, '_on')
-        end_time_field              = options[:end_utc]   || options[:end]
-        end_date_field              = end_time_field.to_s.gsub(/_at/, '_on')
+        start_time_field            = (options[:start_utc] || options[:start]).to_sym
+        start_date_field            = start_time_field.to_s.gsub(/_at/, '_on').to_sym
+        end_time_field              = (options[:end_utc]   || options[:end]).to_sym
+        end_date_field              = end_time_field.to_s.gsub(/_at/, '_on').to_sym
         time_zone                   = options[:time_zone]
         start_time_field_is_utc     = options.has_key? :start_utc
         end_time_field_is_utc       = options.has_key? :end_utc
@@ -39,19 +39,19 @@ module Chronological
         end
 
         self.class.send(:define_method, :expired) do
-          where("#{end_time_field} <= :now", :now => Time.now.utc)
+          where(arel_table[end_time_field].lteq(Time.now.utc))
         end
 
         self.class.send(:define_method, :current) do
-          where("#{end_time_field} > :now", :now => Time.now.utc)
+          where(arel_table[end_time_field].gt(Time.now.utc))
         end
 
         self.class.send(:define_method, :in_progress) do
-          where("#{start_time_field} <= :now AND #{end_time_field} > :now", :now => Time.now.utc)
+          started.current
         end
 
         self.class.send(:define_method, :started) do
-          where("#{start_time_field} <= :now", :now => Time.now.utc)
+          where(arel_table[start_time_field].lteq Time.now.utc)
         end
 
         self.class.send(:define_method, :in_progress?) do
@@ -68,10 +68,10 @@ module Chronological
         end
 
         class_eval do
-          alias_attribute   :"starts_at#{start_time_field_utc_suffix}",    start_time_field.to_sym
-          alias_attribute   :"starting_at#{start_time_field_utc_suffix}",  start_time_field.to_sym
-          alias_attribute   :"ends_at#{start_time_field_utc_suffix}",      end_time_field.to_sym
-          alias_attribute   :"ending_at#{start_time_field_utc_suffix}",    end_time_field.to_sym
+          alias_attribute   :"starts_at#{start_time_field_utc_suffix}",   start_time_field
+          alias_attribute   :"starting_at#{start_time_field_utc_suffix}", start_time_field
+          alias_attribute   :"ends_at#{end_time_field_utc_suffix}",       end_time_field
+          alias_attribute   :"ending_at#{end_time_field_utc_suffix}",     end_time_field
         end
 
         base_timeframe  start_date_field: start_date_field,
