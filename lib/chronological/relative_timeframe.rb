@@ -53,11 +53,11 @@ module Chronological
         ###
         # Scopes
         #
-        self.class.send(:define_method, :in_progress) do
+        define_singleton_method(:in_progress) do
           all.select(&:in_progress?)
         end
 
-        self.class.send(:define_method, :in_progress?) do
+        define_singleton_method(:in_progress?) do
           all.any?(&:in_progress?)
         end
 

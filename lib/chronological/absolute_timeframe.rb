@@ -30,31 +30,31 @@ module Chronological
         ###
         # Scopes
         #
-        self.class.send(:define_method, :by_date) do
+        define_singleton_method(:by_date) do
           order "#{table_name}.#{start_time_field} ASC, #{table_name}.#{end_time_field} ASC"
         end
 
-        self.class.send(:define_method, :by_date_reversed) do
+        define_singleton_method(:by_date_reversed) do
           order "#{table_name}.#{start_time_field} DESC, #{table_name}.#{end_time_field} DESC"
         end
 
-        self.class.send(:define_method, :expired) do
+        define_singleton_method(:expired) do
           where(arel_table[end_time_field].lteq(Time.now.utc))
         end
 
-        self.class.send(:define_method, :current) do
+        define_singleton_method(:current) do
           where(arel_table[end_time_field].gt(Time.now.utc))
         end
 
-        self.class.send(:define_method, :in_progress) do
+        define_singleton_method(:in_progress) do
           started.current
         end
 
-        self.class.send(:define_method, :started) do
+        define_singleton_method(:started) do
           where(arel_table[start_time_field].lteq Time.now.utc)
         end
 
-        self.class.send(:define_method, :in_progress?) do
+        define_singleton_method(:in_progress?) do
           in_progress.any?
         end
 
