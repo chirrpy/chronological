@@ -1,5 +1,6 @@
 module Chronological
-  module AbsoluteStrategy
+  class AbsoluteStrategy
+    module MyModule
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
@@ -93,6 +94,7 @@ module Chronological
     def self.included(base)
       base.extend Chronological::Base
       base.extend ClassMethods
+    end
     end
   end
 end

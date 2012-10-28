@@ -1,5 +1,6 @@
 module Chronological
   module RelativeStrategy
+    module MyModule
     module ClassMethods
       def strategy_timeframe(options = {})
         base_time_field        = options[:base_utc] || options[:base]
@@ -91,6 +92,7 @@ module Chronological
     def self.included(base)
       base.extend Chronological::Base
       base.extend ClassMethods
+    end
     end
   end
 end

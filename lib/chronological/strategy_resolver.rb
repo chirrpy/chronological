@@ -13,7 +13,7 @@ module Chronological
     def self.resolve(strategy)
       raise Chronological::UndefinedStrategy unless STRATEGIES.include? strategy
 
-      "Chronological::#{strategy.to_s.classify}Strategy".constantize
+      "Chronological::#{strategy.to_s.classify}Strategy::MyModule".constantize
     end
   end
 end
