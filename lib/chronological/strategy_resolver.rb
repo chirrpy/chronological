@@ -44,14 +44,13 @@ module Chronological
 
     def self.resolve(options)
       strategy_name = resolve_strategy_name(options)
+      field_names   = resolve_option_fields(strategy_name, options)
 
-      strategy_options = parse(strategy_name, options)
-
-      "Chronological::#{strategy_name.to_s.classify}Strategy".constantize.new(strategy_options)
+      "Chronological::#{strategy_name.to_s.classify}Strategy".constantize.new(field_names)
     end
 
   private
-    def self.parse(strategy_name, options)
+    def self.resolve_option_fields(strategy_name, options)
       strategy_option_names   = STRATEGIES[strategy_name]
       default_field_names     = DEFAULT_FIELD_NAMES_FOR_OPTIONS.select do |option_name, default_field_name|
                                   strategy_option_names.include? option_name
