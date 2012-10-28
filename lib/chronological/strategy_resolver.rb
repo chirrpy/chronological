@@ -26,17 +26,16 @@ module Chronological
     }
 
     def self.resolve(options)
-      raise Chronological::UndefinedStrategy unless STRATEGIES.include? options[:type]
+      strategy_name = resolve_strategy_name(options)
 
-      strategy_options = parse(options)
+      strategy_options = parse(strategy_name, options)
 
-      "Chronological::#{options[:type].to_s.classify}Strategy".constantize.new(strategy_options)
+      "Chronological::#{strategy_name.to_s.classify}Strategy".constantize.new(strategy_options)
     end
 
   private
-    def self.parse(options)
-      strategy                = options[:type]
-      strategy_option_names   = STRATEGIES[strategy]
+    def self.parse(strategy_name, options)
+      strategy_option_names   = STRATEGIES[strategy_name]
       default_field_names     = DEFAULT_FIELD_NAMES_FOR_STRATEGY_OPTIONS.select do |option_name, default_field_name|
                                   strategy_option_names.include? option_name
                                 end
@@ -45,6 +44,12 @@ module Chronological
                                 end
 
       default_field_names.merge overridden_field_names
+    end
+
+    def self.resolve_strategy_name(options)
+      raise Chronological::UndefinedStrategy unless STRATEGIES.include? options[:type]
+
+      options[:type]
     end
   end
 end
