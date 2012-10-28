@@ -1,5 +1,9 @@
 module Chronological
   class AbsoluteStrategy
+    def module
+      Chronological::AbsoluteStrategy::MyModule
+    end
+
     module MyModule
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the

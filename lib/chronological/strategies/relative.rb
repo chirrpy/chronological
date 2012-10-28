@@ -1,5 +1,9 @@
 module Chronological
-  module RelativeStrategy
+  class RelativeStrategy
+    def module
+      Chronological::RelativeStrategy::MyModule
+    end
+
     module MyModule
     module ClassMethods
       def strategy_timeframe(options = {})
