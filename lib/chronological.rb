@@ -1,8 +1,7 @@
 require 'chronological/version'
 require 'chronological/base'
 require 'chronological/errors'
-require 'chronological/absolute_timeframe'
-require 'chronological/relative_timeframe'
+require 'chronological/strategies'
 
 module Chronological
   STRATEGIES = [
@@ -16,7 +15,7 @@ module Chronological
   ]
 
   def timeframe(*args)
-    strategy = args.first.is_a?(Symbol) ? args.pop    : nil
+    strategy = args.first.is_a?(Symbol) ? args.shift    : nil
 
     raise Chronological::UndefinedStrategy unless STRATEGIES.include? strategy
 
