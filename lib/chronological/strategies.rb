@@ -1,2 +1,2 @@
-require 'chronological/relative_timeframe'
 require 'chronological/strategies/absolute'
+require 'chronological/strategies/relative'

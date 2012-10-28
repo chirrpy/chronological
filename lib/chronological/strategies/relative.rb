@@ -1,5 +1,5 @@
 module Chronological
-  module RelativeTimeframe
+  module RelativeStrategy
     module ClassMethods
       def relative_timeframe(options = {})
         base_time_field        = options[:base_utc] || options[:base]
