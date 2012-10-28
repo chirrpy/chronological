@@ -1,13 +1,13 @@
 module Chronological
   class StrategyResolver
     STRATEGIES = {
-      absolute:                       [ :starting_time,           :ending_time ],
-      relative:                       [ :base_of_offset,          :starting_offset, :ending_offset ],
-      dual_relative:                  [ :base_of_starting_offset, :starting_offset, :base_of_ending_offset, :ending_offset ],
-      duration_from_start:            [ :starting_time,           :duration ],
-      duration_until_end:             [ :ending_time,             :duration ],
-      duration_from_relative_start:   [ :base_of_starting_offset, :starting_offset, :duration ],
-      duration_until_a_relative_end:  [ :base_of_ending_offset,   :ending_offset,   :duration ]
+      absolute:                       Set[ :starting_time,           :ending_time ],
+      relative:                       Set[ :base_of_offset,          :starting_offset, :ending_offset ],
+      dual_relative:                  Set[ :base_of_starting_offset, :starting_offset, :base_of_ending_offset, :ending_offset ],
+      duration_from_start:            Set[ :starting_time,           :duration ],
+      duration_until_end:             Set[ :ending_time,             :duration ],
+      duration_from_relative_start:   Set[ :base_of_starting_offset, :starting_offset, :duration ],
+      duration_until_a_relative_end:  Set[ :base_of_ending_offset,   :ending_offset,   :duration ]
     }
 
     VALID_OPTIONS = [
