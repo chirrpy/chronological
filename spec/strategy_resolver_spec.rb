@@ -30,5 +30,14 @@ describe Chronological::StrategyResolver do
         end
       end
     end
+
+    context 'when passed exact field names that relate to a strategy' do
+      let(:options_to_resolve) { { starting_time: :my_starting_field,
+                                   ending_time:   :my_ending_field } }
+
+      it 'resolves the proper strategy to instantiate' do
+        resolved_strategy.should be_a Chronological::AbsoluteStrategy
+      end
+    end
   end
 end

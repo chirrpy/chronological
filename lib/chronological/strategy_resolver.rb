@@ -64,9 +64,23 @@ module Chronological
     end
 
     def self.resolve_strategy_name(options)
-      raise Chronological::UndefinedStrategy unless STRATEGIES.include? options[:type]
+      strategy_name = if options[:type]
+                        options[:type]
+                      else
+                        resolve_strategy_name_from_options(options)
+                      end
 
-      options[:type]
+      raise Chronological::UndefinedStrategy unless STRATEGIES.include? strategy_name
+
+      strategy_name
+    end
+
+    def self.resolve_strategy_name_from_options(options)
+      option_names = Set.new options.keys
+
+      STRATEGIES.find do |strategy_name, required_options|
+        required_options & option_names == required_options
+      end[0]
     end
   end
 end
