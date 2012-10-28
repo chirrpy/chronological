@@ -3,7 +3,7 @@ require 'spec_helper'
 class RelativeChronologicable < ActiveRecord::Base
   extend Chronological
 
-  timeframe :relative,
+  timeframe type:     :relative,
             start:    :starting_offset,
             end:      :ending_offset,
             base_utc: :base_datetime_utc

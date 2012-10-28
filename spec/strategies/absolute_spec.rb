@@ -3,7 +3,7 @@ require 'spec_helper'
 class AbsoluteChronologicable < ActiveRecord::Base
   extend Chronological
 
-  timeframe :absolute,
+  timeframe type:       :absolute,
             start_utc:  :started_at_utc,
             end_utc:    :ended_at_utc
 end
@@ -11,7 +11,7 @@ end
 class ChronologicableWithTimeZone < ActiveRecord::Base
   extend Chronological
 
-  timeframe :absolute,
+  timeframe type:       :absolute,
             start_utc:  :started_at_utc,
             end_utc:    :ended_at_utc,
             time_zone:  :time_zone

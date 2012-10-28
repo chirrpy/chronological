@@ -10,10 +10,10 @@ module Chronological
       :duration_from_relative_end
     ]
 
-    def self.resolve(strategy)
-      raise Chronological::UndefinedStrategy unless STRATEGIES.include? strategy
+    def self.resolve(options)
+      raise Chronological::UndefinedStrategy unless STRATEGIES.include? options[:type]
 
-      "Chronological::#{strategy.to_s.classify}Strategy".constantize.new
+      "Chronological::#{options[:type].to_s.classify}Strategy".constantize.new
     end
   end
 end
