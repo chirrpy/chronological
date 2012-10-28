@@ -1,3 +1,4 @@
+`rm -f ./tmp/test.db`
 test_db_root = File.expand_path('../../../tmp/', __FILE__)
 Dir.mkdir test_db_root unless Dir.exists? test_db_root
 
