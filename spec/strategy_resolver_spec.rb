@@ -39,5 +39,14 @@ describe Chronological::StrategyResolver do
         resolved_strategy.should be_a Chronological::AbsoluteStrategy
       end
     end
+
+    context 'when passed something it does not know how to resolve' do
+      let(:options_to_resolve) { { start_me_up:                             :my_starting_field,
+                                   its_the_end_of_the_world_as_we_know_it:  :my_ending_field } }
+
+      it 'resolves the proper strategy to instantiate' do
+        lambda { Chronological::StrategyResolver.resolve(options_to_resolve) }.should raise_error Chronological::UndefinedStrategy
+      end
+    end
   end
 end

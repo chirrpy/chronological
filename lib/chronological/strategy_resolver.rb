@@ -74,9 +74,11 @@ module Chronological
     def self.resolve_strategy_name_from_options(options)
       option_names = Set.new options.keys
 
-      STRATEGIES.find do |strategy_name, required_options|
-        required_options & option_names == required_options
-      end[0]
+      resolved_strategy = STRATEGIES.find do |strategy_name, required_options|
+                            required_options & option_names == required_options
+                          end
+
+      resolved_strategy ? resolved_strategy[0] : nil
     end
   end
 end
