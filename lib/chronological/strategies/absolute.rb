@@ -4,6 +4,9 @@ module Chronological
       Chronological::AbsoluteStrategy::MyModule
     end
 
+    def initialize(*args)
+    end
+
     module MyModule
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the

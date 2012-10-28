@@ -4,6 +4,9 @@ module Chronological
       Chronological::RelativeStrategy::MyModule
     end
 
+    def initialize(*args)
+    end
+
     module MyModule
     module ClassMethods
       def strategy_timeframe(options = {})
