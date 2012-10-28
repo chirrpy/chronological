@@ -1,5 +1,6 @@
 require 'chronological/version'
 require 'chronological/base'
+require 'chronological/errors'
 require 'chronological/absolute_timeframe'
 require 'chronological/relative_timeframe'
 
@@ -16,6 +17,8 @@ module Chronological
 
   def timeframe(*args)
     strategy = args.first.is_a?(Symbol) ? args.pop    : nil
+
+    raise Chronological::UndefinedStrategy unless STRATEGIES.include? strategy
 
     class_variable_set(:@@chronological_strategy, strategy)
   end
