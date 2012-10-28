@@ -4,4 +4,6 @@ require 'chronological/absolute_timeframe'
 require 'chronological/relative_timeframe'
 
 module Chronological
+  def timeframe(*args)
+  end
 end
