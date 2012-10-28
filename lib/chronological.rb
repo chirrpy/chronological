@@ -6,7 +6,7 @@ require 'chronological/strategies'
 
 module Chronological
   def timeframe(*args)
-    options             = args.first.is_a?(Hash)   ? args.pop      : {}
+    options = args.first.is_a?(Hash) ? args.pop : {}
 
     strategy = Chronological::StrategyResolver.resolve(options)
 
