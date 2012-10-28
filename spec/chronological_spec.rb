@@ -15,7 +15,7 @@ describe Chronological do
         end
       end
 
-      it 'is translated properly' do
+      pit 'is translated properly' do
         ChronologicableStrategyClass.class_variable_get(:@@chronological_strategy).should eql Chronological::AbsoluteStrategy
       end
     end
