@@ -44,13 +44,13 @@ module Chronological
 
     def self.resolve(options)
       strategy_name = resolve_strategy_name(options)
-      field_names   = resolve_option_fields(strategy_name, options)
+      field_names   = resolve_strategy_fields(strategy_name, options)
 
       "Chronological::#{strategy_name.to_s.classify}Strategy".constantize.new(field_names)
     end
 
   private
-    def self.resolve_option_fields(strategy_name, options)
+    def self.resolve_strategy_fields(strategy_name, options)
       strategy_option_names = STRATEGIES[strategy_name]
       overridden_options    = DEFAULT_FIELD_NAMES_FOR_OPTIONS.merge options
 
