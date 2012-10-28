@@ -1,5 +1,5 @@
 module Chronological
-  module AbsoluteTimeframe
+  module AbsoluteStrategy
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
