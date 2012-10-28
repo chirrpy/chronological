@@ -17,6 +17,18 @@ describe Chronological::StrategyResolver do
 
         resolved_strategy
       end
+
+      context 'with some overridden field name options' do
+        let(:options_to_resolve) { {  type:           :absolute,
+                                      starting_time:  :my_starting_field } }
+
+        it 'overrides the proper default fields and tells the strategy to create itself with those' do
+          Chronological::AbsoluteStrategy.should_receive(:new).with starting_time:  :my_starting_field,
+                                                                    ending_time:    :ended_at
+
+          resolved_strategy
+        end
+      end
     end
   end
 end

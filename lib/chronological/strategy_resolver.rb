@@ -10,7 +10,7 @@ module Chronological
       duration_until_a_relative_end:  [ :base_of_ending_offset,   :ending_offset,   :duration ]
     }
 
-    DEFAULT_FIELD_NAMES = {
+    DEFAULT_FIELD_NAMES_FOR_STRATEGY_OPTIONS = {
       starting_time:                  :started_at,
       ending_time:                    :ended_at,
       base_of_offset:                 :base_of_range_offset,
@@ -35,10 +35,16 @@ module Chronological
 
   private
     def self.parse(options)
-      strategy        = options[:type]
-      required_fields = STRATEGIES[strategy]
+      strategy                = options[:type]
+      strategy_option_names   = STRATEGIES[strategy]
+      default_field_names     = DEFAULT_FIELD_NAMES_FOR_STRATEGY_OPTIONS.select do |option_name, default_field_name|
+                                  strategy_option_names.include? option_name
+                                end
+      overridden_field_names  = options.select do |option_name, option_value|
+                                  strategy_option_names.include? option_name
+                                end
 
-      DEFAULT_FIELD_NAMES.select { |option_name, default_field_name| required_fields.include? option_name }
+      default_field_names.merge overridden_field_names
     end
   end
 end
