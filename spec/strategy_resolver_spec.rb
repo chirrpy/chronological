@@ -8,7 +8,7 @@ describe Chronological::StrategyResolver do
       let(:options_to_resolve) { { :type => :absolute } }
 
       it 'resolves to the proper class' do
-        resolved_strategy.should be_an Chronological::AbsoluteStrategy
+        resolved_strategy.should be_a Chronological::AbsoluteStrategy
       end
 
       it 'tells the strategy to create itself with the default fields' do
