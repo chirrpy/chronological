@@ -1,7 +1,7 @@
 module Chronological
   module RelativeStrategy
     module ClassMethods
-      def relative_timeframe(options = {})
+      def strategy_timeframe(options = {})
         base_time_field        = options[:base_utc] || options[:base]
         base_time_field_is_utc = options.has_key? :base_utc
         time_field_utc_suffix  = base_time_field_is_utc ? 'utc' : nil

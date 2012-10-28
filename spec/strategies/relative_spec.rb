@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 class RelativeChronologicable < ActiveRecord::Base
-  include Chronological::RelativeStrategy
+  extend Chronological
 
-  relative_timeframe start:    :starting_offset,
-                     end:      :ending_offset,
-                     base_utc: :base_datetime_utc
+  timeframe :relative,
+            start:    :starting_offset,
+            end:      :ending_offset,
+            base_utc: :base_datetime_utc
 end
 
 describe Chronological::RelativeStrategy, :timecop => true do

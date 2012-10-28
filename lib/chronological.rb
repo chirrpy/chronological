@@ -11,6 +11,6 @@ module Chronological
 
     include Chronological::StrategyResolver.resolve(strategy)
 
-    absolute_timeframe options
+    strategy_timeframe options
   end
 end

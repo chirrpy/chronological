@@ -4,7 +4,7 @@ module Chronological
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
       # and that both should validate timeliness
-      def absolute_timeframe(options = {})
+      def strategy_timeframe(options = {})
         start_time_field            = (options[:start_utc] || options[:start]).to_sym
         start_date_field            = start_time_field.to_s.gsub(/_at/, '_on').to_sym
         end_time_field              = (options[:end_utc]   || options[:end]).to_sym
