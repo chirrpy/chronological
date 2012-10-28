@@ -19,6 +19,8 @@ module Chronological
 
     raise Chronological::UndefinedStrategy unless STRATEGIES.include? strategy
 
-    class_variable_set(:@@chronological_strategy, strategy)
+    strategy_class = "Chronological::#{strategy.to_s.classify}Strategy".constantize
+
+    class_variable_set(:@@chronological_strategy, strategy_class)
   end
 end
