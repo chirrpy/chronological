@@ -51,15 +51,12 @@ module Chronological
 
   private
     def self.resolve_option_fields(strategy_name, options)
-      strategy_option_names   = STRATEGIES[strategy_name]
-      default_field_names     = DEFAULT_FIELD_NAMES_FOR_OPTIONS.select do |option_name, default_field_name|
-                                  strategy_option_names.include? option_name
-                                end
-      overridden_field_names  = options.select do |option_name, option_value|
-                                  strategy_option_names.include? option_name
-                                end
+      strategy_option_names = STRATEGIES[strategy_name]
+      overridden_options    = DEFAULT_FIELD_NAMES_FOR_OPTIONS.merge options
 
-      default_field_names.merge overridden_field_names
+      overridden_options.select do |option_name, option_value|
+        strategy_option_names.include? option_name
+      end
     end
 
     def self.resolve_strategy_name(options)
