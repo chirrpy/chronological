@@ -9,7 +9,9 @@ describe Chronological do
     context 'when it is called with a symbol representing a strategy' do
       before do
         ChronologicableStrategyClass.class_eval do
-          timeframe :absolute
+          timeframe :absolute,
+                    start_utc:  :started_at_utc,
+                    end_utc:    :ended_at_utc
         end
       end
 

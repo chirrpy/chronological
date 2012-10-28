@@ -7,8 +7,10 @@ require 'chronological/strategies'
 module Chronological
   def timeframe(*args)
     strategy = args.first.is_a?(Symbol) ? args.shift    : nil
+    options  = args.first.is_a?(Hash)   ? args.pop      : {}
 
-    class_variable_set  :@@chronological_strategy,
-                        Chronological::StrategyResolver.resolve(strategy)
+    include Chronological::StrategyResolver.resolve(strategy)
+
+    absolute_timeframe options
   end
 end
