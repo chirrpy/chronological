@@ -3,10 +3,10 @@ require 'spec_helper'
 class BaseChronologicable < ActiveRecord::Base
   extend Chronological::Base
 
-  base_timeframe :start_date_field => :started_on,
-                 :start_time_field => :started_at,
-                 :end_date_field   => :ended_on,
-                 :end_time_field   => :ended_at
+  base_timeframe :starting_date => :started_on,
+                 :starting_time => :started_at,
+                 :ending_date   => :ended_on,
+                 :ending_time   => :ended_at
 
 private
   def has_absolute_timeframe?

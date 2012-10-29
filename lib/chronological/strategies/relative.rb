@@ -60,10 +60,7 @@ module Chronological
           alias active  in_progress
         end
 
-        base_timeframe  start_date_field: options[:starting_date],
-                        start_time_field: options[:starting_time],
-                        end_date_field:   options[:ending_date],
-                        end_time_field:   options[:ending_time]
+        base_timeframe  options
 
       private
         define_method(:has_absolute_timeframe?) do
