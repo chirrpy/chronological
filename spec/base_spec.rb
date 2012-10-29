@@ -25,34 +25,6 @@ describe Chronological::Base do
     )
   end
 
-  describe '#started_on' do
-    context 'when #started_at is set' do
-      context 'to a string' do
-        let(:started_at) { '2012-07-26 03:15:12' }
-
-        it 'properly converts the date' do
-          chronologicable.started_on.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
-        end
-      end
-
-      context 'to a date' do
-        let(:started_at) { Time.utc(2012, 7, 26, 3, 15, 12) }
-
-        it 'properly converts the date' do
-          chronologicable.started_on.should eql Time.utc(2012, 7, 26, 3, 15, 12).to_date
-        end
-      end
-    end
-
-    context 'when #started_at is not set' do
-      let(:started_at) { nil }
-
-      it 'is nil' do
-        chronologicable.started_on.should be_nil
-      end
-    end
-  end
-
   describe '#ended_on' do
     context 'when #ended_at is set' do
       context 'to a string' do
