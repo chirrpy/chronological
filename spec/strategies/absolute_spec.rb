@@ -31,12 +31,12 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
   it { AbsoluteChronologicable.respond_to?(:active?).should             be_true }
   it { AbsoluteChronologicable.respond_to?(:active).should              be_true }
 
-  context 'when there are two chronologicables that start at the same time' do
-    context 'but end at different times' do
-      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => past }
-      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
+  describe '.by_date' do
+    context 'when there are two chronologicables that start at the same time' do
+      context 'but end at different times' do
+        let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => past }
+        let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
-      describe '.by_date' do
         context 'when no option is passed' do
           it 'properly sorts them in ascending order' do
             AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
@@ -51,36 +51,34 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
       end
-    end
 
-    context 'and end at the same time' do
-      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
-      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
+      context 'and end at the same time' do
+        let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
+        let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
-      describe '.by_date' do
-        context 'when in ascending order' do
-          it 'does not matter what order they are in as long as they are all there' do
-            AbsoluteChronologicable.by_date.should  include chronologicable_1
-            AbsoluteChronologicable.by_date.should  include chronologicable_2
+        describe '.by_date' do
+          context 'when in ascending order' do
+            it 'does not matter what order they are in as long as they are all there' do
+              AbsoluteChronologicable.by_date.should  include chronologicable_1
+              AbsoluteChronologicable.by_date.should  include chronologicable_2
+            end
           end
-        end
 
-        context 'when in descending order' do
-          it 'does not matter what order they are in as long as they are all there' do
-            AbsoluteChronologicable.by_date(:desc).should  include chronologicable_1
-            AbsoluteChronologicable.by_date(:desc).should  include chronologicable_2
+          context 'when in descending order' do
+            it 'does not matter what order they are in as long as they are all there' do
+              AbsoluteChronologicable.by_date(:desc).should  include chronologicable_1
+              AbsoluteChronologicable.by_date(:desc).should  include chronologicable_2
+            end
           end
         end
       end
     end
-  end
 
-  context 'when there are two chronologicables that start at different times' do
-    context 'and end at different times' do
-      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
-      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
+    context 'when there are two chronologicables that start at different times' do
+      context 'and end at different times' do
+        let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
+        let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
 
-      describe '.by_date' do
         context 'when in ascending order' do
           it 'sorts them by the start date' do
             AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
@@ -95,13 +93,11 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
       end
-    end
 
-    context 'but end at the same time' do
-      let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => later }
-      let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
+      context 'but end at the same time' do
+        let!(:chronologicable_1) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => later }
+        let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
 
-      describe '.by_date' do
         context 'when in ascending order' do
           it 'sorts them by the start date' do
             AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
