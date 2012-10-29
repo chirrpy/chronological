@@ -53,12 +53,7 @@ module Chronological
     end
 
     module ClassMethods
-      # TODO: Needs to be able to add a validation option which can do the
-      # typical timeliness validation such as ended_at should be after started_at
-      # and that both should validate timeliness
       def strategy_timeframe(field_names = {})
-
-
       private
         define_method(:has_absolute_timeframe?) do
           send(field_names[:starting_time]).present? && send(field_names[:ending_time]).present?
