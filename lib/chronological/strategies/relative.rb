@@ -5,14 +5,13 @@ module Chronological
     end
 
     def module
-      Chronological::RelativeStrategy::MyModule
+      Chronological::RelativeStrategy::ClassMethods
     end
 
     def field_names
       @field_names.dup
     end
 
-    module MyModule
     module ClassMethods
       def strategy_timeframe(options = {})
         class_eval do
@@ -73,11 +72,6 @@ module Chronological
           send(options[:starting_offset]) - send(options[:ending_offset])
         end
       end
-    end
-
-    def self.included(base)
-      base.extend ClassMethods
-    end
     end
   end
 end

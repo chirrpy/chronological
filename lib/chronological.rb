@@ -11,7 +11,7 @@ module Chronological
     strategy = Chronological::StrategyResolver.resolve(options)
 
     extend Chronological::Base
-    include strategy.module
+    extend strategy.module
 
     strategy_timeframe strategy.field_names
   end

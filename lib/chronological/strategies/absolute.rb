@@ -5,14 +5,13 @@ module Chronological
     end
 
     def module
-      Chronological::AbsoluteStrategy::MyModule
+      Chronological::AbsoluteStrategy::ClassMethods
     end
 
     def field_names
       @field_names.dup
     end
 
-    module MyModule
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
@@ -81,11 +80,6 @@ module Chronological
           (send(options[:ending_time]) - send(options[:starting_time]))
         end
       end
-    end
-
-    def self.included(base)
-      base.extend ClassMethods
-    end
     end
   end
 end
