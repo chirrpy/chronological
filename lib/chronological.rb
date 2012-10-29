@@ -13,6 +13,7 @@ module Chronological
     extend Chronological::Base
     extend strategy.module
 
+    base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
   end
 end

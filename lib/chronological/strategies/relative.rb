@@ -59,8 +59,6 @@ module Chronological
           alias active  in_progress
         end
 
-        base_timeframe  options
-
       private
         define_method(:has_absolute_timeframe?) do
           scheduled?

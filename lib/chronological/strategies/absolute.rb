@@ -69,8 +69,6 @@ module Chronological
           alias active  in_progress
         end
 
-        base_timeframe  options
-
       private
         define_method(:has_absolute_timeframe?) do
           send(options[:starting_time]).present? && send(options[:ending_time]).present?
