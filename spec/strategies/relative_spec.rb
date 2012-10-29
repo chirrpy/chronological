@@ -352,6 +352,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and before the ending offset' do
       let(:ending_offset) { 30 }
 
+      it 'is not included in the started list' do
+        RelativeChronologicable.started.should_not include chronologicable
+      end
+
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
@@ -370,6 +374,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and before the ending offset' do
       let(:ending_offset) { 29 }
 
+      it 'is included in the started list' do
+        RelativeChronologicable.started.should include chronologicable
+      end
+
       it 'is included in the in progress list' do
         RelativeChronologicable.in_progress.should include chronologicable
       end
@@ -381,6 +389,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
     context 'and the same as the ending offset' do
       let(:ending_offset) { 30 }
+
+      it 'is included in the started list' do
+        RelativeChronologicable.started.should include chronologicable
+      end
 
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
@@ -400,6 +412,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and before the ending offset' do
       let(:ending_offset) { 27 }
 
+      it 'is included in the started list' do
+        RelativeChronologicable.started.should include chronologicable
+      end
+
       it 'is included in the in progress list' do
         RelativeChronologicable.in_progress.should include chronologicable
       end
@@ -412,6 +428,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and the same as the ending offset' do
       let(:ending_offset) { 28 }
 
+      it 'is included in the started list' do
+        RelativeChronologicable.started.should include chronologicable
+      end
+
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
@@ -423,6 +443,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
     context 'and after the ending offset' do
       let(:ending_offset) { 29 }
+
+      it 'is included in the started list' do
+        RelativeChronologicable.started.should include chronologicable
+      end
 
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
