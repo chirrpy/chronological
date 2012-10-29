@@ -20,16 +20,19 @@ module Chronological
       optional_time_zone
     end
 
+    def partially_scheduled?(object)
+      optional_time_zone = !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : false
+
+      object.send(field_names[:starting_time]).present? ||
+      object.send(field_names[:ending_time]).present? ||
+      optional_time_zone
+    end
+
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
       # and that both should validate timeliness
       def strategy_timeframe(field_names = {})
-        define_method(:partially_scheduled?) do
-          optional_time_zone = !field_names[:time_zone].nil? ? send(field_names[:time_zone]) : false
-
-          send(field_names[:starting_time]).present? || send(field_names[:ending_time]).present? || optional_time_zone
-        end
 
         ###
         # Scopes

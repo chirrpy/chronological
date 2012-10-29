@@ -17,6 +17,10 @@ module Chronological
       strategy.scheduled?(self)
     end
 
+    define_method(:partially_scheduled?) do
+      strategy.partially_scheduled?(self)
+    end
+
     base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
   end
