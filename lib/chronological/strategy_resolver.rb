@@ -13,6 +13,8 @@ module Chronological
     VALID_OPTIONS = [
       :starting_time,
       :ending_time,
+      :starting_date,
+      :ending_date,
       :base_of_offset,
       :starting_offset,
       :ending_offset,
@@ -25,9 +27,16 @@ module Chronological
       :absolute_end_time_field,
     ]
 
+    CROSS_STRATEGY_OPTIONS = Set[
+      :starting_date,
+      :ending_date
+    ]
+
     DEFAULT_FIELD_NAMES = [
       :started_at,
       :ended_at,
+      :started_on,
+      :ended_on,
       :base_of_range_offset,
       :start_of_range_offset,
       :end_of_range_offset,
@@ -51,7 +60,7 @@ module Chronological
 
   private
     def self.resolve_strategy_fields(strategy_name, options)
-      strategy_option_names = STRATEGIES[strategy_name]
+      strategy_option_names = STRATEGIES[strategy_name] + CROSS_STRATEGY_OPTIONS
       overridden_options    = DEFAULT_FIELD_NAMES_FOR_OPTIONS.merge options
 
       overridden_options.select do |option_name, option_value|

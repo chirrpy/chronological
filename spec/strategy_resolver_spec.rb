@@ -13,7 +13,9 @@ describe Chronological::StrategyResolver do
 
       it 'tells the strategy to create itself with the default fields' do
         Chronological::AbsoluteStrategy.should_receive(:new).with starting_time:  :started_at,
-                                                                  ending_time:    :ended_at
+                                                                  ending_time:    :ended_at,
+                                                                  starting_date:  :started_on,
+                                                                  ending_date:    :ended_on
 
         resolved_strategy
       end
@@ -24,7 +26,9 @@ describe Chronological::StrategyResolver do
 
         it 'overrides the proper default fields and tells the strategy to create itself with those' do
           Chronological::AbsoluteStrategy.should_receive(:new).with starting_time:  :my_starting_field,
-                                                                    ending_time:    :ended_at
+                                                                    ending_time:    :ended_at,
+                                                                    starting_date:  :started_on,
+                                                                    ending_date:    :ended_on
 
           resolved_strategy
         end
