@@ -65,7 +65,8 @@ Now you can use any of the methods that Chronological adds to your class:
 ### Range Status Predicates
 
 * `started?` - Whether it is currently on or after the start date
-* `ended?` - Whether it is currently before the end date
+* `ended?` - Whether it is currently on or after the end date
+* `not_yet_ended?` - Whether it is currently before the end date
 * `in_progress?` _(aliased to `active?`)_ - Whether it is between the start and end dates
 * `inactive?` - The inverse of `in_progress?`/`active?`
 
@@ -95,6 +96,7 @@ represents all of the items that meet the requirements of that method.
 
 * `started`
 * `ended`
+* `not_yet_ended`
 * `in_progress` _(also aliased to `active?`)_
 * `scheduled`
 * `partially_scheduled`
@@ -256,6 +258,7 @@ Affected methods:
 
 * `started?`
 * `ended?`
+* `not_yet_ended?`
 * `in_progress?` _(or `active?`)_
 * `inactive?`
 
@@ -263,6 +266,7 @@ Affected scopes:
 
 * `started`
 * `ended`
+* `not_yet_ended`
 * `in_progress` _(or `active`)_
 * `inactive?`
 

@@ -320,9 +320,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.current' do
+        describe '.not_yet_ended' do
           it 'does not include that chronologicable' do
-            AbsoluteChronologicable.current.should_not include chronologicable
+            AbsoluteChronologicable.not_yet_ended.should_not include chronologicable
           end
         end
 
@@ -354,9 +354,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.current' do
+        describe '.not_yet_ended' do
           it 'does not include that chronologicable' do
-            AbsoluteChronologicable.current.should_not include chronologicable
+            AbsoluteChronologicable.not_yet_ended.should_not include chronologicable
           end
         end
 
@@ -388,9 +388,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.current' do
+        describe '.not_yet_ended' do
           it 'includes that chronologicable' do
-            AbsoluteChronologicable.current.should include chronologicable
+            AbsoluteChronologicable.not_yet_ended.should include chronologicable
           end
         end
 
@@ -426,9 +426,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.current' do
+        describe '.not_yet_ended' do
           it 'does not include that chronologicable' do
-            AbsoluteChronologicable.current.should_not include chronologicable
+            AbsoluteChronologicable.not_yet_ended.should_not include chronologicable
           end
         end
 
@@ -460,9 +460,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.current' do
+        describe '.not_yet_ended' do
           it 'includes that chronologicable' do
-            AbsoluteChronologicable.current.should include chronologicable
+            AbsoluteChronologicable.not_yet_ended.should include chronologicable
           end
         end
 
@@ -496,9 +496,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
         end
       end
 
-      describe '.current' do
+      describe '.not_yet_ended' do
         it 'includes that chronologicable' do
-          AbsoluteChronologicable.current.should include chronologicable
+          AbsoluteChronologicable.not_yet_ended.should include chronologicable
         end
       end
 

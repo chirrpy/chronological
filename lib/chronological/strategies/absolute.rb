@@ -36,12 +36,12 @@ module Chronological
       object.where object.arel_table[field_names[:ending_time]].lteq(Time.now.utc)
     end
 
-    def self.current(object, field_names)
+    def self.not_yet_ended(object, field_names)
       object.where object.arel_table[field_names[:ending_time]].gt(Time.now.utc)
     end
 
     def self.in_progress(object, field_names)
-      object.started.current
+      object.started.not_yet_ended
     end
 
     def self.in_progress?(object, field_names)

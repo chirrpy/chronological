@@ -32,8 +32,8 @@ module Chronological
       strategy.class.ended(self, strategy.field_names)
     end
 
-    define_singleton_method(:current) do
-      strategy.class.current(self, strategy.field_names)
+    define_singleton_method(:not_yet_ended) do
+      strategy.class.not_yet_ended(self, strategy.field_names)
     end
 
     define_singleton_method(:in_progress) do
