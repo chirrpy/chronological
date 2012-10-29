@@ -135,4 +135,94 @@ describe Chronological::BaseStrategy do
       end
     end
   end
+
+  describe '#in_progress?', :timecop => true do
+    let(:later) { Time.local(2012, 7, 26, 6, 0, 26) }
+    let(:now)   { Time.local(2012, 7, 26, 6, 0, 25) }
+    let(:past)  { Time.local(2012, 7, 26, 6, 0, 24) }
+
+    before      { Timecop.freeze(now)             }
+
+    context 'when it does not have an absolute timeframe' do
+      before { strategy.should_receive(:has_absolute_timeframe?).and_return(false) }
+
+      it 'is false' do
+        strategy.in_progress?(chrono).should_not be_true
+      end
+    end
+
+    context 'when it does have an absolute timeframe' do
+      before { strategy.should_receive(:has_absolute_timeframe?).and_return(true) }
+
+      context 'and it has already started' do
+        context 'and already ended' do
+          let(:fields) do
+            { start_time: past,
+              end_time:   past }
+          end
+
+          it 'is false' do
+            strategy.in_progress?(chrono).should_not be_true
+          end
+        end
+
+        context 'and ends now' do
+          let(:fields) do
+            { start_time: past,
+              end_time:   now }
+          end
+
+          it 'is false' do
+            strategy.in_progress?(chrono).should_not be_true
+          end
+        end
+
+        context 'and ends later' do
+          let(:fields) do
+            { start_time: past,
+              end_time:   later }
+          end
+
+          it 'is true' do
+            strategy.in_progress?(chrono).should be_true
+          end
+        end
+      end
+
+      context 'and there is a strategy that starts now' do
+        context 'and ends now' do
+          let(:fields) do
+            { start_time: now,
+              end_time:   now }
+          end
+
+          it 'is false' do
+            strategy.in_progress?(chrono).should_not be_true
+          end
+        end
+
+        context 'and ends later' do
+          let(:fields) do
+            { start_time: now,
+              end_time:   later }
+          end
+
+          it 'is true' do
+            strategy.in_progress?(chrono).should be_true
+          end
+        end
+      end
+
+      context 'and there is a strategy that has not yet started' do
+        let(:fields) do
+          { start_time: later,
+            end_time:   later }
+        end
+
+        it 'is false' do
+          strategy.in_progress?(chrono).should_not be_true
+        end
+      end
+    end
+  end
 end

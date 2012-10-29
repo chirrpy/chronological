@@ -25,6 +25,10 @@ module Chronological
       strategy.inactive?(self)
     end
 
+    define_method(:in_progress?) do
+      strategy.in_progress?(self)
+    end
+
     define_method(:duration) do
       strategy.duration(self)
     end

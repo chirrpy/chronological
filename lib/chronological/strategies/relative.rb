@@ -31,6 +31,10 @@ module Chronological
       object.send(field_names[:starting_offset]) - object.send(field_names[:ending_offset])
     end
 
+    def has_absolute_timeframe?(object)
+      object.scheduled?
+    end
+
     module ClassMethods
       def strategy_timeframe(field_names = {})
         class_eval do
@@ -48,11 +52,6 @@ module Chronological
           return nil unless send(field_names[:base_of_offset]).present? && send(field_names[:ending_offset]).present?
 
           send(field_names[:base_of_offset]) - send(field_names[:ending_offset])
-        end
-
-      private
-        define_method(:has_absolute_timeframe?) do
-          scheduled?
         end
       end
     end

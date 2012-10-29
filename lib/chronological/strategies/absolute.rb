@@ -49,12 +49,13 @@ module Chronological
       (object.send(field_names[:ending_time]) - object.send(field_names[:starting_time]))
     end
 
+    def has_absolute_timeframe?(object)
+      object.send(field_names[:starting_time]).present? && object.send(field_names[:ending_time]).present?
+    end
+
     module ClassMethods
       def strategy_timeframe(field_names = {})
       private
-        define_method(:has_absolute_timeframe?) do
-          send(field_names[:starting_time]).present? && send(field_names[:ending_time]).present?
-        end
       end
     end
   end

@@ -35,5 +35,11 @@ module Chronological
 
       { :hours => hours, :minutes => minutes, :seconds => seconds }
     end
+
+    def in_progress?(object)
+      return false unless has_absolute_timeframe?(object)
+
+      (object.send(field_names[:starting_time]) <= Time.now.utc) && object.send(field_names[:ending_time]).future?
+    end
   end
 end
