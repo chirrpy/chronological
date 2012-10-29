@@ -18,41 +18,35 @@ module Chronological
       # typical timeliness validation such as ended_at should be after started_at
       # and that both should validate timeliness
       def strategy_timeframe(options = {})
-        start_time_field            = options[:starting_time]
-        start_date_field            = options[:starting_date]
-        end_time_field              = options[:ending_time]
-        end_date_field              = options[:ending_date]
-        time_zone                   = options[:time_zone]
-
         define_method(:scheduled?) do
-          optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : true
+          optional_time_zone = !options[:time_zone].nil? ? send(options[:time_zone]) : true
 
-          send(start_time_field).present? && send(end_time_field).present? && optional_time_zone
+          send(options[:starting_time]).present? && send(options[:ending_time]).present? && optional_time_zone
         end
 
         define_method(:partially_scheduled?) do
-          optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : false
+          optional_time_zone = !options[:time_zone].nil? ? send(options[:time_zone]) : false
 
-          send(start_time_field).present? || send(end_time_field).present? || optional_time_zone
+          send(options[:starting_time]).present? || send(options[:ending_time]).present? || optional_time_zone
         end
 
         ###
         # Scopes
         #
         define_singleton_method(:by_date) do
-          order "#{table_name}.#{start_time_field} ASC, #{table_name}.#{end_time_field} ASC"
+          order "#{table_name}.#{options[:starting_time]} ASC, #{table_name}.#{options[:ending_time]} ASC"
         end
 
         define_singleton_method(:by_date_reversed) do
-          order "#{table_name}.#{start_time_field} DESC, #{table_name}.#{end_time_field} DESC"
+          order "#{table_name}.#{options[:starting_time]} DESC, #{table_name}.#{options[:ending_time]} DESC"
         end
 
         define_singleton_method(:expired) do
-          where(arel_table[end_time_field].lteq(Time.now.utc))
+          where(arel_table[options[:ending_time]].lteq(Time.now.utc))
         end
 
         define_singleton_method(:current) do
-          where(arel_table[end_time_field].gt(Time.now.utc))
+          where(arel_table[options[:ending_time]].gt(Time.now.utc))
         end
 
         define_singleton_method(:in_progress) do
@@ -60,7 +54,7 @@ module Chronological
         end
 
         define_singleton_method(:started) do
-          where(arel_table[start_time_field].lteq Time.now.utc)
+          where(arel_table[options[:starting_time]].lteq Time.now.utc)
         end
 
         define_singleton_method(:in_progress?) do
@@ -76,18 +70,18 @@ module Chronological
           alias active  in_progress
         end
 
-        base_timeframe  start_date_field: start_date_field,
-                        start_time_field: start_time_field,
-                        end_date_field:   end_date_field,
-                        end_time_field:   end_time_field
+        base_timeframe  start_date_field: options[:starting_date],
+                        start_time_field: options[:starting_time],
+                        end_date_field:   options[:ending_date],
+                        end_time_field:   options[:ending_time]
 
       private
         define_method(:has_absolute_timeframe?) do
-          send(start_time_field).present? && send(end_time_field).present?
+          send(options[:starting_time]).present? && send(options[:ending_time]).present?
         end
 
         define_method(:duration_in_seconds) do
-          (send(end_time_field) - send(start_time_field))
+          (send(options[:ending_time]) - send(options[:starting_time]))
         end
       end
     end

@@ -15,35 +15,29 @@ module Chronological
     module MyModule
     module ClassMethods
       def strategy_timeframe(options = {})
-        base_time_field   = options[:base_of_offset]
-        start_time_field  = options[:starting_time]
-        end_time_field    = options[:ending_time]
-        start_date_field  = options[:starting_date]
-        end_date_field    = options[:ending_date]
-
         class_eval do
-          columns_hash[start_time_field] = ActiveRecord::ConnectionAdapters::Column.new(start_time_field, nil, 'datetime')
-          columns_hash[end_time_field]   = ActiveRecord::ConnectionAdapters::Column.new(end_time_field,   nil, 'datetime')
+          columns_hash[options[:starting_time]] = ActiveRecord::ConnectionAdapters::Column.new(options[:starting_time], nil, 'datetime')
+          columns_hash[options[:ending_time]]   = ActiveRecord::ConnectionAdapters::Column.new(options[:ending_time],   nil, 'datetime')
         end
 
-        define_method(start_time_field) do
-          return nil unless send(base_time_field).present? && send(options[:starting_offset]).present?
+        define_method(options[:starting_time]) do
+          return nil unless send(options[:base_of_offset]).present? && send(options[:starting_offset]).present?
 
-          send(base_time_field) - send(options[:starting_offset])
+          send(options[:base_of_offset]) - send(options[:starting_offset])
         end
 
-        define_method(end_time_field) do
-          return nil unless send(base_time_field).present? && send(options[:ending_offset]).present?
+        define_method(options[:ending_time]) do
+          return nil unless send(options[:base_of_offset]).present? && send(options[:ending_offset]).present?
 
-          send(base_time_field) - send(options[:ending_offset])
+          send(options[:base_of_offset]) - send(options[:ending_offset])
         end
 
         define_method(:scheduled?) do
-          send(base_time_field).present? && send(options[:starting_offset]).present? && send(options[:ending_offset]).present?
+          send(options[:base_of_offset]).present? && send(options[:starting_offset]).present? && send(options[:ending_offset]).present?
         end
 
         define_method(:partially_scheduled?) do
-          send(base_time_field).present? || send(options[:starting_offset]).present? || send(options[:ending_offset]).present?
+          send(options[:base_of_offset]).present? || send(options[:starting_offset]).present? || send(options[:ending_offset]).present?
         end
 
         ###
@@ -66,10 +60,10 @@ module Chronological
           alias active  in_progress
         end
 
-        base_timeframe  start_date_field: start_date_field,
-                        start_time_field: start_time_field,
-                        end_date_field:   end_date_field,
-                        end_time_field:   end_time_field
+        base_timeframe  start_date_field: options[:starting_date],
+                        start_time_field: options[:starting_time],
+                        end_date_field:   options[:ending_date],
+                        end_time_field:   options[:ending_time]
 
       private
         define_method(:has_absolute_timeframe?) do
