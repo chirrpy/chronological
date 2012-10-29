@@ -1,15 +1,7 @@
 module Chronological
-  class AbsoluteStrategy
-    def initialize(field_names = {})
-      @field_names = field_names
-    end
-
+  class AbsoluteStrategy < BaseStrategy
     def module
       Chronological::AbsoluteStrategy::ClassMethods
-    end
-
-    def field_names
-      @field_names.dup
     end
 
     def scheduled?(object)
