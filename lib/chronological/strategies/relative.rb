@@ -7,13 +7,15 @@ module Chronological
     def scheduled?(object)
       object.send(field_names[:base_of_offset]).present?  &&
       object.send(field_names[:starting_offset]).present? &&
-      object.send(field_names[:ending_offset]).present?
+      object.send(field_names[:ending_offset]).present? &&
+      super
     end
 
     def partially_scheduled?(object)
       object.send(field_names[:base_of_offset]).present? ||
       object.send(field_names[:starting_offset]).present? ||
-      object.send(field_names[:ending_offset]).present?
+      object.send(field_names[:ending_offset]).present? ||
+      super
     end
 
     def self.in_progress(object, field_names)
