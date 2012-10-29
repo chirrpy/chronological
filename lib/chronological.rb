@@ -78,5 +78,9 @@ module Chronological
       alias active? in_progress?
       alias active  in_progress
     end
+
+    class_eval do
+      alias active? in_progress?
+    end
   end
 end
