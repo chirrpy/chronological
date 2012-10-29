@@ -5,19 +5,15 @@ module Chronological
     end
 
     def scheduled?(object)
-      optional_time_zone = !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : true
-
       object.send(field_names[:starting_time]).present? &&
       object.send(field_names[:ending_time]).present? &&
-      optional_time_zone
+      super
     end
 
     def partially_scheduled?(object)
-      optional_time_zone = !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : false
-
       object.send(field_names[:starting_time]).present? ||
       object.send(field_names[:ending_time]).present? ||
-      optional_time_zone
+      super
     end
 
     def self.by_date(object, field_names, direction)

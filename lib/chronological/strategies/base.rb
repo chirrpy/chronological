@@ -36,6 +36,14 @@ module Chronological
       { :hours => hours, :minutes => minutes, :seconds => seconds }
     end
 
+    def scheduled?(object)
+      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : true
+    end
+
+    def partially_scheduled?(object)
+      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : false
+    end
+
     def in_progress?(object)
       return false unless has_absolute_timeframe?(object)
 
