@@ -40,6 +40,10 @@ module Chronological
       strategy.class.in_progress(self, strategy.field_names)
     end
 
+    define_singleton_method(:started) do
+      strategy.class.started(self, strategy.field_names)
+    end
+
     define_singleton_method(:in_progress?) do
       strategy.class.in_progress?(self, strategy.field_names)
     end

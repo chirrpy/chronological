@@ -48,18 +48,15 @@ module Chronological
       object.in_progress.any?
     end
 
+    def self.started(object, field_names)
+      object.where object.arel_table[field_names[:starting_time]].lteq(Time.now.utc)
+    end
+
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
       # and that both should validate timeliness
       def strategy_timeframe(field_names = {})
-
-        ###
-        # Scopes
-        #
-        define_singleton_method(:started) do
-          where(arel_table[field_names[:starting_time]].lteq Time.now.utc)
-        end
 
         ###
         # Aliases
