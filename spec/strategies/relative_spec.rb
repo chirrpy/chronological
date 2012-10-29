@@ -356,6 +356,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         RelativeChronologicable.started.should_not include chronologicable
       end
 
+      it 'is not included in the ended list' do
+        RelativeChronologicable.ended.should_not include chronologicable
+      end
+
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
@@ -378,6 +382,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         RelativeChronologicable.started.should include chronologicable
       end
 
+      it 'is not included in the ended list' do
+        RelativeChronologicable.ended.should_not include chronologicable
+      end
+
       it 'is included in the in progress list' do
         RelativeChronologicable.in_progress.should include chronologicable
       end
@@ -392,6 +400,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable
+      end
+
+      it 'is included in the ended list' do
+        RelativeChronologicable.ended.should include chronologicable
       end
 
       it 'is not included in the in progress list' do
@@ -416,6 +428,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         RelativeChronologicable.started.should include chronologicable
       end
 
+      it 'is not included in the ended list' do
+        RelativeChronologicable.ended.should_not include chronologicable
+      end
+
       it 'is included in the in progress list' do
         RelativeChronologicable.in_progress.should include chronologicable
       end
@@ -432,6 +448,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         RelativeChronologicable.started.should include chronologicable
       end
 
+      it 'is included in the ended list' do
+        RelativeChronologicable.ended.should include chronologicable
+      end
+
       it 'is not included in the in progress list' do
         RelativeChronologicable.in_progress.should_not include chronologicable
       end
@@ -446,6 +466,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable
+      end
+
+      it 'is included in the ended list' do
+        RelativeChronologicable.ended.should include chronologicable
       end
 
       it 'is not included in the in progress list' do
