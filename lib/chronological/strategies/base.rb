@@ -1,11 +1,11 @@
 module Chronological
   class BaseStrategy
     def initialize(field_names = {})
-      @field_names = field_names
+      @field_names = field_names.freeze
     end
 
     def field_names
-      @field_names.dup
+      @field_names
     end
 
     def starting_date(object)
