@@ -28,6 +28,10 @@ module Chronological
       optional_time_zone
     end
 
+    def self.by_date(object, field_names)
+      object.order "#{object.table_name}.#{field_names[:starting_time]} ASC, #{object.table_name}.#{field_names[:ending_time]} ASC"
+    end
+
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
@@ -37,9 +41,6 @@ module Chronological
         ###
         # Scopes
         #
-        define_singleton_method(:by_date) do
-          order "#{table_name}.#{field_names[:starting_time]} ASC, #{table_name}.#{field_names[:ending_time]} ASC"
-        end
 
         define_singleton_method(:by_date_reversed) do
           order "#{table_name}.#{field_names[:starting_time]} DESC, #{table_name}.#{field_names[:ending_time]} DESC"

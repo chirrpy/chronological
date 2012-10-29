@@ -21,6 +21,13 @@ module Chronological
       strategy.partially_scheduled?(self)
     end
 
+    ###
+    # Scopes
+    #
+    define_singleton_method(:by_date) do
+      strategy.class.by_date(self, strategy.field_names)
+    end
+
     base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
   end
