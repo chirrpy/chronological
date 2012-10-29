@@ -32,6 +32,10 @@ module Chronological
       object.order "#{object.table_name}.#{field_names[:starting_time]} ASC, #{object.table_name}.#{field_names[:ending_time]} ASC"
     end
 
+    def self.by_date_reversed(object, field_names)
+      object.order "#{object.table_name}.#{field_names[:starting_time]} DESC, #{object.table_name}.#{field_names[:ending_time]} DESC"
+    end
+
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
@@ -41,10 +45,6 @@ module Chronological
         ###
         # Scopes
         #
-
-        define_singleton_method(:by_date_reversed) do
-          order "#{table_name}.#{field_names[:starting_time]} DESC, #{table_name}.#{field_names[:ending_time]} DESC"
-        end
 
         define_singleton_method(:expired) do
           where(arel_table[field_names[:ending_time]].lteq(Time.now.utc))

@@ -28,6 +28,10 @@ module Chronological
       strategy.class.by_date(self, strategy.field_names)
     end
 
+    define_singleton_method(:by_date_reversed) do
+      strategy.class.by_date_reversed(self, strategy.field_names)
+    end
+
     base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
   end
