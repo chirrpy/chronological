@@ -12,6 +12,12 @@ module Chronological
       @field_names.dup
     end
 
+    def scheduled?(object)
+      object.send(field_names[:base_of_offset]).present?  &&
+      object.send(field_names[:starting_offset]).present? &&
+      object.send(field_names[:ending_offset]).present?
+    end
+
     module ClassMethods
       def strategy_timeframe(field_names = {})
         class_eval do
@@ -29,10 +35,6 @@ module Chronological
           return nil unless send(field_names[:base_of_offset]).present? && send(field_names[:ending_offset]).present?
 
           send(field_names[:base_of_offset]) - send(field_names[:ending_offset])
-        end
-
-        define_method(:scheduled?) do
-          send(field_names[:base_of_offset]).present? && send(field_names[:starting_offset]).present? && send(field_names[:ending_offset]).present?
         end
 
         define_method(:partially_scheduled?) do

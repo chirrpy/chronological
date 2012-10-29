@@ -13,6 +13,10 @@ module Chronological
     extend Chronological::Base
     extend strategy.module
 
+    define_method(:scheduled?) do
+      strategy.scheduled?(self)
+    end
+
     base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
   end
