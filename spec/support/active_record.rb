@@ -1,10 +1,10 @@
 postgres_connection_options = {
-  :adapter  => 'postgresql',
-  :host     => 'localhost',
-  :database => 'chronological',
-  :username => ENV['USER'],
+  :adapter      => 'postgresql',
+  :host         => 'localhost',
+  :database     => 'chronological',
+  :username     => ENV['USER'],
   :min_messages => 'warning',
-  :encoding => 'utf8' }
+  :encoding     => 'utf8' }
 
 ActiveRecord::Base.establish_connection       postgres_connection_options.merge(
                                                 :database           => 'postgres',
