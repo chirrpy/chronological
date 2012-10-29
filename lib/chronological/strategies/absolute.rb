@@ -84,7 +84,6 @@ module Chronological
     end
 
     def self.included(base)
-      base.extend Chronological::Base
       base.extend ClassMethods
     end
     end
