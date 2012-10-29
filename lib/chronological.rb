@@ -1,5 +1,4 @@
 require 'chronological/version'
-require 'chronological/base'
 require 'chronological/errors'
 require 'chronological/strategy_resolver'
 require 'chronological/strategies'
@@ -10,7 +9,6 @@ module Chronological
 
     strategy = Chronological::StrategyResolver.resolve(options)
 
-    extend Chronological::Base
     extend strategy.module
 
     define_method(:scheduled?) do
@@ -68,7 +66,6 @@ module Chronological
       strategy.class.in_progress?(self, strategy.field_names)
     end
 
-    base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
 
     ###
