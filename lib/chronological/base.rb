@@ -1,12 +1,6 @@
 module Chronological
   module Base
     def base_timeframe(options = {})
-      define_method(options[:ending_date]) do
-        return nil unless send(options[:ending_time]).respond_to? :to_date
-
-        send(options[:ending_time]).to_date
-      end
-
       define_method(:inactive?) do
         !active?
       end

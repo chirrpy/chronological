@@ -25,6 +25,10 @@ module Chronological
       strategy.starting_date(self)
     end
 
+    define_method(strategy.field_names[:ending_date]) do
+      strategy.ending_date(self)
+    end
+
     ###
     # Scopes
     #

@@ -13,5 +13,11 @@ module Chronological
 
       object.send(field_names[:starting_time]).to_date
     end
+
+    def ending_date(object)
+      return nil unless object.send(field_names[:ending_time]).respond_to? :to_date
+
+      object.send(field_names[:ending_time]).to_date
+    end
   end
 end
