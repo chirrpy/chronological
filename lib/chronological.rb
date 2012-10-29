@@ -32,6 +32,10 @@ module Chronological
       strategy.class.expired(self, strategy.field_names)
     end
 
+    define_singleton_method(:current) do
+      strategy.class.current(self, strategy.field_names)
+    end
+
     base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
   end
