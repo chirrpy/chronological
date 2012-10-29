@@ -3,18 +3,18 @@ require 'spec_helper'
 class AbsoluteChronologicable < ActiveRecord::Base
   extend Chronological
 
-  timeframe type:       :absolute,
-            start_utc:  :started_at_utc,
-            end_utc:    :ended_at_utc
+  timeframe type:           :absolute,
+            starting_time:  :started_at_utc,
+            ending_time:    :ended_at_utc
 end
 
 class ChronologicableWithTimeZone < ActiveRecord::Base
   extend Chronological
 
-  timeframe type:       :absolute,
-            start_utc:  :started_at_utc,
-            end_utc:    :ended_at_utc,
-            time_zone:  :time_zone
+  timeframe type:           :absolute,
+            starting_time:  :started_at_utc,
+            ending_time:    :ended_at_utc,
+            time_zone:      :time_zone
 end
 
 describe Chronological::AbsoluteStrategy, :timecop => true do

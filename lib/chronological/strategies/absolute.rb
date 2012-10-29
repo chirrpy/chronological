@@ -1,10 +1,15 @@
 module Chronological
   class AbsoluteStrategy
+    def initialize(field_names = {})
+      @field_names = field_names
+    end
+
     def module
       Chronological::AbsoluteStrategy::MyModule
     end
 
-    def initialize(*args)
+    def field_names
+      @field_names.dup
     end
 
     module MyModule
@@ -13,10 +18,10 @@ module Chronological
       # typical timeliness validation such as ended_at should be after started_at
       # and that both should validate timeliness
       def strategy_timeframe(options = {})
-        start_time_field            = (options[:start_utc] || options[:start]).to_sym
-        start_date_field            = start_time_field.to_s.gsub(/_at/, '_on').to_sym
-        end_time_field              = (options[:end_utc]   || options[:end]).to_sym
-        end_date_field              = end_time_field.to_s.gsub(/_at/, '_on').to_sym
+        start_time_field            = options[:starting_time]
+        start_date_field            = options[:starting_date]
+        end_time_field              = options[:ending_time]
+        end_date_field              = options[:ending_date]
         time_zone                   = options[:time_zone]
 
         define_method(:scheduled?) do

@@ -12,6 +12,6 @@ module Chronological
 
     include strategy.module
 
-    strategy_timeframe options
+    strategy_timeframe strategy.field_names
   end
 end

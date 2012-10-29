@@ -28,8 +28,11 @@ module Chronological
     ]
 
     CROSS_STRATEGY_OPTIONS = Set[
+      :starting_time,
+      :ending_time,
       :starting_date,
-      :ending_date
+      :ending_date,
+      :time_zone
     ]
 
     DEFAULT_FIELD_NAMES = [
