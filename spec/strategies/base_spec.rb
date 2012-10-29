@@ -62,6 +62,14 @@ describe Chronological::BaseStrategy do
     end
   end
 
+  describe '#inactive?' do
+    it 'is the opposite of in_progress?' do
+      chrono.should_receive(:in_progress?).and_return false
+
+      strategy.inactive?(chrono).should be_true
+    end
+  end
+
   describe '#duration' do
     context 'when the strategy represents something with a duration' do
       before { strategy.should_receive(:duration_in_seconds).and_return(6263) }
