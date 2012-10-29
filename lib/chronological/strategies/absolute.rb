@@ -29,6 +29,10 @@ module Chronological
       field_names[:ending_time]
     end
 
+    def self.duration_sql_calculation(field_names)
+      "extract ('epoch' from (#{field_names[:ending_time]} - #{field_names[:starting_time]}))"
+    end
+
     def duration_in_seconds(object)
       (object.send(field_names[:ending_time]) - object.send(field_names[:starting_time]))
     end

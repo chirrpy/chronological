@@ -76,5 +76,9 @@ module Chronological
     def self.by_date(object, field_names, direction)
       object.order "#{object.table_name}.#{started_at_sql_calculation(field_names)} #{direction}, #{object.table_name}.#{ended_at_sql_calculation(field_names)} #{direction}"
     end
+
+    def self.by_duration(object, field_names, direction)
+      object.order "#{duration_sql_calculation(field_names)} #{direction}"
+    end
   end
 end

@@ -51,6 +51,10 @@ module Chronological
       "#{field_names[:base_of_offset]} - (#{field_names[:ending_offset]} * INTERVAL '1 seconds')"
     end
 
+    def self.duration_sql_calculation(field_names)
+      "#{field_names[:starting_offset]} - #{field_names[:ending_offset]}"
+    end
+
     def duration_in_seconds(object)
       return nil unless object.send(field_names[:starting_offset]).present? && object.send(field_names[:ending_offset]).present?
 
