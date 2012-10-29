@@ -24,6 +24,92 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
   before { Timecop.freeze(now) }
 
+  describe '.by_date' do
+    before { RelativeChronologicable.delete_all }
+
+    context 'when there are two chronologicables that start at the same time' do
+      context 'but end at different times' do
+        let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 2) }
+        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 1) }
+
+        context 'when no option is passed' do
+          it 'properly sorts them in ascending order' do
+            RelativeChronologicable.by_date.first.should  eql chronologicable_1
+            RelativeChronologicable.by_date.last.should   eql chronologicable_2
+          end
+        end
+
+        context 'when the :desc option is passed' do
+          it 'sorts them backwards by the start date' do
+            RelativeChronologicable.by_date(:desc).first.should  eql chronologicable_2
+            RelativeChronologicable.by_date(:desc).last.should   eql chronologicable_1
+          end
+        end
+      end
+
+      context 'and end at the same time' do
+        let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 2) }
+        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 2) }
+
+        describe '.by_date' do
+          context 'when in ascending order' do
+            it 'does not matter what order they are in as long as they are all there' do
+              RelativeChronologicable.by_date.should  include chronologicable_1
+              RelativeChronologicable.by_date.should  include chronologicable_2
+            end
+          end
+
+          context 'when in descending order' do
+            it 'does not matter what order they are in as long as they are all there' do
+              RelativeChronologicable.by_date(:desc).should  include chronologicable_1
+              RelativeChronologicable.by_date(:desc).should  include chronologicable_2
+            end
+          end
+        end
+      end
+    end
+
+    context 'when there are two chronologicables that start at different times' do
+      context 'and end at different times' do
+        let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 2) }
+        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 2,  :ending_offset => 1) }
+
+        context 'when in ascending order' do
+          it 'sorts them by the start date' do
+            RelativeChronologicable.by_date.first.should  eql chronologicable_1
+            RelativeChronologicable.by_date.last.should   eql chronologicable_2
+          end
+        end
+
+        context 'when in descending order' do
+          it 'sorts them backwards by the start date' do
+            RelativeChronologicable.by_date(:desc).first.should  eql chronologicable_2
+            RelativeChronologicable.by_date(:desc).last.should   eql chronologicable_1
+          end
+        end
+      end
+
+      context 'but end at the same time' do
+        let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 1) }
+        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 2,  :ending_offset => 1) }
+
+        context 'when in ascending order' do
+          it 'sorts them by the start date' do
+            RelativeChronologicable.by_date.first.should  eql chronologicable_1
+            RelativeChronologicable.by_date.last.should   eql chronologicable_2
+          end
+        end
+
+        context 'when in descending order' do
+          it 'sorts them backwards by the start date' do
+            RelativeChronologicable.by_date(:desc).first.should  eql chronologicable_2
+            RelativeChronologicable.by_date(:desc).last.should   eql chronologicable_1
+          end
+        end
+      end
+    end
+  end
+
   context 'when the base time is not set' do
     let(:base_time)       { nil }
 
