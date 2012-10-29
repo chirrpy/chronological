@@ -18,10 +18,6 @@ module Chronological
         end_time_field              = (options[:end_utc]   || options[:end]).to_sym
         end_date_field              = end_time_field.to_s.gsub(/_at/, '_on').to_sym
         time_zone                   = options[:time_zone]
-        start_time_field_is_utc     = options.has_key? :start_utc
-        end_time_field_is_utc       = options.has_key? :end_utc
-        start_time_field_utc_suffix = start_time_field_is_utc ? '_utc' : ''
-        end_time_field_utc_suffix   = end_time_field_is_utc ? '_utc' : ''
 
         define_method(:scheduled?) do
           optional_time_zone = !options[:time_zone].nil? ? send(time_zone) : true

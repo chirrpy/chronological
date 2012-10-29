@@ -76,7 +76,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       end
 
       it 'does not have a start time' do
-        chronologicable.started_at_utc.should be_nil
+        chronologicable.started_at.should be_nil
       end
     end
 
@@ -104,7 +104,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       end
 
       it 'does not have a start time' do
-        chronologicable.started_at_utc.should be_nil
+        chronologicable.started_at.should be_nil
       end
     end
 
@@ -112,7 +112,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       let(:ending_offset) { 0 }
 
       it 'does not have a end time' do
-        chronologicable.ended_at_utc.should be_nil
+        chronologicable.ended_at.should be_nil
       end
     end
 
@@ -120,7 +120,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       let(:ending_offset) { nil }
 
       it 'does not have a end time' do
-        chronologicable.ended_at_utc.should be_nil
+        chronologicable.ended_at.should be_nil
       end
     end
 
@@ -194,7 +194,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       end
 
       it 'does not have a start time' do
-        chronologicable.started_at_utc.should be_nil
+        chronologicable.started_at.should be_nil
       end
     end
 
@@ -242,7 +242,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       end
 
       it 'calculates the correct start time' do
-        chronologicable.started_at_utc.should eql Time.local(2012, 7, 26, 6, 0, 0)
+        chronologicable.started_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
       end
     end
 
@@ -250,7 +250,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       let(:ending_offset) { 30 }
 
       it 'calculates the correct end time' do
-        chronologicable.ended_at_utc.should eql Time.local(2012, 7, 26, 6, 0, 0)
+        chronologicable.ended_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
       end
     end
 
@@ -258,7 +258,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
       let(:ending_offset) { nil }
 
       it 'does not have a end time' do
-        chronologicable.ended_at_utc.should be_nil
+        chronologicable.ended_at.should be_nil
       end
     end
   end

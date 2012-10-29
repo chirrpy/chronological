@@ -11,31 +11,14 @@ module Chronological
     module ClassMethods
       def strategy_timeframe(options = {})
         base_time_field        = options[:base_utc] || options[:base]
-        base_time_field_is_utc = options.has_key? :base_utc
-        time_field_utc_suffix  = base_time_field_is_utc ? 'utc' : nil
-
-        start_time_field       = ['started_at', time_field_utc_suffix].compact.join('_').to_sym
-        end_time_field         = ['ended_at',   time_field_utc_suffix].compact.join('_').to_sym
-        start_date_field       = ['started_on', time_field_utc_suffix].compact.join('_').to_sym
-        end_date_field         = ['ended_on',   time_field_utc_suffix].compact.join('_').to_sym
+        start_time_field       = :started_at
+        end_time_field         = :ended_at
+        start_date_field       = :started_on
+        end_date_field         = :ended_on
 
         class_eval do
           columns_hash[start_time_field] = ActiveRecord::ConnectionAdapters::Column.new(start_time_field, nil, 'datetime')
           columns_hash[end_time_field]   = ActiveRecord::ConnectionAdapters::Column.new(end_time_field,   nil, 'datetime')
-        end
-
-        unless base_time_field_is_utc
-          define_method("#{start_time_field}_utc") do
-            return nil unless send(start_time_field).present?
-
-            send(start_time_field).in_time_zone('UTC')
-          end
-
-          define_method("#{end_time_field}_utc") do
-            return nil unless send(end_time_field).present?
-
-            send(end_time_field).in_time_zone('UTC')
-          end
         end
 
         define_method(start_time_field) do
