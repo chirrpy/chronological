@@ -3,6 +3,7 @@ postgres_connection_options = {
   :host     => 'localhost',
   :database => 'chronological',
   :username => ENV['USER'],
+  :min_messages => 'warning',
   :encoding => 'utf8' }
 
 ActiveRecord::Base.establish_connection       postgres_connection_options.merge(
