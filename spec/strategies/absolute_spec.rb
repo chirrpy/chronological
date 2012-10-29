@@ -28,9 +28,6 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
   before           { Timecop.freeze(now) }
 
-  it { AbsoluteChronologicable.respond_to?(:active?).should             be_true }
-  it { AbsoluteChronologicable.respond_to?(:active).should              be_true }
-
   describe '.by_date' do
     context 'when there are two chronologicables that start at the same time' do
       context 'but end at different times' do
