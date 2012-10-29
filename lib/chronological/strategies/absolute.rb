@@ -40,6 +40,10 @@ module Chronological
       object.where object.arel_table[field_names[:ending_time]].gt(Time.now.utc)
     end
 
+    def self.in_progress(object, field_names)
+      object.started.current
+    end
+
     module ClassMethods
       # TODO: Needs to be able to add a validation option which can do the
       # typical timeliness validation such as ended_at should be after started_at
@@ -49,11 +53,6 @@ module Chronological
         ###
         # Scopes
         #
-
-        define_singleton_method(:in_progress) do
-          started.current
-        end
-
         define_singleton_method(:started) do
           where(arel_table[field_names[:starting_time]].lteq Time.now.utc)
         end

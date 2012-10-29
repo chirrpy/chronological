@@ -24,6 +24,10 @@ module Chronological
       object.send(field_names[:ending_offset]).present?
     end
 
+    def self.in_progress(object, field_names)
+      object.all.select(&:in_progress?)
+    end
+
     module ClassMethods
       def strategy_timeframe(field_names = {})
         class_eval do
@@ -46,10 +50,6 @@ module Chronological
         ###
         # Scopes
         #
-        define_singleton_method(:in_progress) do
-          all.select(&:in_progress?)
-        end
-
         define_singleton_method(:in_progress?) do
           all.any?(&:in_progress?)
         end
