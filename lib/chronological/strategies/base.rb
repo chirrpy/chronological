@@ -23,5 +23,17 @@ module Chronological
     def inactive?(object)
       !object.in_progress?
     end
+
+    def duration(object)
+      calculated_duration = duration_in_seconds(object)
+
+      return Hash.new unless calculated_duration.present?
+
+      hours   = (calculated_duration / 3600).to_i
+      minutes = ((calculated_duration % 3600) / 60).to_i
+      seconds = (calculated_duration % 60).to_i
+
+      { :hours => hours, :minutes => minutes, :seconds => seconds }
+    end
   end
 end

@@ -24,6 +24,13 @@ module Chronological
       object.all.any?(&:in_progress?)
     end
 
+  private
+    def duration_in_seconds(object)
+      return nil unless object.send(field_names[:starting_offset]).present? && object.send(field_names[:ending_offset]).present?
+
+      object.send(field_names[:starting_offset]) - object.send(field_names[:ending_offset])
+    end
+
     module ClassMethods
       def strategy_timeframe(field_names = {})
         class_eval do
@@ -46,12 +53,6 @@ module Chronological
       private
         define_method(:has_absolute_timeframe?) do
           scheduled?
-        end
-
-        define_method(:duration_in_seconds) do
-          return nil unless send(field_names[:starting_offset]).present? && send(field_names[:ending_offset]).present?
-
-          send(field_names[:starting_offset]) - send(field_names[:ending_offset])
         end
       end
     end

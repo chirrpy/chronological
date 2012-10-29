@@ -44,15 +44,16 @@ module Chronological
       object.where object.arel_table[field_names[:starting_time]].lteq(Time.now.utc)
     end
 
+  private
+    def duration_in_seconds(object)
+      (object.send(field_names[:ending_time]) - object.send(field_names[:starting_time]))
+    end
+
     module ClassMethods
       def strategy_timeframe(field_names = {})
       private
         define_method(:has_absolute_timeframe?) do
           send(field_names[:starting_time]).present? && send(field_names[:ending_time]).present?
-        end
-
-        define_method(:duration_in_seconds) do
-          (send(field_names[:ending_time]) - send(field_names[:starting_time]))
         end
       end
     end
