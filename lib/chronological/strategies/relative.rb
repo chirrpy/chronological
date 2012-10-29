@@ -42,33 +42,6 @@ module Chronological
       false
     end
 
-    ###
-    # Scopes
-    #
-    # def self.by_date(object, field_names, direction)
-    #   object.order "#{object.table_name}.#{field_names[:starting_time]} #{direction}, #{object.table_name}.#{field_names[:ending_time]} #{direction}"
-    # end
-
-    def self.started(object, field_names)
-      object.where "#{started_at_sql_calculation(field_names)} <= :as_of", :as_of => Time.now.utc
-    end
-
-    def self.ended(object, field_names)
-      object.where "#{ended_at_sql_calculation(field_names)} <= :as_of", :as_of => Time.now.utc
-    end
-
-    def self.not_yet_ended(object, field_names)
-      object.where "#{ended_at_sql_calculation(field_names)} > :as_of", :as_of => Time.now.utc
-    end
-
-    def self.in_progress(object, field_names)
-      object.started.not_yet_ended
-    end
-
-    def self.in_progress?(object, field_names)
-      object.in_progress.any?
-    end
-
   private
     def self.started_at_sql_calculation(field_names)
       "#{field_names[:base_of_offset]} - (#{field_names[:starting_offset]} * INTERVAL '1 seconds')"

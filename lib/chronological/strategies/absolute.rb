@@ -20,34 +20,15 @@ module Chronological
       true
     end
 
-    ###
-    # Scopes
-    #
-    def self.by_date(object, field_names, direction)
-      object.order "#{object.table_name}.#{field_names[:starting_time]} #{direction}, #{object.table_name}.#{field_names[:ending_time]} #{direction}"
-    end
-
-    def self.ended(object, field_names)
-      object.where object.arel_table[field_names[:ending_time]].lteq(Time.now.utc)
-    end
-
-    def self.not_yet_ended(object, field_names)
-      object.where object.arel_table[field_names[:ending_time]].gt(Time.now.utc)
-    end
-
-    def self.in_progress(object, field_names)
-      object.started.not_yet_ended
-    end
-
-    def self.in_progress?(object, field_names)
-      object.in_progress.any?
-    end
-
-    def self.started(object, field_names)
-      object.where object.arel_table[field_names[:starting_time]].lteq(Time.now.utc)
-    end
-
   private
+    def self.started_at_sql_calculation(field_names)
+      field_names[:starting_time]
+    end
+
+    def self.ended_at_sql_calculation(field_names)
+      field_names[:ending_time]
+    end
+
     def duration_in_seconds(object)
       (object.send(field_names[:ending_time]) - object.send(field_names[:starting_time]))
     end
