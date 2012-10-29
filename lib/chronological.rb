@@ -28,8 +28,8 @@ module Chronological
       strategy.class.by_date(self, strategy.field_names, direction)
     end
 
-    define_singleton_method(:expired) do
-      strategy.class.expired(self, strategy.field_names)
+    define_singleton_method(:ended) do
+      strategy.class.ended(self, strategy.field_names)
     end
 
     define_singleton_method(:current) do

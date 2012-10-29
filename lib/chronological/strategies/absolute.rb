@@ -32,7 +32,7 @@ module Chronological
       object.order "#{object.table_name}.#{field_names[:starting_time]} #{direction}, #{object.table_name}.#{field_names[:ending_time]} #{direction}"
     end
 
-    def self.expired(object, field_names)
+    def self.ended(object, field_names)
       object.where object.arel_table[field_names[:ending_time]].lteq(Time.now.utc)
     end
 

@@ -308,9 +308,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.expired' do
+        describe '.ended' do
           it 'includes that chronologicable' do
-            AbsoluteChronologicable.expired.should include chronologicable
+            AbsoluteChronologicable.ended.should include chronologicable
           end
         end
 
@@ -342,9 +342,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.expired' do
+        describe '.ended' do
           it 'does include that chronologicable' do
-            AbsoluteChronologicable.expired.should include chronologicable
+            AbsoluteChronologicable.ended.should include chronologicable
           end
         end
 
@@ -376,9 +376,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.expired' do
+        describe '.ended' do
           it 'does not include that chronologicable' do
-            AbsoluteChronologicable.expired.should_not include chronologicable
+            AbsoluteChronologicable.ended.should_not include chronologicable
           end
         end
 
@@ -414,9 +414,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.expired' do
+        describe '.ended' do
           it 'does include that chronologicable' do
-            AbsoluteChronologicable.expired.should include chronologicable
+            AbsoluteChronologicable.ended.should include chronologicable
           end
         end
 
@@ -448,9 +448,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
-        describe '.expired' do
+        describe '.ended' do
           it 'does not include that chronologicable' do
-            AbsoluteChronologicable.expired.should_not include chronologicable
+            AbsoluteChronologicable.ended.should_not include chronologicable
           end
         end
 
@@ -484,9 +484,9 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
         end
       end
 
-      describe '.expired' do
+      describe '.ended' do
         it 'does not include that chronologicable' do
-          AbsoluteChronologicable.expired.should_not include chronologicable
+          AbsoluteChronologicable.ended.should_not include chronologicable
         end
       end
 
