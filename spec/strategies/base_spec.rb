@@ -263,4 +263,34 @@ describe Chronological::BaseStrategy do
       end
     end
   end
+
+  describe '#partially_scheduled?' do
+    context 'when the time zone option is passed in' do
+      let(:field_names) { { time_zone: :time_zone } }
+
+      context 'and a time zone exists' do
+        let(:fields) { { time_zone: 'Alaska' } }
+
+        it 'is the time zone' do
+          strategy.partially_scheduled?(chrono).should eql 'Alaska'
+        end
+      end
+
+      context 'and a time zone does not exist' do
+        let(:fields) { { time_zone: nil } }
+
+        it 'is the time zone' do
+          strategy.partially_scheduled?(chrono).should be_nil
+        end
+      end
+    end
+
+    context 'when the time zone option is not passed in' do
+      let(:field_names) { Hash.new }
+
+      it 'is always false' do
+        strategy.partially_scheduled?(chrono).should be_false
+      end
+    end
+  end
 end
