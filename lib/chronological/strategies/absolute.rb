@@ -20,6 +20,9 @@ module Chronological
       true
     end
 
+    ###
+    # Scopes
+    #
     def self.by_date(object, field_names, direction)
       object.order "#{object.table_name}.#{field_names[:starting_time]} #{direction}, #{object.table_name}.#{field_names[:ending_time]} #{direction}"
     end
