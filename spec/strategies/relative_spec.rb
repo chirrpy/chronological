@@ -110,6 +110,48 @@ describe Chronological::RelativeStrategy, :timecop => true do
     end
   end
 
+  describe '.by_duration' do
+    before { RelativeChronologicable.delete_all }
+
+    context 'when there are two chronologicables that are different durations' do
+      let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 2) }
+      let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 1) }
+
+      context 'when no option is passed' do
+        it 'properly sorts them in ascending order' do
+          RelativeChronologicable.by_date.first.should  eql chronologicable_1
+          RelativeChronologicable.by_date.last.should   eql chronologicable_2
+        end
+      end
+
+      context 'when the :desc option is passed' do
+        it 'sorts them backwards by the start date' do
+          RelativeChronologicable.by_date(:desc).first.should  eql chronologicable_2
+          RelativeChronologicable.by_date(:desc).last.should   eql chronologicable_1
+        end
+      end
+    end
+
+    context 'when there are two chronologicables that are the same duration' do
+      let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 1) }
+      let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 1) }
+
+      context 'when no option is passed' do
+        it 'does not matter what order they are in' do
+          RelativeChronologicable.by_date.should  include chronologicable_1
+          RelativeChronologicable.by_date.should  include chronologicable_2
+        end
+      end
+
+      context 'when the :desc option is passed' do
+        it 'does not matter what order they are in' do
+          RelativeChronologicable.by_date(:desc).should  include chronologicable_1
+          RelativeChronologicable.by_date(:desc).should  include chronologicable_2
+        end
+      end
+    end
+  end
+
   context 'when the base time is not set' do
     let(:base_time)       { nil }
 

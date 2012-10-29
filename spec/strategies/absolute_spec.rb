@@ -112,6 +112,46 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
     end
   end
 
+  describe '.by_duration' do
+    context 'when there are two chronologicables that are different durations' do
+      let!(:chronologicable_1) { AbsoluteChronologicable.create(:started_at_utc => 3.seconds.ago, :ended_at_utc => 2.seconds.ago) }
+      let!(:chronologicable_2) { AbsoluteChronologicable.create(:started_at_utc => 3.seconds.ago, :ended_at_utc => 1.second.ago) }
+
+      context 'when no option is passed' do
+        it 'properly sorts them in ascending order' do
+          AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
+          AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
+        end
+      end
+
+      context 'when the :desc option is passed' do
+        it 'sorts them backwards by the start date' do
+          AbsoluteChronologicable.by_date(:desc).first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date(:desc).last.should   eql chronologicable_1
+        end
+      end
+    end
+
+    context 'when there are two chronologicables that are the same duration' do
+      let!(:chronologicable_1) { AbsoluteChronologicable.create(:started_at_utc => 3.seconds.ago, :ended_at_utc => 1.second.ago) }
+      let!(:chronologicable_2) { AbsoluteChronologicable.create(:started_at_utc => 3.seconds.ago, :ended_at_utc => 1.second.ago) }
+
+      context 'when no option is passed' do
+        it 'does not matter what order they are in' do
+          AbsoluteChronologicable.by_date.should  include chronologicable_1
+          AbsoluteChronologicable.by_date.should  include chronologicable_2
+        end
+      end
+
+      context 'when the :desc option is passed' do
+        it 'does not matter what order they are in' do
+          AbsoluteChronologicable.by_date(:desc).should  include chronologicable_1
+          AbsoluteChronologicable.by_date(:desc).should  include chronologicable_2
+        end
+      end
+    end
+  end
+
   context 'when dealing with one chronologicable' do
     let!(:chronologicable) do
       AbsoluteChronologicable.create(
