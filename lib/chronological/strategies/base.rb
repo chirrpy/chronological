@@ -1,11 +1,9 @@
 module Chronological
   class BaseStrategy
+    attr_reader :field_names
+
     def initialize(field_names = {})
       @field_names = field_names.freeze
-    end
-
-    def field_names
-      @field_names
     end
 
     def starting_date(object)
