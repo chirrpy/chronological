@@ -19,5 +19,9 @@ module Chronological
 
       object.send(field_names[:ending_time]).to_date
     end
+
+    def inactive?(object)
+      !object.in_progress?
+    end
   end
 end

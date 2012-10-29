@@ -1,10 +1,6 @@
 module Chronological
   module Base
     def base_timeframe(options = {})
-      define_method(:inactive?) do
-        !active?
-      end
-
       define_method(:duration) do
         return Hash.new unless duration_in_seconds.present?
 

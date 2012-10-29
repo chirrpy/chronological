@@ -21,6 +21,10 @@ module Chronological
       strategy.partially_scheduled?(self)
     end
 
+    define_method(:inactive?) do
+      strategy.inactive?(self)
+    end
+
     define_method(strategy.field_names[:starting_date]) do
       strategy.starting_date(self)
     end
