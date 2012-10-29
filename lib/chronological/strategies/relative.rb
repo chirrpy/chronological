@@ -39,11 +39,6 @@ module Chronological
 
     module ClassMethods
       def strategy_timeframe(field_names = {})
-        class_eval do
-          columns_hash[field_names[:starting_time]] = ActiveRecord::ConnectionAdapters::Column.new(field_names[:starting_time], nil, 'datetime')
-          columns_hash[field_names[:ending_time]]   = ActiveRecord::ConnectionAdapters::Column.new(field_names[:ending_time],   nil, 'datetime')
-        end
-
         define_method(field_names[:starting_time]) do
           return nil unless send(field_names[:base_of_offset]).present? && send(field_names[:starting_offset]).present?
 
