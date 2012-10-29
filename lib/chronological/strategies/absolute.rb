@@ -1,9 +1,5 @@
 module Chronological
   class AbsoluteStrategy < BaseStrategy
-    def module
-      Chronological::AbsoluteStrategy::ClassMethods
-    end
-
     def scheduled?(object)
       object.send(field_names[:starting_time]).present? &&
       object.send(field_names[:ending_time]).present? &&
@@ -55,12 +51,6 @@ module Chronological
 
     def has_absolute_timeframe?(object)
       object.send(field_names[:starting_time]).present? && object.send(field_names[:ending_time]).present?
-    end
-
-    module ClassMethods
-      def strategy_timeframe(field_names = {})
-      private
-      end
     end
   end
 end

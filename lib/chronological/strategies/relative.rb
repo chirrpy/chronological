@@ -1,9 +1,5 @@
 module Chronological
   class RelativeStrategy < BaseStrategy
-    def module
-      Chronological::RelativeStrategy::ClassMethods
-    end
-
     def starting_time(object)
       return nil unless object.send(field_names[:base_of_offset]).present? && object.send(field_names[:starting_offset]).present?
 
@@ -55,11 +51,6 @@ module Chronological
 
     def has_absolute_timeframe?(object)
       object.scheduled?
-    end
-
-    module ClassMethods
-      def strategy_timeframe(field_names = {})
-      end
     end
   end
 end

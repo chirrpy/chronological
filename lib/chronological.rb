@@ -16,8 +16,6 @@ module Chronological
       columns_hash[strategy.field_names[:ending_date]]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_date],   nil, 'date')
     end
 
-    extend strategy.module
-
     unless strategy.has_absolute_start?
       define_method(strategy.field_names[:starting_time]) do
         strategy.starting_time(self)
@@ -84,8 +82,6 @@ module Chronological
     define_singleton_method(:in_progress?) do
       strategy.class.in_progress?(self, strategy.field_names)
     end
-
-    strategy_timeframe strategy.field_names
 
     ###
     # Aliases
