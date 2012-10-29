@@ -37,16 +37,18 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
       describe '.by_date' do
-        it 'properly sorts them' do
+        context 'when no option is passed' do
+        it 'properly sorts them in ascending order' do
           AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
           AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
         end
-      end
+        end
 
-      describe '.by_date_reversed' do
+        context 'when the :desc option is passed' do
         it 'sorts them backwards by the start date' do
-          AbsoluteChronologicable.by_date_reversed.first.should  eql chronologicable_2
-          AbsoluteChronologicable.by_date_reversed.last.should   eql chronologicable_1
+          AbsoluteChronologicable.by_date(:desc).first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date(:desc).last.should   eql chronologicable_1
+        end
         end
       end
     end
@@ -56,16 +58,18 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => past, :ended_at_utc => now }
 
       describe '.by_date' do
+        context 'when in ascending order' do
         it 'does not matter what order they are in as long as they are all there' do
           AbsoluteChronologicable.by_date.should  include chronologicable_1
           AbsoluteChronologicable.by_date.should  include chronologicable_2
         end
-      end
+        end
 
-      describe '.by_date_reversed' do
+        context 'when in descending order' do
         it 'does not matter what order they are in as long as they are all there' do
-          AbsoluteChronologicable.by_date.should  include chronologicable_1
-          AbsoluteChronologicable.by_date.should  include chronologicable_2
+          AbsoluteChronologicable.by_date(:desc).should  include chronologicable_1
+          AbsoluteChronologicable.by_date(:desc).should  include chronologicable_2
+        end
         end
       end
     end
@@ -77,16 +81,18 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
 
       describe '.by_date' do
+        context 'when in ascending order' do
         it 'sorts them by the start date' do
           AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
           AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
         end
-      end
+        end
 
-      describe '.by_date_reversed' do
+        context 'when in descending order' do
         it 'sorts them backwards by the start date' do
-          AbsoluteChronologicable.by_date_reversed.first.should  eql chronologicable_2
-          AbsoluteChronologicable.by_date_reversed.last.should   eql chronologicable_1
+          AbsoluteChronologicable.by_date(:desc).first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date(:desc).last.should   eql chronologicable_1
+        end
         end
       end
     end
@@ -96,16 +102,18 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       let!(:chronologicable_2) { AbsoluteChronologicable.create :started_at_utc => now,  :ended_at_utc => later }
 
       describe '.by_date' do
+        context 'when in ascending order' do
         it 'sorts them by the start date' do
           AbsoluteChronologicable.by_date.first.should  eql chronologicable_1
           AbsoluteChronologicable.by_date.last.should   eql chronologicable_2
         end
-      end
+        end
 
-      describe '.by_date_reversed' do
+        context 'when in descending order' do
         it 'sorts them backwards by the start date' do
-          AbsoluteChronologicable.by_date_reversed.first.should  eql chronologicable_2
-          AbsoluteChronologicable.by_date_reversed.last.should   eql chronologicable_1
+          AbsoluteChronologicable.by_date(:desc).first.should  eql chronologicable_2
+          AbsoluteChronologicable.by_date(:desc).last.should   eql chronologicable_1
+        end
         end
       end
     end

@@ -28,12 +28,8 @@ module Chronological
       optional_time_zone
     end
 
-    def self.by_date(object, field_names)
-      object.order "#{object.table_name}.#{field_names[:starting_time]} ASC, #{object.table_name}.#{field_names[:ending_time]} ASC"
-    end
-
-    def self.by_date_reversed(object, field_names)
-      object.order "#{object.table_name}.#{field_names[:starting_time]} DESC, #{object.table_name}.#{field_names[:ending_time]} DESC"
+    def self.by_date(object, field_names, direction)
+      object.order "#{object.table_name}.#{field_names[:starting_time]} #{direction}, #{object.table_name}.#{field_names[:ending_time]} #{direction}"
     end
 
     module ClassMethods

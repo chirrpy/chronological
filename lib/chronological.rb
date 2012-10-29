@@ -24,12 +24,8 @@ module Chronological
     ###
     # Scopes
     #
-    define_singleton_method(:by_date) do
-      strategy.class.by_date(self, strategy.field_names)
-    end
-
-    define_singleton_method(:by_date_reversed) do
-      strategy.class.by_date_reversed(self, strategy.field_names)
+    define_singleton_method(:by_date) do |direction = :asc|
+      strategy.class.by_date(self, strategy.field_names, direction)
     end
 
     base_timeframe     strategy.field_names
