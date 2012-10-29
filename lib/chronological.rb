@@ -18,6 +18,18 @@ module Chronological
 
     extend strategy.module
 
+    unless strategy.has_absolute_start?
+      define_method(strategy.field_names[:starting_time]) do
+        strategy.starting_time(self)
+      end
+    end
+
+    unless strategy.has_absolute_end?
+      define_method(strategy.field_names[:ending_time]) do
+        strategy.ending_time(self)
+      end
+    end
+
     define_method(:scheduled?) do
       strategy.scheduled?(self)
     end

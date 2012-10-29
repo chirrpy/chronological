@@ -16,6 +16,14 @@ module Chronological
       super
     end
 
+    def has_absolute_start?
+      true
+    end
+
+    def has_absolute_end?
+      true
+    end
+
     def self.by_date(object, field_names, direction)
       object.order "#{object.table_name}.#{field_names[:starting_time]} #{direction}, #{object.table_name}.#{field_names[:ending_time]} #{direction}"
     end
