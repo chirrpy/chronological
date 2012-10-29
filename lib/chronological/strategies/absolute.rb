@@ -58,14 +58,6 @@ module Chronological
       # and that both should validate timeliness
       def strategy_timeframe(field_names = {})
 
-        ###
-        # Aliases
-        #
-        # Aliasing date methods to make code more readable
-        instance_eval do
-          alias active? in_progress?
-          alias active  in_progress
-        end
 
       private
         define_method(:has_absolute_timeframe?) do

@@ -50,5 +50,13 @@ module Chronological
 
     base_timeframe     strategy.field_names
     strategy_timeframe strategy.field_names
+
+    ###
+    # Aliases
+    #
+    instance_eval do
+      alias active? in_progress?
+      alias active  in_progress
+    end
   end
 end

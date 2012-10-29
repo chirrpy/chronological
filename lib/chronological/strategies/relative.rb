@@ -51,15 +51,6 @@ module Chronological
           send(field_names[:base_of_offset]) - send(field_names[:ending_offset])
         end
 
-        ###
-        # Aliases
-        #
-        # Aliasing date methods to make code more readable
-        instance_eval do
-          alias active? in_progress?
-          alias active  in_progress
-        end
-
       private
         define_method(:has_absolute_timeframe?) do
           scheduled?
