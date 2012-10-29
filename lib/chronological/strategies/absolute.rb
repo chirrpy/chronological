@@ -75,13 +75,6 @@ module Chronological
           alias active  in_progress
         end
 
-        class_eval do
-          alias_attribute   :"starts_at#{start_time_field_utc_suffix}",   start_time_field
-          alias_attribute   :"starting_at#{start_time_field_utc_suffix}", start_time_field
-          alias_attribute   :"ends_at#{end_time_field_utc_suffix}",       end_time_field
-          alias_attribute   :"ending_at#{end_time_field_utc_suffix}",     end_time_field
-        end
-
         base_timeframe  start_date_field: start_date_field,
                         start_time_field: start_time_field,
                         end_date_field:   end_date_field,

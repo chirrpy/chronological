@@ -28,12 +28,6 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
   before           { Timecop.freeze(now) }
 
-  it { AbsoluteChronologicable.new.respond_to?(:starts_at_utc).should   be_true }
-  it { AbsoluteChronologicable.new.respond_to?(:starting_at_utc).should be_true }
-  it { AbsoluteChronologicable.new.respond_to?(:ends_at_utc).should     be_true }
-  it { AbsoluteChronologicable.new.respond_to?(:ending_at_utc).should   be_true }
-  it { AbsoluteChronologicable.new.respond_to?(:active?).should         be_true }
-
   it { AbsoluteChronologicable.respond_to?(:active?).should             be_true }
   it { AbsoluteChronologicable.respond_to?(:active).should              be_true }
 
