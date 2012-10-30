@@ -1,12 +1,19 @@
-test_db_root = File.expand_path('../../../tmp/', __FILE__)
-Dir.mkdir test_db_root unless Dir.exists? test_db_root
+postgres_connection_options = {
+  :adapter      => 'postgresql',
+  :host         => 'localhost',
+  :database     => 'chronological',
+  :username     => ENV['USER'],
+  :min_messages => 'warning',
+  :encoding     => 'utf8' }
 
-SQLite3::Database.new "#{test_db_root}/test.db"
+ActiveRecord::Base.establish_connection       postgres_connection_options.merge(
+                                                :database           => 'postgres',
+                                                :schema_search_path => 'public')
 
-ActiveRecord::Base.establish_connection(
-  :adapter  => 'sqlite3',
-  :database => 'tmp/test.db'
-)
+ActiveRecord::Base.connection.drop_database   postgres_connection_options[:database] rescue nil
+ActiveRecord::Base.connection.create_database postgres_connection_options[:database]
+
+ActiveRecord::Base.establish_connection       postgres_connection_options
 
 ActiveRecord::Base.connection.create_table :base_chronologicables do |t|
   t.datetime :started_at
@@ -36,9 +43,5 @@ RSpec.configure do |config|
     ActiveRecord::Base.connection.execute 'DELETE FROM relative_chronologicables'
     ActiveRecord::Base.connection.execute 'DELETE FROM absolute_chronologicables'
     ActiveRecord::Base.connection.execute 'DELETE FROM chronologicable_with_time_zones'
-  end
-
-  config.after(:suite) do
-    `rm -f ./tmp/test.db`
   end
 end
