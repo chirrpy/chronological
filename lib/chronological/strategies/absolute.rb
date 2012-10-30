@@ -21,15 +21,15 @@ module Chronological
     end
 
   private
-    def self.started_at_sql_calculation(field_names)
+    def self.started_at_sql(field_names)
       field_names[:starting_time]
     end
 
-    def self.ended_at_sql_calculation(field_names)
+    def self.ended_at_sql(field_names)
       field_names[:ending_time]
     end
 
-    def self.duration_sql_calculation(field_names)
+    def self.duration_sql(field_names)
       "extract ('epoch' from (#{field_names[:ending_time]} - #{field_names[:starting_time]}))"
     end
 

@@ -44,15 +44,15 @@ module Chronological
     # Scopes
     #
     def self.started(object, field_names)
-      object.where "#{started_at_sql_calculation(field_names)} <= :as_of", :as_of => Time.now.utc
+      object.where "#{started_at_sql(field_names)} <= :as_of", :as_of => Time.now.utc
     end
 
     def self.ended(object, field_names)
-      object.where "#{ended_at_sql_calculation(field_names)} <= :as_of", :as_of => Time.now.utc
+      object.where "#{ended_at_sql(field_names)} <= :as_of", :as_of => Time.now.utc
     end
 
     def self.not_yet_ended(object, field_names)
-      object.where "#{ended_at_sql_calculation(field_names)} > :as_of", :as_of => Time.now.utc
+      object.where "#{ended_at_sql(field_names)} > :as_of", :as_of => Time.now.utc
     end
 
     def self.in_progress(object, field_names)
@@ -64,11 +64,11 @@ module Chronological
     end
 
     def self.by_date(object, field_names, direction)
-      object.order "#{object.table_name}.#{started_at_sql_calculation(field_names)} #{direction}, #{object.table_name}.#{ended_at_sql_calculation(field_names)} #{direction}"
+      object.order "#{object.table_name}.#{started_at_sql(field_names)} #{direction}, #{object.table_name}.#{ended_at_sql(field_names)} #{direction}"
     end
 
     def self.by_duration(object, field_names, direction)
-      object.order "#{duration_sql_calculation(field_names)} #{direction}"
+      object.order "#{duration_sql(field_names)} #{direction}"
     end
 
   private

@@ -43,15 +43,15 @@ module Chronological
     end
 
   private
-    def self.started_at_sql_calculation(field_names)
+    def self.started_at_sql(field_names)
       "#{field_names[:base_of_offset]} - (#{field_names[:starting_offset]} * INTERVAL '1 seconds')"
     end
 
-    def self.ended_at_sql_calculation(field_names)
+    def self.ended_at_sql(field_names)
       "#{field_names[:base_of_offset]} - (#{field_names[:ending_offset]} * INTERVAL '1 seconds')"
     end
 
-    def self.duration_sql_calculation(field_names)
+    def self.duration_sql(field_names)
       "#{field_names[:starting_offset]} - #{field_names[:ending_offset]}"
     end
 
