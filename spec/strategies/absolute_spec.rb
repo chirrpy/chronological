@@ -8,7 +8,7 @@ class AbsoluteChronologicable < ActiveRecord::Base
             ending_time:    :ended_at_utc
 end
 
-class ChronologicableWithTimeZone < ActiveRecord::Base
+class AbsoluteChronologicableWithTimeZone < ActiveRecord::Base
   extend Chronological
 
   timeframe type:           :absolute,
@@ -166,7 +166,7 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
     end
 
     let!(:chronologicable_with_enabled_time_zone) do
-      ChronologicableWithTimeZone.new(
+      AbsoluteChronologicableWithTimeZone.new(
         started_at_utc:  start_time,
         ended_at_utc:    end_time,
         time_zone:       time_zone)
@@ -180,6 +180,24 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
         context 'and no time zone is set' do
           let(:time_zone) { nil }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'and the time zone is blank' do
+          let(:time_zone) { '' }
 
           describe '#scheduled?' do
             it 'is correct' do
@@ -220,6 +238,24 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
         context 'but no time zone is set' do
           let(:time_zone) { nil }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'but the time zone is blank' do
+          let(:time_zone) { '' }
 
           describe '#scheduled?' do
             it 'is correct' do
@@ -292,6 +328,24 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
+        context 'but the time zone is blank' do
+          let(:time_zone) { '' }
+
+          describe '#scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+          end
+
+          describe '#partially_scheduled?' do
+            it 'is correct' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
         context 'and a time zone is set' do
           let(:time_zone) { ActiveSupport::TimeZone.new('Alaska') }
 
@@ -325,6 +379,24 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       describe '#partially_scheduled?' do
         it 'is false' do
           chronologicable.should_not be_partially_scheduled
+        end
+      end
+
+      context 'but the time zone is blank' do
+        let(:time_zone) { '' }
+
+        describe '#scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+        end
+
+        describe '#partially_scheduled?' do
+          it 'is correct' do
+            chronologicable_without_enabled_time_zone.should_not be_partially_scheduled
+            chronologicable_with_enabled_time_zone.should_not be_partially_scheduled
+          end
         end
       end
     end
