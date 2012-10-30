@@ -16,8 +16,9 @@ ActiveRecord::Base.connection.create_database postgres_connection_options[:datab
 ActiveRecord::Base.establish_connection       postgres_connection_options
 
 ActiveRecord::Base.connection.create_table :chronologicable_strategy_classes do |t|
-  t.datetime :started_at
-  t.datetime :ended_at
+  t.integer  :starting_offset
+  t.integer  :ending_offset
+  t.datetime :base_of_offset
 end
 
 ActiveRecord::Base.connection.create_table :base_chronologicables do |t|

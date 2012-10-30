@@ -9,7 +9,7 @@ describe Chronological do
     context 'when it is called with a symbol representing a strategy' do
       before do
         ChronologicableStrategyClass.class_eval do
-          timeframe type:       :absolute
+          timeframe type:       :relative
         end
       end
 
@@ -36,6 +36,22 @@ describe Chronological do
       it { ChronologicableStrategyClass.should respond_to :started }
       it { ChronologicableStrategyClass.should respond_to :in_progress? }
       it { ChronologicableStrategyClass.should respond_to :active? }
+
+      it 'tells ActiveRecord that the dynamic starting date field is a datetime' do
+        ChronologicableStrategyClass.columns_hash[:started_at].type.should eql :datetime
+      end
+
+      it 'tells ActiveRecord that the dynamic ending date field is a datetime' do
+        ChronologicableStrategyClass.columns_hash[:ended_at].type.should eql :datetime
+      end
+
+      it 'tells ActiveRecord that the dynamic starting date field is a datetime' do
+        ChronologicableStrategyClass.columns_hash[:started_on].type.should eql :date
+      end
+
+      it 'tells ActiveRecord that the dynamic ending date field is a datetime' do
+        ChronologicableStrategyClass.columns_hash[:ended_on].type.should eql :date
+      end
     end
 
     context 'when it is called with a symbol that does not represent a strategy' do
