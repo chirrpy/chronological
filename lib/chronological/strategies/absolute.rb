@@ -3,13 +3,13 @@ module Chronological
     def scheduled?(object)
       object.send(field_names[:starting_time]).present? &&
       object.send(field_names[:ending_time]).present? &&
-      super
+      scheduled_time_zone(object, true)
     end
 
     def partially_scheduled?(object)
       object.send(field_names[:starting_time]).present? ||
       object.send(field_names[:ending_time]).present? ||
-      super
+      scheduled_time_zone(object, false)
     end
 
     def has_absolute_start?

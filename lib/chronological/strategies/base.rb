@@ -34,14 +34,6 @@ module Chronological
       { :hours => hours, :minutes => minutes, :seconds => seconds }
     end
 
-    def scheduled?(object)
-      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : true
-    end
-
-    def partially_scheduled?(object)
-      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : false
-    end
-
     def in_progress?(object)
       return false unless has_absolute_timeframe?(object)
 
@@ -77,6 +69,11 @@ module Chronological
 
     def self.by_duration(object, field_names, direction)
       object.order "#{duration_sql_calculation(field_names)} #{direction}"
+    end
+
+  private
+    def scheduled_time_zone(object, default)
+      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : default
     end
   end
 end

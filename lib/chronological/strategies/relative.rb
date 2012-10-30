@@ -16,14 +16,14 @@ module Chronological
       object.send(field_names[:base_of_offset]).present?  &&
       object.send(field_names[:starting_offset]).present? &&
       object.send(field_names[:ending_offset]).present? &&
-      super
+      scheduled_time_zone(object, true)
     end
 
     def partially_scheduled?(object)
       object.send(field_names[:base_of_offset]).present? ||
       object.send(field_names[:starting_offset]).present? ||
       object.send(field_names[:ending_offset]).present? ||
-      super
+      scheduled_time_zone(object, false)
     end
 
     def self.in_progress(object, field_names)
