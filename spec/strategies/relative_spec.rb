@@ -19,6 +19,21 @@ class RelativeChronologicableWithTimeZone < ActiveRecord::Base
             time_zone:        :time_zone
 end
 
+class RelativeChronologicalWithOverriddenTime < ActiveRecord::Base
+  extend Chronological
+
+  set_table_name 'relative_chronologicables'
+
+  timeframe type:             :relative,
+            starting_offset:  :starting_offset,
+            ending_offset:    :ending_offset,
+            base_of_offset:   :base_datetime_utc,
+            starting_time:    :foobar_starting_time,
+            ending_time:      :foobar_ending_time,
+            starting_date:    :foobar_starting_date,
+            ending_date:      :foobar_ending_date
+end
+
 describe Chronological::RelativeStrategy, :timecop => true do
   let(:now)             { nil }
   let(:starting_offset) { nil }
@@ -47,6 +62,15 @@ describe Chronological::RelativeStrategy, :timecop => true do
       base_datetime_utc:  base_time,
       time_zone:          time_zone)
   end
+
+  let(:chronologicable_with_overridden_time) do
+    RelativeChronologicalWithOverriddenTime.new
+  end
+
+  it { chronologicable_with_overridden_time.should respond_to(:foobar_starting_time) }
+  it { chronologicable_with_overridden_time.should respond_to(:foobar_ending_time)   }
+  it { chronologicable_with_overridden_time.should respond_to(:foobar_starting_date) }
+  it { chronologicable_with_overridden_time.should respond_to(:foobar_ending_date)   }
 
   before { Timecop.freeze(now) }
 
