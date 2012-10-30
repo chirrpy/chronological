@@ -9,17 +9,43 @@ class RelativeChronologicable < ActiveRecord::Base
             base_of_offset:   :base_datetime_utc
 end
 
+class RelativeChronologicableWithTimeZone < ActiveRecord::Base
+  extend Chronological
+
+  timeframe type:             :relative,
+            starting_offset:  :starting_offset,
+            ending_offset:    :ending_offset,
+            base_of_offset:   :base_datetime_utc,
+            time_zone:        :time_zone
+end
+
 describe Chronological::RelativeStrategy, :timecop => true do
   let(:now)             { nil }
   let(:starting_offset) { nil }
   let(:ending_offset)   { nil }
   let(:base_time)       { nil }
+  let(:time_zone)       { nil }
 
   let!(:chronologicable) do
     RelativeChronologicable.create(
       starting_offset:    starting_offset,
       ending_offset:      ending_offset,
       base_datetime_utc:  base_time)
+  end
+
+  let!(:chronologicable_without_enabled_time_zone) do
+    RelativeChronologicable.new(
+      starting_offset:    starting_offset,
+      ending_offset:      ending_offset,
+      base_datetime_utc:  base_time)
+  end
+
+  let!(:chronologicable_with_enabled_time_zone) do
+    RelativeChronologicableWithTimeZone.new(
+      starting_offset:    starting_offset,
+      ending_offset:      ending_offset,
+      base_datetime_utc:  base_time,
+      time_zone:          time_zone)
   end
 
   before { Timecop.freeze(now) }
@@ -161,12 +187,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'and the ending offset is set' do
         let(:ending_offset) { 0 }
 
-        it 'is not scheduled' do
-          chronologicable.should_not be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is not included in the in progress list' do
@@ -181,12 +271,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'and the ending offset is not set' do
         let(:ending_offset) { nil }
 
-        it 'is not scheduled' do
-          chronologicable.should_not be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is not included in the in progress list' do
@@ -209,12 +363,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'but the ending offset is set' do
         let(:ending_offset) { 0 }
 
-        it 'is not scheduled' do
-          chronologicable.should_not be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is not included in the in progress list' do
@@ -234,7 +452,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and the ending offset is set' do
       let(:ending_offset) { 0 }
 
-      it 'does not have a end time' do
+      it 'does not have an end time' do
         chronologicable.ended_at.should be_nil
       end
     end
@@ -242,7 +460,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and the ending offset is not set' do
       let(:ending_offset) { nil }
 
-      it 'does not have a end time' do
+      it 'does not have an end time' do
         chronologicable.ended_at.should be_nil
       end
     end
@@ -251,12 +469,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       let(:starting_offset) { nil }
       let(:ending_offset)   { nil }
 
-      it 'is not scheduled' do
-        chronologicable.should_not be_scheduled
+      context 'when the time zone is not set' do
+        let(:time_zone) { nil }
+
+        context 'and the time zone check is enabled' do
+          it 'is not scheduled' do
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+
+          it 'is partially scheduled' do
+            chronologicable_with_enabled_time_zone.should_not be_partially_scheduled
+          end
+        end
+
+        context 'and the time zone check is not enabled' do
+          it 'is not scheduled' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+          end
+
+          it 'is partially scheduled' do
+            chronologicable_without_enabled_time_zone.should_not be_partially_scheduled
+          end
+        end
       end
 
-      it 'is not partially scheduled' do
-        chronologicable.should_not be_partially_scheduled
+      context 'when the time zone is blank' do
+        let(:time_zone) { '' }
+
+        context 'and the time zone check is enabled' do
+          it 'is not scheduled' do
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+
+          it 'is partially scheduled' do
+            chronologicable_with_enabled_time_zone.should_not be_partially_scheduled
+          end
+        end
+
+        context 'and the time zone check is not enabled' do
+          it 'is not scheduled' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+          end
+
+          it 'is partially scheduled' do
+            chronologicable_without_enabled_time_zone.should_not be_partially_scheduled
+          end
+        end
+      end
+
+      context 'when the time zone is set' do
+        let(:time_zone) { 'Alaska' }
+
+        context 'and the time zone check is enabled' do
+          it 'is not scheduled' do
+            chronologicable_with_enabled_time_zone.should_not be_scheduled
+          end
+
+          it 'is partially scheduled' do
+            chronologicable_with_enabled_time_zone.should be_partially_scheduled
+          end
+        end
+
+        context 'and the time zone check is not enabled' do
+          it 'is not scheduled' do
+            chronologicable_without_enabled_time_zone.should_not be_scheduled
+          end
+
+          it 'is partially scheduled' do
+            chronologicable_without_enabled_time_zone.should_not be_partially_scheduled
+          end
+        end
       end
 
       it 'is not included in the in progress list' do
@@ -279,12 +561,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'and the ending offset is not set' do
         let(:ending_offset) { nil }
 
-        it 'is not scheduled' do
-          chronologicable.should_not be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is not included in the in progress list' do
@@ -299,12 +645,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'and the ending offset is set' do
         let(:ending_offset)   { 0 }
 
-        it 'is not scheduled' do
-          chronologicable.should_not be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is not included in the in progress list' do
@@ -327,12 +737,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'and the ending offset is not set' do
         let(:ending_offset) { nil }
 
-        it 'is not scheduled' do
-          chronologicable.should_not be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is not included in the in progress list' do
@@ -347,12 +821,76 @@ describe Chronological::RelativeStrategy, :timecop => true do
       context 'and the ending offset is set' do
         let(:ending_offset)   { 0 }
 
-        it 'is scheduled' do
-          chronologicable.should be_scheduled
+        context 'when the time zone is not set' do
+          let(:time_zone) { nil }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
-        it 'is partially scheduled' do
-          chronologicable.should be_partially_scheduled
+        context 'when the time zone is blank' do
+          let(:time_zone) { '' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should_not be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+        end
+
+        context 'when the time zone is set' do
+          let(:time_zone) { 'Alaska' }
+
+          context 'and the time zone check is enabled' do
+            it 'is not scheduled' do
+              chronologicable_with_enabled_time_zone.should be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_with_enabled_time_zone.should be_partially_scheduled
+            end
+          end
+
+          context 'and the time zone check is not enabled' do
+            it 'is not scheduled' do
+              chronologicable_without_enabled_time_zone.should be_scheduled
+            end
+
+            it 'is partially scheduled' do
+              chronologicable_without_enabled_time_zone.should be_partially_scheduled
+            end
+          end
         end
 
         it 'is included in the in progress list' do

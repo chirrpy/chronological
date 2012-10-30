@@ -16,14 +16,14 @@ module Chronological
       object.send(field_names[:base_of_offset]).present?  &&
       object.send(field_names[:starting_offset]).present? &&
       object.send(field_names[:ending_offset]).present? &&
-      super
+      scheduled_time_zone(object, true).present?
     end
 
     def partially_scheduled?(object)
       object.send(field_names[:base_of_offset]).present? ||
       object.send(field_names[:starting_offset]).present? ||
       object.send(field_names[:ending_offset]).present? ||
-      super
+      scheduled_time_zone(object, false).present?
     end
 
     def self.in_progress(object, field_names)
@@ -43,15 +43,15 @@ module Chronological
     end
 
   private
-    def self.started_at_sql_calculation(field_names)
+    def self.started_at_sql(field_names)
       "#{field_names[:base_of_offset]} - (#{field_names[:starting_offset]} * INTERVAL '1 seconds')"
     end
 
-    def self.ended_at_sql_calculation(field_names)
+    def self.ended_at_sql(field_names)
       "#{field_names[:base_of_offset]} - (#{field_names[:ending_offset]} * INTERVAL '1 seconds')"
     end
 
-    def self.duration_sql_calculation(field_names)
+    def self.duration_sql(field_names)
       "#{field_names[:starting_offset]} - #{field_names[:ending_offset]}"
     end
 

@@ -15,6 +15,12 @@ ActiveRecord::Base.connection.create_database postgres_connection_options[:datab
 
 ActiveRecord::Base.establish_connection       postgres_connection_options
 
+ActiveRecord::Base.connection.create_table :chronologicable_strategy_classes do |t|
+  t.integer  :starting_offset
+  t.integer  :ending_offset
+  t.datetime :base_of_offset
+end
+
 ActiveRecord::Base.connection.create_table :base_chronologicables do |t|
   t.datetime :started_at
   t.datetime :ended_at
@@ -26,12 +32,19 @@ ActiveRecord::Base.connection.create_table :relative_chronologicables do |t|
   t.datetime :base_datetime_utc
 end
 
+ActiveRecord::Base.connection.create_table :relative_chronologicable_with_time_zones do |t|
+  t.integer  :starting_offset
+  t.integer  :ending_offset
+  t.datetime :base_datetime_utc
+  t.string   :time_zone
+end
+
 ActiveRecord::Base.connection.create_table :absolute_chronologicables do |t|
   t.datetime :started_at_utc
   t.datetime :ended_at_utc
 end
 
-ActiveRecord::Base.connection.create_table :chronologicable_with_time_zones do |t|
+ActiveRecord::Base.connection.create_table :absolute_chronologicable_with_time_zones do |t|
   t.datetime :started_at_utc
   t.datetime :ended_at_utc
   t.string   :time_zone
@@ -39,9 +52,11 @@ end
 
 RSpec.configure do |config|
   config.before(:each) do
+    ActiveRecord::Base.connection.execute 'DELETE FROM chronologicable_strategy_classes'
     ActiveRecord::Base.connection.execute 'DELETE FROM base_chronologicables'
     ActiveRecord::Base.connection.execute 'DELETE FROM relative_chronologicables'
+    ActiveRecord::Base.connection.execute 'DELETE FROM relative_chronologicable_with_time_zones'
     ActiveRecord::Base.connection.execute 'DELETE FROM absolute_chronologicables'
-    ActiveRecord::Base.connection.execute 'DELETE FROM chronologicable_with_time_zones'
+    ActiveRecord::Base.connection.execute 'DELETE FROM absolute_chronologicable_with_time_zones'
   end
 end

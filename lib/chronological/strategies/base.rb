@@ -34,14 +34,6 @@ module Chronological
       { :hours => hours, :minutes => minutes, :seconds => seconds }
     end
 
-    def scheduled?(object)
-      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : true
-    end
-
-    def partially_scheduled?(object)
-      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : false
-    end
-
     def in_progress?(object)
       return false unless has_absolute_timeframe?(object)
 
@@ -52,15 +44,15 @@ module Chronological
     # Scopes
     #
     def self.started(object, field_names)
-      object.where "#{started_at_sql_calculation(field_names)} <= :as_of", :as_of => Time.now.utc
+      object.where "#{started_at_sql(field_names)} <= :as_of", :as_of => Time.now.utc
     end
 
     def self.ended(object, field_names)
-      object.where "#{ended_at_sql_calculation(field_names)} <= :as_of", :as_of => Time.now.utc
+      object.where "#{ended_at_sql(field_names)} <= :as_of", :as_of => Time.now.utc
     end
 
     def self.not_yet_ended(object, field_names)
-      object.where "#{ended_at_sql_calculation(field_names)} > :as_of", :as_of => Time.now.utc
+      object.where "#{ended_at_sql(field_names)} > :as_of", :as_of => Time.now.utc
     end
 
     def self.in_progress(object, field_names)
@@ -72,11 +64,16 @@ module Chronological
     end
 
     def self.by_date(object, field_names, direction)
-      object.order "#{object.table_name}.#{started_at_sql_calculation(field_names)} #{direction}, #{object.table_name}.#{ended_at_sql_calculation(field_names)} #{direction}"
+      object.order "#{object.table_name}.#{started_at_sql(field_names)} #{direction}, #{object.table_name}.#{ended_at_sql(field_names)} #{direction}"
     end
 
     def self.by_duration(object, field_names, direction)
-      object.order "#{duration_sql_calculation(field_names)} #{direction}"
+      object.order "#{duration_sql(field_names)} #{direction}"
+    end
+
+  private
+    def scheduled_time_zone(object, default)
+      !field_names[:time_zone].nil? ? object.send(field_names[:time_zone]) : default
     end
   end
 end
