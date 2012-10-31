@@ -38,19 +38,19 @@ describe Chronological do
       it { ChronologicableStrategyClass.should respond_to :active? }
 
       it 'tells ActiveRecord that the dynamic starting date field is a datetime' do
-        ChronologicableStrategyClass.columns_hash[:started_at].type.should eql :datetime
+        ChronologicableStrategyClass.columns_hash['started_at'].type.should eql :datetime
       end
 
       it 'tells ActiveRecord that the dynamic ending date field is a datetime' do
-        ChronologicableStrategyClass.columns_hash[:ended_at].type.should eql :datetime
+        ChronologicableStrategyClass.columns_hash['ended_at'].type.should eql :datetime
       end
 
       it 'tells ActiveRecord that the dynamic starting date field is a datetime' do
-        ChronologicableStrategyClass.columns_hash[:started_on].type.should eql :date
+        ChronologicableStrategyClass.columns_hash['started_on'].type.should eql :date
       end
 
       it 'tells ActiveRecord that the dynamic ending date field is a datetime' do
-        ChronologicableStrategyClass.columns_hash[:ended_on].type.should eql :date
+        ChronologicableStrategyClass.columns_hash['ended_on'].type.should eql :date
       end
     end
 

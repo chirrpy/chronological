@@ -227,20 +227,18 @@ these accessors:
   * `started_on`
   * `ended_on`
 
-If you want to override these values, simply pass in the
-`absolute_start_date_field`, `absolute_end_date_field`,
-`absolute_start_time_field` and/or `absolute_end_time_field` options to
-`timeframe` like so:
+If you want to override the fields that Chronological creates to access those
+values, simply pass in the option with the name of the field you would like.
 
 #### Example
 
 ```ruby
 class MyTimeRangeClass
-  timeframe :base_of_offset             => :event_start_time,
-            :starting_offset            => :starting_availability_offset
-            :ending_offset              => :ending_availability_offset,
-            :absolute_start_time_field  => :starting_time
-            :absolute_end_time_field    => :ending_time
+  timeframe :base_of_offset  => :event_start_time,
+            :starting_offset => :starting_availability_offset
+            :ending_offset   => :ending_availability_offset,
+            :starting_time   => :custom_start_field
+            :ending_time     => :custom_end_field
 end
 ```
 

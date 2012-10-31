@@ -9,10 +9,10 @@ module Chronological
     strategy = Chronological::StrategyResolver.resolve(options)
 
     class_eval do
-      columns_hash[strategy.field_names[:starting_time]] ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:starting_time], nil, 'datetime')
-      columns_hash[strategy.field_names[:ending_time]]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_time],   nil, 'datetime')
-      columns_hash[strategy.field_names[:starting_date]] ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:starting_date], nil, 'date')
-      columns_hash[strategy.field_names[:ending_date]]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_date],   nil, 'date')
+      columns_hash[strategy.field_names[:starting_time].to_s] ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:starting_time], nil, 'datetime')
+      columns_hash[strategy.field_names[:ending_time].to_s]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_time],   nil, 'datetime')
+      columns_hash[strategy.field_names[:starting_date].to_s] ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:starting_date], nil, 'date')
+      columns_hash[strategy.field_names[:ending_date].to_s]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_date],   nil, 'date')
     end
 
     unless strategy.has_absolute_start?
