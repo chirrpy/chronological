@@ -34,6 +34,8 @@ module Chronological
     end
 
     def duration_in_seconds(object)
+      return nil unless object.send(field_names[:ending_time]).present? && object.send(field_names[:starting_time]).present?
+
       (object.send(field_names[:ending_time]) - object.send(field_names[:starting_time]))
     end
 

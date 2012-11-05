@@ -613,5 +613,28 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
         end
       end
     end
+
+    describe '#duration_in_seconds' do
+      let(:strategy)   { Chronological::AbsoluteStrategy.new( starting_time:  :started_at_utc,
+                                                              ending_time:    :ended_at_utc) }
+
+      context 'when the starting time is not set' do
+        let(:start_time) { nil }
+        let(:end_time)   { now }
+
+        it 'is nil' do
+          strategy.send(:duration_in_seconds, chronologicable).should be_nil
+        end
+      end
+
+      context 'when the starting time is not set' do
+        let(:start_time) { now }
+        let(:end_time)   { nil }
+
+        it 'is nil' do
+          strategy.send(:duration_in_seconds, chronologicable).should be_nil
+        end
+      end
+    end
   end
 end
