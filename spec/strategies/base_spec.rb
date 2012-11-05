@@ -71,8 +71,28 @@ describe Chronological::BaseStrategy do
   end
 
   describe '#duration' do
+    context 'when passed an options hash limiting the parts of the output' do
+      let(:duration_hash) { strategy.duration(chrono, :as => [:days, :hours, :seconds]) }
+
+      before { strategy.should_receive(:duration_in_seconds).and_return(438263) }
+
+      it 'removes it from the resulting hash' do
+        duration_hash.should_not have_key :minutes
+      end
+
+      it 'makes up for it in the following more granular item' do
+        duration_hash[:days].should eql 5
+        duration_hash[:hours].should eql 1
+        duration_hash[:seconds].should eql 2663
+      end
+    end
+
     context 'when the strategy represents something with a duration' do
-      before { strategy.should_receive(:duration_in_seconds).and_return(6263) }
+      before { strategy.should_receive(:duration_in_seconds).and_return(438263) }
+
+      it 'is a hash with the correct days' do
+        strategy.duration(chrono)[:days].should eql 5
+      end
 
       it 'is a hash with the correct hours' do
         strategy.duration(chrono)[:hours].should eql 1
