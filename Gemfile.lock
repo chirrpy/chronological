@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    chronological (1.0.0beta5)
+    chronological (1.0.0beta6)
 
 GEM
   remote: https://rubygems.org/
