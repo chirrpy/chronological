@@ -282,19 +282,19 @@ MyTimeRangeClass.ended :as_of => 42.years.from_now  #=> [range_instance]
 
 When calling `duration` on a Chronological, by default it will return
 the days, hours, minutes and seconds in a Hash.  If you need a specific
-combination of these pieces, you can pass them in an `:as` options like
+combination of these pieces, you can pass them in an `:in` options like
 so:
 
 ```ruby
 # range_instance's total duration is 5 days, 1 hour, 44 minutes and 23 seconds
 
-range_instance.duration :as => [:days, :hours, :seconds]
+range_instance.duration :in => [:days, :hours, :seconds]
 #=> { :days => 5, :hours => 1, :seconds => 2663 }
 
-range_instance.duration :as => [:days, :hours, :minutes]
+range_instance.duration :in => [:days, :hours, :minutes]
 #=> { :days => 5, :hours => 1, :minutes => 44 }
 
-range_instance.duration :as => [:hours, :minutes, :seconds]
+range_instance.duration :in => [:hours, :minutes, :seconds]
 #=> { :hours => 121, :minutes => 44, :seconds => 23 }
 ```
 

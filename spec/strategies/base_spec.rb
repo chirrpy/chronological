@@ -72,7 +72,7 @@ describe Chronological::BaseStrategy do
 
   describe '#duration' do
     context 'when passed an options hash limiting the parts of the output' do
-      let(:duration_hash) { strategy.duration(chrono, :as => [:days, :hours, :seconds]) }
+      let(:duration_hash) { strategy.duration(chrono, :in => [:days, :hours, :seconds]) }
 
       before { strategy.should_receive(:duration_in_seconds).and_return(438263) }
 

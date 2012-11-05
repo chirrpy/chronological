@@ -22,8 +22,8 @@ module Chronological
       !object.in_progress?
     end
 
-    def duration(object, options = { :as => [:days, :hours, :minutes, :seconds] })
-      duration_parts      = options[:as]
+    def duration(object, options = { :in => [:days, :hours, :minutes, :seconds] })
+      duration_parts      = options[:in]
       remaining_duration  = duration_in_seconds(object)
 
       return Hash.new unless remaining_duration.present?
