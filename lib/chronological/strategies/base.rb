@@ -22,16 +22,32 @@ module Chronological
       !object.in_progress?
     end
 
-    def duration(object)
-      calculated_duration = duration_in_seconds(object)
+    def duration(object, options = { :as => [:days, :hours, :minutes, :seconds] })
+      duration_parts      = options[:as]
+      remaining_duration  = duration_in_seconds(object)
 
-      return Hash.new unless calculated_duration.present?
+      return Hash.new unless remaining_duration.present?
 
-      hours   = (calculated_duration / 3600).to_i
-      minutes = ((calculated_duration % 3600) / 60).to_i
-      seconds = (calculated_duration % 60).to_i
+      if duration_parts.include? :days
+        days                = remaining_duration / 86400
+        remaining_duration  = remaining_duration % 86400
+      end
 
-      { :hours => hours, :minutes => minutes, :seconds => seconds }
+      if duration_parts.include? :hours
+        hours               = remaining_duration / 3600
+        remaining_duration  = remaining_duration % 3600
+      end
+
+      if duration_parts.include? :minutes
+        minutes             = remaining_duration / 60
+        remaining_duration  = remaining_duration % 60
+      end
+
+      if duration_parts.include? :seconds
+        seconds             = remaining_duration
+      end
+
+      { :days => days, :hours => hours, :minutes => minutes, :seconds => seconds }.select {|k,v| !v.nil?}
     end
 
     def in_progress?(object)
