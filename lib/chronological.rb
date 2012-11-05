@@ -43,8 +43,8 @@ module Chronological
       strategy.in_progress?(self)
     end
 
-    define_method(:duration) do
-      strategy.duration(self)
+    define_method(:duration) do |options|
+      strategy.duration(self, options)
     end
 
     define_method(strategy.field_names[:starting_date]) do
