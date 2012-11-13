@@ -50,12 +50,18 @@ ActiveRecord::Base.connection.create_table :absolute_chronologicable_with_time_z
   t.string   :time_zone
 end
 
+ActiveRecord::Base.connection.create_table :relative_chronologicable_with_dynamic_bases do |t|
+  t.integer  :starting_offset
+  t.integer  :ending_offset
+end
+
 RSpec.configure do |config|
   config.before(:each) do
     ActiveRecord::Base.connection.execute 'DELETE FROM chronologicable_strategy_classes'
     ActiveRecord::Base.connection.execute 'DELETE FROM base_chronologicables'
     ActiveRecord::Base.connection.execute 'DELETE FROM relative_chronologicables'
     ActiveRecord::Base.connection.execute 'DELETE FROM relative_chronologicable_with_time_zones'
+    ActiveRecord::Base.connection.execute 'DELETE FROM relative_chronologicable_with_dynamic_bases'
     ActiveRecord::Base.connection.execute 'DELETE FROM absolute_chronologicables'
     ActiveRecord::Base.connection.execute 'DELETE FROM absolute_chronologicable_with_time_zones'
   end

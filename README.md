@@ -242,6 +242,9 @@ class MyTimeRangeClass
 end
 ```
 
+_Note: The `:base_of_offset` option can be anything that has accessor
+methods for the field._
+
 ### Advanced Method Usage
 
 --------------------------------------------------------------------------------

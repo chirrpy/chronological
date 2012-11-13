@@ -34,6 +34,17 @@ class RelativeChronologicalWithOverriddenTime < ActiveRecord::Base
             ending_date:      :foobar_ending_date
 end
 
+class RelativeChronologicableWithDynamicBase < ActiveRecord::Base
+  extend Chronological
+
+  timeframe type:             :relative,
+            starting_offset:  :starting_offset,
+            ending_offset:    :ending_offset,
+            base_of_offset:   :base_datetime_utc
+
+  attr_accessor :base_datetime_utc
+end
+
 describe Chronological::RelativeStrategy, :timecop => true do
   let(:now)             { nil }
   let(:starting_offset) { nil }
@@ -65,6 +76,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
   let(:chronologicable_with_overridden_time) do
     RelativeChronologicalWithOverriddenTime.new
+  end
+
+  let(:chronologicable_with_dynamic_base) do
+    RelativeChronologicableWithDynamicBase.new(
+      starting_offset:    starting_offset,
+      ending_offset:      ending_offset,
+      base_datetime_utc:  base_time
+    )
   end
 
   it { chronologicable_with_overridden_time.should respond_to(:foobar_starting_time) }
@@ -376,6 +395,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
+      it 'does not have a start time when the base is dynamic' do
+        chronologicable_with_dynamic_base.started_at.should be_nil
+      end
+
       it 'does not have a start time when called directly' do
         chronologicable.started_at.should be_nil
       end
@@ -472,6 +495,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
+      it 'does not have a start time when the base is dynamic' do
+        chronologicable_with_dynamic_base.started_at.should be_nil
+      end
+
       it 'does not have a start time when called directly' do
         chronologicable.started_at.should be_nil
       end
@@ -484,6 +511,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and the ending offset is set' do
       let(:ending_offset) { 0 }
 
+      it 'does not have an end time when the base is dynamic' do
+        chronologicable_with_dynamic_base.ended_at.should be_nil
+      end
+
       it 'does not have an end time when called directly' do
         chronologicable.ended_at.should be_nil
       end
@@ -495,6 +526,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
     context 'and the ending offset is not set' do
       let(:ending_offset) { nil }
+
+      it 'does not have an end time when the base is dynamic' do
+        chronologicable_with_dynamic_base.ended_at.should be_nil
+      end
 
       it 'does not have an end time when called directly' do
         chronologicable.ended_at.should be_nil
@@ -766,6 +801,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
+      it 'does not have a start time when the base is dynamic' do
+        chronologicable_with_dynamic_base.started_at.should be_nil
+      end
+
       it 'does not have a start time when called directly' do
         chronologicable.started_at.should be_nil
       end
@@ -946,6 +985,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
+      it 'calculates the correct start time when the base is dynamic' do
+        chronologicable_with_dynamic_base.started_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
+      end
+
       it 'calculates the correct start time when called directly' do
         chronologicable.started_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
       end
@@ -958,6 +1001,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and the ending offset is set' do
       let(:ending_offset) { 30 }
 
+      it 'calculates the correct end time when the base is dynamic' do
+        chronologicable_with_dynamic_base.ended_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
+      end
+
       it 'calculates the correct end time when called directly' do
         chronologicable.ended_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
       end
@@ -969,6 +1016,10 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
     context 'and the ending offset is not set' do
       let(:ending_offset) { nil }
+
+      it 'does not have an end time when the base is dynamic' do
+        chronologicable_with_dynamic_base.ended_at.should be_nil
+      end
 
       it 'does not have a end time when called directly' do
         chronologicable.ended_at.should be_nil
