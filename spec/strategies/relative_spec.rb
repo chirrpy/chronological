@@ -141,7 +141,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'when there are two chronologicables that start at different times' do
       context 'and end at different times' do
         let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 2) }
-        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 2,  :ending_offset => 1) }
+        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 2, :ending_offset => 1) }
 
         context 'when in ascending order' do
           it 'sorts them by the start date' do
@@ -160,7 +160,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
       context 'but end at the same time' do
         let!(:chronologicable_1) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 3, :ending_offset => 1) }
-        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 2,  :ending_offset => 1) }
+        let!(:chronologicable_2) { RelativeChronologicable.create(:base_datetime_utc => Time.now, :starting_offset => 2, :ending_offset => 1) }
 
         context 'when in ascending order' do
           it 'sorts them by the start date' do
