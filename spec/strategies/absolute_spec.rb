@@ -407,6 +407,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       context 'and has already ended' do
         let(:end_time) { past }
 
+        describe '#started?' do
+          it 'is started when called directly' do
+            chronologicable.should be_started
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_started(:base_of => 100.years.from_now)
+          end
+        end
+
         describe '.in_progress?' do
           it 'is false' do
             AbsoluteChronologicable.should_not be_in_progress
@@ -441,6 +451,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       context 'and ends now' do
         let(:end_time) { now }
 
+        describe '#started?' do
+          it 'is started when called directly' do
+            chronologicable.should be_started
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_started(:base_of => 100.years.from_now)
+          end
+        end
+
         describe '.in_progress?' do
           it 'is false' do
             AbsoluteChronologicable.should_not be_in_progress
@@ -474,6 +494,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
       context 'and ends later' do
         let(:end_time) { later }
+
+        describe '#started?' do
+          it 'is started when called directly' do
+            chronologicable.should be_started
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_started(:base_of => 100.years.from_now)
+          end
+        end
 
         describe '.in_progress?' do
           it 'is true' do
@@ -513,6 +543,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
       context 'and ends now' do
         let(:end_time) { now }
 
+        describe '#started?' do
+          it 'is started when called directly' do
+            chronologicable.should be_started
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_started(:base_of => 100.years.from_now)
+          end
+        end
+
         describe '.in_progress?' do
           it 'is false' do
             AbsoluteChronologicable.should_not be_in_progress
@@ -546,6 +586,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
       context 'and ends later' do
         let(:end_time) { later }
+
+        describe '#started?' do
+          it 'is started when called directly' do
+            chronologicable.should be_started
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_started(:base_of => 100.years.from_now)
+          end
+        end
 
         describe '.in_progress?' do
           it 'is true' do
@@ -582,6 +632,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
     context 'when there is a chronologicable that has not yet started' do
       let(:start_time) { later }
       let(:end_time)   { later }
+
+      describe '#started?' do
+        it 'is started when called directly' do
+          chronologicable.should_not be_started
+        end
+
+        it 'ignores any passed in base time' do
+          chronologicable.should_not be_started(:base_of => 100.years.ago)
+        end
+      end
 
       describe '.in_progress?' do
         it 'is false' do

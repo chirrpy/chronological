@@ -988,6 +988,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and before the ending offset' do
       let(:ending_offset) { 30 }
 
+      it 'is not started when called directly' do
+        chronologicable.should_not be_started
+      end
+
+      it 'is started if the base time is overridden to a time before the offset plus "now"' do
+        chronologicable.should be_started(:base_of => Time.local(2012, 7, 26, 6,  0, 29))
+      end
+
       it 'is not included in the started list' do
         RelativeChronologicable.started.should_not include chronologicable
       end
@@ -1018,6 +1026,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and before the ending offset' do
       let(:ending_offset) { 29 }
 
+      it 'is not started when called directly' do
+        chronologicable.should be_started
+      end
+
+      it 'is not started if the base time is overridden to a time after the offset plus "now"' do
+        chronologicable.should_not be_started(:base_of => Time.local(2012, 7, 26, 6,  0, 31))
+      end
+
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable
       end
@@ -1041,6 +1057,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
     context 'and the same as the ending offset' do
       let(:ending_offset) { 30 }
+
+      it 'is not started when called directly' do
+        chronologicable.should be_started
+      end
+
+      it 'is not started if the base time is overridden to a time after the offset plus "now"' do
+        chronologicable.should_not be_started(:base_of => Time.local(2012, 7, 26, 6,  0, 31))
+      end
 
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable
@@ -1072,6 +1096,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and before the ending offset' do
       let(:ending_offset) { 27 }
 
+      it 'is not started when called directly' do
+        chronologicable.should be_started
+      end
+
+      it 'is not started if the base time is overridden to a time after the offset plus "now"' do
+        chronologicable.should_not be_started(:base_of => Time.local(2012, 7, 26, 6,  0, 33))
+      end
+
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable
       end
@@ -1096,6 +1128,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
     context 'and the same as the ending offset' do
       let(:ending_offset) { 28 }
 
+      it 'is not started when called directly' do
+        chronologicable.should be_started
+      end
+
+      it 'is not started if the base time is overridden to a time after the offset plus "now"' do
+        chronologicable.should_not be_started(:base_of => Time.local(2012, 7, 26, 6,  0, 33))
+      end
+
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable
       end
@@ -1119,6 +1159,14 @@ describe Chronological::RelativeStrategy, :timecop => true do
 
     context 'and after the ending offset' do
       let(:ending_offset) { 29 }
+
+      it 'is not started when called directly' do
+        chronologicable.should be_started
+      end
+
+      it 'is not started if the base time is overridden to a time after the offset plus "now"' do
+        chronologicable.should_not be_started(:base_of => Time.local(2012, 7, 26, 6,  0, 33))
+      end
 
       it 'is included in the started list' do
         RelativeChronologicable.started.should include chronologicable

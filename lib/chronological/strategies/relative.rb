@@ -14,7 +14,6 @@ module Chronological
       return nil unless base_of_offset.present? && object.send(field_names[:ending_offset]).present?
 
       base_of_offset - object.send(field_names[:ending_offset])
-
     end
 
     def scheduled?(object)
