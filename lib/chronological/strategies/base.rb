@@ -56,6 +56,18 @@ module Chronological
       (object.send(field_names[:starting_time]) <= Time.now.utc) && object.send(field_names[:ending_time]).future?
     end
 
+    def started?(object, options = {})
+      Time.now >= object.send(field_names[:starting_time], options)
+    end
+
+    def ended?(object, options = {})
+      Time.now >= object.send(field_names[:ending_time], options)
+    end
+
+    def not_yet_ended?(object, options = {})
+      !ended?(object, options)
+    end
+
     ###
     # Scopes
     #

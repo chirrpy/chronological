@@ -15,16 +15,46 @@ module Chronological
       columns_hash[strategy.field_names[:ending_date].to_s]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_date],   nil, 'date')
     end
 
-    unless strategy.has_absolute_start?
-      define_method(strategy.field_names[:starting_time]) do
-        strategy.starting_time(self)
+    if strategy.has_absolute_start?
+      define_method(strategy.field_names[:starting_time]) do |*args|
+        super()
+      end
+    else
+      define_method(strategy.field_names[:starting_time]) do |*args|
+        options = args.last.is_a?(Hash) ? args.last : {}
+
+        strategy.starting_time(self, options)
       end
     end
 
-    unless strategy.has_absolute_end?
-      define_method(strategy.field_names[:ending_time]) do
-        strategy.ending_time(self)
+    if strategy.has_absolute_end?
+      define_method(strategy.field_names[:ending_time]) do |*args|
+        super()
       end
+    else
+      define_method(strategy.field_names[:ending_time]) do |*args|
+        options = args.last.is_a?(Hash) ? args.last : {}
+
+        strategy.ending_time(self, options)
+      end
+    end
+
+    define_method(:started?) do |*args|
+      options = args.last.is_a?(Hash) ? args.last : {}
+
+      strategy.started?(self, options)
+    end
+
+    define_method(:ended?) do |*args|
+      options = args.last.is_a?(Hash) ? args.last : {}
+
+      strategy.ended?(self, options)
+    end
+
+    define_method(:not_yet_ended?) do |*args|
+      options = args.last.is_a?(Hash) ? args.last : {}
+
+      strategy.not_yet_ended?(self, options)
     end
 
     define_method(:scheduled?) do

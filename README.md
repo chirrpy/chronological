@@ -252,6 +252,11 @@ default behavior which is `Time.now.utc`.  Using this option you can more easily
 see if an instance (or instances) would be started, ended, etc as of a given
 date.
 
+All range status methods can also take a `:base_of` option _this is only
+meaningful for strategies which utilize an offset for either the start
+time or the end time_ which will calculate the absolute time based on
+that time rather than any time stored within the instance.
+
 Affected methods:
 
 * `started?`
