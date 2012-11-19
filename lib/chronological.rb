@@ -24,8 +24,10 @@ module Chronological
     end
 
     unless strategy.has_absolute_end?
-      define_method(strategy.field_names[:ending_time]) do
-        strategy.ending_time(self)
+      define_method(strategy.field_names[:ending_time]) do |*args|
+        options = args.last.is_a?(Hash) ? args.last : {}
+
+        strategy.ending_time(self, options)
       end
     end
 
