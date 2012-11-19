@@ -60,6 +60,10 @@ module Chronological
       Time.now >= object.send(field_names[:starting_time], options)
     end
 
+    def ended?(object, options = {})
+      Time.now >= object.send(field_names[:ending_time], options)
+    end
+
     ###
     # Scopes
     #
