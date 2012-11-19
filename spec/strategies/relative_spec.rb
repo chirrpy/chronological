@@ -1035,7 +1035,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
   end
 
   context 'when it is currently a time the same as the starting offset' do
-    let(:now)             { Time.local(2012, 7, 26, 6, 0, 0) }
+    let(:now)             { Time.local(2012, 7, 26, 6,  0,  0) }
     let(:base_time)       { Time.local(2012, 7, 26, 6,  0, 30) }
     let(:starting_offset) { 30 }
 
@@ -1137,7 +1137,7 @@ describe Chronological::RelativeStrategy, :timecop => true do
   end
 
   context 'when it is currently a time after the starting offset' do
-    let(:now)             { Time.local(2012, 7, 26, 6, 0, 2) }
+    let(:now)             { Time.local(2012, 7, 26, 6,  0,  2) }
     let(:base_time)       { Time.local(2012, 7, 26, 6,  0, 30) }
     let(:starting_offset) { 30 }
 
