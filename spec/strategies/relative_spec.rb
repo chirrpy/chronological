@@ -376,8 +376,12 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
-      it 'does not have a start time' do
+      it 'does not have a start time when called directly' do
         chronologicable.started_at.should be_nil
+      end
+
+      it 'has the proper start time when a base is passed in' do
+        chronologicable.started_at(:base_of => Time.local(2012, 7, 26, 12, 0, 0)).should eql Time.local(2012, 7, 26, 11, 59, 30)
       end
     end
 
@@ -468,8 +472,12 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
-      it 'does not have a start time' do
+      it 'does not have a start time when called directly' do
         chronologicable.started_at.should be_nil
+      end
+
+      it 'does not have a start time when a base is passed in' do
+        chronologicable.started_at(:base_of => Time.local(2012, 7, 26, 12, 0, 0)).should be_nil
       end
     end
 
@@ -750,8 +758,12 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
-      it 'does not have a start time' do
+      it 'does not have a start time when called directly' do
         chronologicable.started_at.should be_nil
+      end
+
+      it 'does not have a start time when a base is passed in' do
+        chronologicable.started_at(:base_of => Time.local(2012, 7, 26, 12, 0, 0)).should be_nil
       end
     end
 
@@ -926,8 +938,12 @@ describe Chronological::RelativeStrategy, :timecop => true do
         end
       end
 
-      it 'calculates the correct start time' do
+      it 'calculates the correct start time when called directly' do
         chronologicable.started_at.should eql Time.local(2012, 7, 26, 6, 0, 0)
+      end
+
+      it 'calculates the correct start time when a base is passed in' do
+        chronologicable.started_at(:base_of => Time.local(2012, 7, 26, 12, 0, 0)).should eql Time.local(2012, 7, 26, 11, 59, 30)
       end
     end
 

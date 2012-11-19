@@ -1,9 +1,11 @@
 module Chronological
   class RelativeStrategy < BaseStrategy
-    def starting_time(object)
-      return nil unless object.send(field_names[:base_of_offset]).present? && object.send(field_names[:starting_offset]).present?
+    def starting_time(object, options = {})
+      base_of_offset = options[:base_of] || object.send(field_names[:base_of_offset])
 
-      object.send(field_names[:base_of_offset]) - object.send(field_names[:starting_offset])
+      return nil unless base_of_offset.present? && object.send(field_names[:starting_offset]).present?
+
+      base_of_offset - object.send(field_names[:starting_offset])
     end
 
     def ending_time(object)

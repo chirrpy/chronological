@@ -16,8 +16,10 @@ module Chronological
     end
 
     unless strategy.has_absolute_start?
-      define_method(strategy.field_names[:starting_time]) do
-        strategy.starting_time(self)
+      define_method(strategy.field_names[:starting_time]) do |*args|
+        options = args.last.is_a?(Hash) ? args.last : {}
+
+        strategy.starting_time(self, options)
       end
     end
 
