@@ -15,9 +15,12 @@ module Chronological
       columns_hash[strategy.field_names[:ending_date].to_s]   ||= ActiveRecord::ConnectionAdapters::Column.new(strategy.field_names[:ending_date],   nil, 'date')
     end
 
+    # TODO: Once we implement anonymous modules in Greenwich and Chronological, then
+    # we can call `super` here which would call Greenwich which would convert the
+    # time over to UTC.
     if strategy.has_absolute_start?
       define_method(strategy.field_names[:starting_time]) do |*args|
-        super()
+        super().try(:utc)
       end
     else
       define_method(strategy.field_names[:starting_time]) do |*args|
@@ -27,9 +30,12 @@ module Chronological
       end
     end
 
+    # TODO: Once we implement anonymous modules in Greenwich and Chronological, then
+    # we can call `super` here which would call Greenwich which would convert the
+    # time over to UTC.
     if strategy.has_absolute_end?
       define_method(strategy.field_names[:ending_time]) do |*args|
-        super()
+        super().try(:utc)
       end
     else
       define_method(strategy.field_names[:ending_time]) do |*args|
