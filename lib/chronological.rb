@@ -51,6 +51,12 @@ module Chronological
       strategy.ended?(self, options)
     end
 
+    define_method(:not_yet_ended?) do |*args|
+      options = args.last.is_a?(Hash) ? args.last : {}
+
+      strategy.not_yet_ended?(self, options)
+    end
+
     define_method(:scheduled?) do
       strategy.scheduled?(self)
     end

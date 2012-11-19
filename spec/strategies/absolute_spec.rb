@@ -427,6 +427,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
+        describe '#not_yet_ended?' do
+          it 'is not_yet_ended when called directly' do
+            chronologicable.should_not be_not_yet_ended
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should_not be_not_yet_ended(:base_of => 100.years.from_now)
+          end
+        end
+
         describe '.in_progress?' do
           it 'is false' do
             AbsoluteChronologicable.should_not be_in_progress
@@ -481,6 +491,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
+        describe '#not_yet_ended?' do
+          it 'is not_yet_ended when called directly' do
+            chronologicable.should_not be_not_yet_ended
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should_not be_not_yet_ended(:base_of => 100.years.from_now)
+          end
+        end
+
         describe '.in_progress?' do
           it 'is false' do
             AbsoluteChronologicable.should_not be_in_progress
@@ -532,6 +552,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
           it 'ignores any passed in base time' do
             chronologicable.should_not be_ended(:base_of => 100.years.ago)
+          end
+        end
+
+        describe '#not_yet_ended?' do
+          it 'is not_yet_ended when called directly' do
+            chronologicable.should be_not_yet_ended
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_not_yet_ended(:base_of => 100.years.ago)
           end
         end
 
@@ -593,6 +623,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
           end
         end
 
+        describe '#not_yet_ended?' do
+          it 'is not_yet_ended when called directly' do
+            chronologicable.should_not be_not_yet_ended
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should_not be_not_yet_ended(:base_of => 100.years.from_now)
+          end
+        end
+
         describe '.in_progress?' do
           it 'is false' do
             AbsoluteChronologicable.should_not be_in_progress
@@ -644,6 +684,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
           it 'ignores any passed in base time' do
             chronologicable.should_not be_ended(:base_of => 100.years.ago)
+          end
+        end
+
+        describe '#not_yet_ended?' do
+          it 'is not_yet_ended when called directly' do
+            chronologicable.should be_not_yet_ended
+          end
+
+          it 'ignores any passed in base time' do
+            chronologicable.should be_not_yet_ended(:base_of => 100.years.ago)
           end
         end
 
@@ -700,6 +750,16 @@ describe Chronological::AbsoluteStrategy, :timecop => true do
 
         it 'ignores any passed in base time' do
           chronologicable.should_not be_ended(:base_of => 100.years.ago)
+        end
+      end
+
+      describe '#not_yet_ended?' do
+        it 'is not_yet_ended when called directly' do
+          chronologicable.should be_not_yet_ended
+        end
+
+        it 'ignores any passed in base time' do
+          chronologicable.should be_not_yet_ended(:base_of => 100.years.ago)
         end
       end
 
