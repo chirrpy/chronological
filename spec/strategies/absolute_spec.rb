@@ -17,7 +17,7 @@ class AbsoluteChronologicableWithTimeZone < ActiveRecord::Base
             time_zone:      :time_zone
 end
 
-describe Chronological::AbsoluteStrategy, :timecop => true do
+describe Chronological::AbsoluteStrategy do
   let(:later)      { Time.local(2012, 7, 26, 6, 0, 26) }
   let(:now)        { Time.local(2012, 7, 26, 6, 0, 25) }
   let(:past)       { Time.local(2012, 7, 26, 6, 0, 24) }

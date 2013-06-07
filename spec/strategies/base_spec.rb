@@ -164,7 +164,7 @@ describe Chronological::BaseStrategy do
     end
   end
 
-  describe '#in_progress?', :timecop => true do
+  describe '#in_progress?' do
     let(:later) { Time.local(2012, 7, 26, 6, 0, 26) }
     let(:now)   { Time.local(2012, 7, 26, 6, 0, 25) }
     let(:past)  { Time.local(2012, 7, 26, 6, 0, 24) }
