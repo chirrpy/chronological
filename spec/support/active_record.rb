@@ -26,6 +26,17 @@ ActiveRecord::Base.connection.create_table :base_chronologicables do |t|
   t.datetime :ended_at
 end
 
+ActiveRecord::Base.connection.create_table :duration_from_start_chronologicables do |t|
+  t.datetime  :started_at
+  t.integer   :duration_in_seconds
+end
+
+ActiveRecord::Base.connection.create_table :duration_from_start_chronologicable_with_time_zones do |t|
+  t.datetime  :started_at
+  t.integer   :duration_in_seconds
+  t.string    :time_zone
+end
+
 ActiveRecord::Base.connection.create_table :relative_chronologicables do |t|
   t.integer  :starting_offset
   t.integer  :ending_offset

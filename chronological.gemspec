@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.authors               = %w{jfelchner m5rk}
   s.email                 = 'support@chirrpy.com'
-  s.date                  = Date.today
+  s.date                  = Time.now
   s.homepage              = 'https://github.com/chirrpy/chronological'
 
   s.summary               = %q{Easy Accessors for ActiveModel Objects}
@@ -29,13 +29,10 @@ Gem::Specification.new do |s|
   s.require_paths         = ["lib"]
   #= Manifest =#
 
-  s.add_development_dependency  'rspec',                '~> 2.11'
-  s.add_development_dependency  'fuubar',               '~> 1.0'
-  s.add_development_dependency  'guard',                '~> 1.4.0'
-  s.add_development_dependency  'guard-rspec',          '~> 2.0.0'
-  s.add_development_dependency  'rb-fsevent',           '~> 0.9.1'
-  s.add_development_dependency  'awesome_print',        '~> 1.1.0'
+  s.add_development_dependency  'rspec',                '~> 2.13'
+  s.add_development_dependency  'rspectacular',         '~> 0.13'
   s.add_development_dependency  'activerecord',         '~> 3.1.8'
+  s.add_development_dependency  'database_cleaner',     '~> 1.0'
   s.add_development_dependency  'pg',                   '~> 0.14.1'
-  s.add_development_dependency  'timecop',              '~> 0.5.2'
+  s.add_development_dependency  'timecop',              '~> 0.6.1'
 end

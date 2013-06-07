@@ -45,7 +45,7 @@ class RelativeChronologicableWithDynamicBase < ActiveRecord::Base
   attr_accessor :base_datetime_utc
 end
 
-describe Chronological::RelativeStrategy, :timecop => true do
+describe Chronological::RelativeStrategy do
   let(:now)             { nil }
   let(:starting_offset) { nil }
   let(:ending_offset)   { nil }
